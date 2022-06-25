@@ -2,7 +2,7 @@
 
 ## Sobre o Projeto
 
-O TP Backoffice é um projeto para realizar o controle e administração das acomodações disponíveis no site da Tempoara Paulista, ele foi inteiramente desenvolvido em Laravel.
+O TP Backoffice é um projeto para realizar o controle e administração das acomodações disponíveis no site da Temporada Paulista, ele foi inteiramente desenvolvido em Laravel.
 
 ## Inicializando o Projeto
 
