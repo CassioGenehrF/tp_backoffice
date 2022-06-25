@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/user', function () {
+    return (new UserController)->index();
+});
+
+Route::get('/property', function () {
+    return (new PropertyController)->index();
 });
