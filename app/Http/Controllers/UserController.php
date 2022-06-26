@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
@@ -15,13 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // return User::all();
-        $properties = User::find(1)
-            ->properties()
-            ->property()
-            ->published()
-            ->get();
-        return $properties;
+        return User::all();
     }
 
     /**
@@ -53,7 +48,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -86,6 +81,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
+    {
+        //
+    }
+
+    public function login(LoginRequest $request)
     {
         //
     }

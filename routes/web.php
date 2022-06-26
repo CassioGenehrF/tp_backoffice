@@ -19,10 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user', function () {
-    return (new UserController)->index();
-});
+Route::resource('user', UserController::class);
 
-Route::get('/property', function () {
-    return (new PropertyController)->index();
-});
+Route::resource('property', PropertyController::class);
