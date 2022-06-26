@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
+})->name('login');
+
+Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::resource('user', UserController::class);
+    
+    Route::resource('property', PropertyController::class);
 });
-
-Route::resource('user', UserController::class);
-
-Route::resource('property', PropertyController::class);
