@@ -22,7 +22,19 @@ Então precisamos baixar as dependencias do projeto.
 docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/var/www/html -w /var/www/html laravelsail/php81-composer:latest composer install --ignore-platform-reqs
 ```
 
-Após isso será necessário subir os containers.
+Agora precisamos criar o arquivo das variáveis de ambiente a partir do exemplo.
+
+```bash
+cp .env.example .env
+```
+
+Em seguida é necessário gerar a APP Key do projeto.
+
+```bash
+./vendor/bin/sail artisan key:generate
+```
+
+Após isso basta subir os containers.
 
 ```bash
 ./vendor/bin/sail up
