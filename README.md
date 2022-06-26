@@ -4,6 +4,10 @@
 
 O TP Backoffice é um projeto para realizar o controle e administração das acomodações disponíveis no site da Temporada Paulista, ele foi inteiramente desenvolvido em Laravel.
 
+## Pré-requisitos do Projeto
+
+Para que esse projeto funcione corretamente no Windows, você já deve possuir o WSL (Windows Subsystem for Linux) e o Docker configurados.
+
 ## Inicializando o Projeto
 
 Primeiro é necessário clonar o projeto.
@@ -12,13 +16,17 @@ Primeiro é necessário clonar o projeto.
 git clone git@github.com:CassioGenehrF/tp_backoffice.git
 ```
 
+Então precisamos baixar as dependencias do projeto.
+
+```bash
+docker run --rm -u "$(id -u):$(id -g)" -v $(pwd):/var/www/html -w /var/www/html laravelsail/php81-composer:latest composer install --ignore-platform-reqs
+```
+
 Após isso será necessário subir os containers.
 
 ```bash
 ./vendor/bin/sail up
 ```
-
-Para que esse comando funcione corretamente no Windows, você já deve possuir o WSL (Windows Subsystem for Linux) e o Docker configurados corretamente.
 
 Agora você já pode acessar sua [aplicação](http://localhost).
 
