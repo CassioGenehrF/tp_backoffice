@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('login');
 })->name('login');
 
+Route::get('/owner', function () {
+    return view('owner');
+})->name('owner');
+
 Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('user', UserController::class);
     
