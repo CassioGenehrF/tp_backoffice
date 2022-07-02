@@ -1,0 +1,71 @@
+.image-predios {
+    height: 100vh;
+}
+
+.form-logo {
+    margin-top: 50px;
+}
+
+.form-box {
+    width: 100vw;
+}
+
+.form-logo img {
+    width: 300px;
+}
+
+.title {
+    margin-top: 4rem;
+    color: var(--cor-primaria);
+    font-size: 30px;
+}
+
+.direction-column {
+    flex-direction: column;
+}
+
+.input-box input {  
+    border: 2px;
+    background-color: rgba(217, 217, 217, 17%);
+    opacity: 1;
+    border-radius: 10px;
+    font-size: 20px;
+    height: 70px;
+    padding-left: 1rem;
+}
+
+.input-box label {
+    color: var(--cor-primaria);
+    font-size: 25px;
+    font-weight: bold;
+    text-align: initial;
+    margin-top: 2rem;
+    padding-left: 1rem;
+}
+
+input::placeholder {
+    color: rgba(199, 197, 197, 0.8);
+    padding-left: 1rem;
+}
+
+form {
+    width: 500px;
+    margin: 0 auto;
+}
+
+.login-button {
+    align-self: center;
+    background-color: var(--cor-primaria);
+    width: 350px;
+    height: 60px;
+    margin-top: 3rem;
+    border-radius: 10px;
+    font-size: 30px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: rgba(217, 217, 217, 35%);
+    color: var(--cor-primaria);
+}
