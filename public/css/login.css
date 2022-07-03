@@ -3,7 +3,7 @@
 }
 
 .form-logo {
-    margin-top: 50px;
+    margin-top: 3rem;
 }
 
 .form-box {
@@ -15,9 +15,13 @@
 }
 
 .title {
-    margin-top: 4rem;
+    margin-top: 2rem;
     color: var(--cor-primaria);
     font-size: 30px;
+}
+
+.title h2 {
+    margin: 0;
 }
 
 .direction-column {

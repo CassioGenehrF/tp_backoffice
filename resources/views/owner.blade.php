@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Login</title>
+    <title>Proprietário</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,24 +19,26 @@
 
 <body>
     <header class="menu-content">
-            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
-            <nav class="cabecalho-menu">
-                <ul class="list-itens">
-                    <li class="menu-item">
-                        <a href="#">Bloquear Agenda</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#">Desbloquear Agenda</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#">Cassio Genehr</a>
-                    </li>
-                    <li class="menu-item">
+        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <nav class="cabecalho-menu">
+            <ul class="list-itens">
+                <li class="menu-item">
+                    <a href="#">Bloquear Agenda</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">Desbloquear Agenda</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">{{ $name }}</a>
+                </li>
+                <li class="menu-item">
+                    <form action="{{ route('logout.user') }}" method="post">
+                        @csrf
                         <button type="submit">Sair</button>
-                    </li>
-                </ul>
-            </nav>
-
+                    </form>
+                </li>
+            </ul>
+        </nav>
     </header>
 
     <main class="conteudo">

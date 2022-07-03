@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -14,15 +16,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('login');
-})->name('login');
+Route::get('/', [LoginController::class, 'index'])->name('login');
 
-Route::get('/owner', function () {
-    return view('owner');
-})->name('owner');
+Route::post('/auth', [LoginController::class, 'auth'])->name('auth.user');
 
-Route::middleware(['auth', 'auth.session'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout.user');
+    
+    Route::get('/owner', [OwnerController::class, 'index'])->name('owner.page');
+
     Route::resource('user', UserController::class);
     
     Route::resource('property', PropertyController::class);

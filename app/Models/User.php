@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -30,6 +30,16 @@ class User extends Authenticatable
     ];
 
     protected $appends = ['role'];
+
+    public function getAuthIdentifier()
+    {
+        return $this->ID;
+    }
+
+    public function getAuthPassword()
+    {
+        return Hash::make($this->user_pass);
+    }
 
     protected function getRoleAttribute(): string
     {
