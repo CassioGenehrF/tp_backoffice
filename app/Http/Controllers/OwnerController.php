@@ -30,18 +30,18 @@ class OwnerController extends Controller
         foreach ($this->commitments as $commitment) {
             $initialDate = $startMonth->gte($commitment->checkin) ? $startMonth : new Carbon($commitment->checkin);
             $endDate = $endMonth->lte($commitment->checkout) ? $endMonth : new Carbon($commitment->checkout);
-    
+
             if ($date->gte($initialDate) && $date->lte($endDate)) {
                 $style = $commitment->type == 'blocked' ?
-                "order: 1; background: rgb(253, 216, 222); color: rgb(121, 6, 25);" :
-                "order: 1; background: rgb(199, 245, 217); color: rgb(11, 65, 33);";
+                    "order: 1; background: rgb(253, 216, 222); color: rgb(121, 6, 25);" :
+                    "order: 1; background: rgb(199, 245, 217); color: rgb(11, 65, 33);";
 
                 $eventType = $commitment->type == 'blocked' ? 'Bloqueado' : 'Alugado';
                 $eventMessage = "<h6><strong>$eventType</strong></h6>
                 <p class=`mb-0`>
                     <small>
                         <i class=`fas fa-calendar-alt pr-1`></i>
-                        ".$initialDate->format('d/m/Y')." - ". $endDate->format('d/m/Y') ."
+                        " . $initialDate->format('d/m/Y') . " - " . $endDate->format('d/m/Y') . "
                     </small>
                 </p>";
 
@@ -60,7 +60,7 @@ class OwnerController extends Controller
                     data-mdb-original-title='$eventMessage'>
                     $title
                 </div>";
-                
+
                 return $event;
             }
         }
@@ -135,15 +135,24 @@ class OwnerController extends Controller
     {
         $data = $request->only(['checkin', 'checkout', 'propriedade']);
 
+        $checkin = $data['checkin'];
+        $checkout = $data['checkout'];
+
         $hasCommitment = Commitment::query()
-            ->whereDate('checkin', '<', $data['checkin'])
-            ->orWhereDate('checkout', '>', $data['checkin'])
+            ->where(function ($query) use ($checkin) {
+                $query->whereDate('checkin', '<', $checkin);
+                $query->whereDate('checkout', '>', $checkin);
+            })
+            ->orWhere(function ($query) use ($checkout) {
+                $query->whereDate('checkin', '<', $checkout);
+                $query->whereDate('checkout', '>', $checkout);
+            })
             ->first();
 
         if ($hasCommitment) {
             return back()->withErrors('Já existe um registro cadastrado nessa data.');
         }
-        
+
         $commitment = new Commitment([
             'user_id' => Auth::id(),
             'property_id' => $data['propriedade'],
