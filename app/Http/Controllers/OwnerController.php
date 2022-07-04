@@ -140,12 +140,12 @@ class OwnerController extends Controller
 
         $hasCommitment = Commitment::query()
             ->where(function ($query) use ($checkin) {
-                $query->whereDate('checkin', '<', $checkin);
-                $query->whereDate('checkout', '>', $checkin);
+                $query->whereDate('checkin', '<=', $checkin);
+                $query->whereDate('checkout', '>=', $checkin);
             })
             ->orWhere(function ($query) use ($checkout) {
-                $query->whereDate('checkin', '<', $checkout);
-                $query->whereDate('checkout', '>', $checkout);
+                $query->whereDate('checkin', '<=', $checkout);
+                $query->whereDate('checkout', '>=', $checkout);
             })
             ->first();
 
