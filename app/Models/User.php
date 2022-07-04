@@ -49,8 +49,8 @@ class User extends Authenticatable
             ->where('meta_key', 'wp_capabilities')
             ->where('user_id', $this->ID)
             ->first();
-        
-        $role = $role ? substr(substr($role->meta_value, 0, -7), 11) : '';
+            
+        $role = $role ? str_replace('"', '', substr(substr($role->meta_value, 0, -7), 10)) : '';
         
         return $role;
     }

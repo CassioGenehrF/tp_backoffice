@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\WordpressAuthenticator;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\LogoutRequest;
+use App\Http\Requests\Login\LoginRequest;
+use App\Http\Requests\Login\LogoutRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +12,19 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('login');
+        if (!Auth::check()) {
+            return view('login');
+        } else {
+            $user = Auth::user();
+            
+            if ($user->role == 'contributor') {
+                return redirect('/broker');
+            } else if ($user->role == 'editor') {
+                return redirect('/owner');
+            } else if ($user->role == 'administrator') {
+                return redirect('/admin');
+            }
+        }
     }
 
     public function auth(LoginRequest $request)
@@ -34,8 +46,17 @@ class LoginController extends Controller
         if ($wp_auth->checkPassword($credentials['password'], $user->user_pass)) {
             Auth::login($user);
             $request->session()->regenerate();
+            
+            if ($user->role == 'contributor') {
+                return redirect('/broker');
+            } else if ($user->role == 'editor') {
+                return redirect('/owner');
+            } else if ($user->role == 'administrator') {
+                return redirect('/admin');
+            }
 
-            return redirect('/owner');
+            // TODO: redirect para "permission not found", algo do genero
+            return redirect('/user');
         }
 
         return back()->withErrors([

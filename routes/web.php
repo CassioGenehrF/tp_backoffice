@@ -23,7 +23,11 @@ Route::post('/auth', [LoginController::class, 'auth'])->name('auth.user');
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout.user');
     
-    Route::get('/owner', [OwnerController::class, 'index'])->name('owner.page');
+    Route::middleware(['owner'])->group(function () {
+        Route::get('/owner', [OwnerController::class, 'index'])->name('owner.page');
+
+        Route::post('/block', [OwnerController::class, 'block'])->name('owner.block');
+    });
 
     Route::resource('user', UserController::class);
     

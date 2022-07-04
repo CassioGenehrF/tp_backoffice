@@ -28,7 +28,7 @@
     flex-direction: column;
 }
 
-.input-box input {  
+.input-box input {
     border: 2px;
     background-color: rgba(217, 217, 217, 17%);
     opacity: 1;
@@ -49,7 +49,6 @@
 
 input::placeholder {
     color: rgba(199, 197, 197, 0.8);
-    padding-left: 1rem;
 }
 
 form {
