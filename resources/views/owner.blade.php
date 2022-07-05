@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{ asset('css/owner.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -55,8 +57,8 @@
             <div class="calendar">
                 <section class="filter">
                     <div class="input-box">
-                        <label for="propriedade">Propriedade:</label>
-                        <select name="propriedade" id="propriedade">
+                        <label for="filtro-propriedade">Propriedade:</label>
+                        <select name="filtro-propriedade" id="filtro-propriedade">
                             @foreach ($properties as $property)
                                 <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
                             @endforeach
@@ -80,7 +82,7 @@
                             <th>Sábado</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="calendar-content">
                         {!! $calendar !!}
                     </tbody>
                 </table>
@@ -95,6 +97,7 @@
                 </ul>
             @endif
             @csrf
+            <input type="hidden" name="propriedade" id="propriedade" value="{{$properties[0]->ID}}">
             <div class="input-box">
                 <label for="checkin">Check-in:</label>
                 <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
@@ -107,7 +110,18 @@
         </form>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        $('#filtro-propriedade').on('change', function() {
+            $('#propriedade').val(this.value);
+
+            $.ajax({
+                url: "/api/getCalendar/"+this.value,
+                success: function(result) {
+                    $("#calendar-content").html(result['data']);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

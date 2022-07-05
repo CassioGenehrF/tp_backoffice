@@ -14,7 +14,8 @@ class OwnerController extends Controller
 
     public function index()
     {
-        $calendar = $this->createCalendar();
+        $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
+        $calendar = $this->createCalendar($firstPropertyID);
 
         return view('owner')
             ->with('name', Auth::user()->display_name)
@@ -68,17 +69,26 @@ class OwnerController extends Controller
         return false;
     }
 
-    private function createCalendar()
+    public function getCalendarAsJson($propertyId) {
+        $row = $this->createCalendar($propertyId);
+        $data = ['data' => $row];
+
+        return response()->json($data, 200);
+    }
+
+    private function createCalendar($propertyId)
     {
         $startMonth = now()->startOfMonth();
         $endMonth = now()->endOfMonth();
 
         $this->commitments = Commitment::query()
-            ->where('user_id', Auth::id())
-            ->whereDate('checkin', '>', $startMonth)
-            ->orWhereDate('checkout', '<', $endMonth)
+            ->where('property_id', $propertyId)
+            ->where(function ($query) use ($startMonth, $endMonth) {
+                $query->whereDate('checkin', '>', $startMonth);
+                $query->orWhereDate('checkout', '<', $endMonth);
+            })
             ->get();
-
+        
         $weekDay = [
             'Sun' => 0,
             'Mon' => 1,
@@ -127,7 +137,6 @@ class OwnerController extends Controller
         }
 
         $row .= "</tr>";
-
         return $row;
     }
 
@@ -160,8 +169,8 @@ class OwnerController extends Controller
         $commitment = new Commitment([
             'user_id' => Auth::id(),
             'property_id' => $data['propriedade'],
-            'checkin' => $data['checkin'],
-            'checkout' => $data['checkout'],
+            'checkin' => $checkin,
+            'checkout' => $checkout,
             'type' => 'blocked'
         ]);
 
