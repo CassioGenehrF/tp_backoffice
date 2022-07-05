@@ -138,6 +138,10 @@ class OwnerController extends Controller
         $checkin = $data['checkin'];
         $checkout = $data['checkout'];
 
+        if (Carbon::createFromFormat('Y-m-d', $checkin) > Carbon::createFromFormat('Y-m-d', $checkout)) {
+            return back()->withErrors('Data de Check-in deve ser menor do que Check-out.');
+        }
+
         $hasCommitment = Commitment::query()
             ->where(function ($query) use ($checkin) {
                 $query->whereDate('checkin', '<=', $checkin);
