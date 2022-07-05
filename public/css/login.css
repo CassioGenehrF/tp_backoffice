@@ -8,6 +8,9 @@
 
 .form-box {
     width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .form-logo img {
