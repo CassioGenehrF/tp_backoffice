@@ -50,10 +50,19 @@
             </ul>
         </nav>
     </header>
-
     <main class="conteudo">
         <section class="p-4 mw-60">
             <div class="calendar">
+                <section class="filter">
+                    <div class="input-box">
+                        <label for="propriedade">Propriedade:</label>
+                        <select name="propriedade" id="propriedade">
+                            @foreach ($properties as $property)
+                                <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </section>
                 <div class="calendar-tools">
                     <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
                         <span class="calendar-heading">Julho 2022</span>
@@ -93,14 +102,6 @@
             <div class="input-box">
                 <label for="checkout">Check-out:</label>
                 <input type="date" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
-            </div>
-            <div class="input-box">
-                <label for="propriedade">Propriedade:</label>
-                <select name="propriedade" id="propriedade">
-                    @foreach ($properties as $property)
-                        <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                    @endforeach
-                </select>
             </div>
             <button type="submit" class="block-button">Bloquear</button>
         </form>

@@ -9,7 +9,7 @@
 
 .menu-logo {
     width: 250px;
-    height: 80px;
+    height: 10vh;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 15px;
@@ -50,6 +50,7 @@
     color: #ffffff;
     background-color: var(--cor-primaria);
     cursor: pointer;
+    width: 100%;
 }
 
 .menu-item p {
@@ -77,7 +78,7 @@
 /* Main - Conteudo da pagina */
 
 .conteudo {
-    height: 90vh;
+    height: 80vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -88,7 +89,7 @@
 }
 
 .calendar .calendar-tools {
-    margin: 0;
+    margin: 20px 0 0 0;
 }
 
 .input-box {
@@ -132,4 +133,25 @@ input::placeholder {
 .block-button:hover {
     background-color: rgba(217, 217, 217, 35%);
     color: var(--cor-primaria);
+}
+
+.filter {
+    height: 10vh;
+    width: 90vw;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.filter .input-box {
+    width: 40%;
+}
+
+.filter .input-box label {
+    margin-top: 1rem;
+    font-size: 16px;
+}
+
+.filter .input-box select {
+    height: 30px;
+    font-size: 18px;
 }
