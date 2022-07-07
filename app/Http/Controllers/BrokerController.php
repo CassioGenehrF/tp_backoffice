@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
 
-class OwnerController extends Controller
+class BrokerController extends Controller
 {
     private $commitments;
 
@@ -17,7 +17,7 @@ class OwnerController extends Controller
         $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
         $calendar = $this->createCalendar($firstPropertyID);
 
-        return view('owner')
+        return view('broker')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Auth::user()->properties)
             ->with('calendar', $calendar);
@@ -36,6 +36,7 @@ class OwnerController extends Controller
 
     private function hasCommitment($date)
     {
+        return false;
         $startMonth = now()->startOfMonth();
         $endMonth = now()->endOfMonth();
 

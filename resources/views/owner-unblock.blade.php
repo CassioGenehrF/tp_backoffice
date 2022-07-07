@@ -34,11 +34,11 @@
         <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
         <nav class="cabecalho-menu">
             <ul class="list-itens">
-                <li class="menu-item active">
-                    <a href="#">Bloquear Agenda</a>
-                </li>
                 <li class="menu-item">
-                    <a href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
+                    <a href="{{ route('owner.page') }}">Bloquear Agenda</a>
+                </li>
+                <li class="menu-item active">
+                    <a href="#">Desbloquear Agenda</a>
                 </li>
                 <li class="menu-item username">
                     <p>{{ $name }}</p>
@@ -88,7 +88,7 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('owner.block') }}" method="POST">
+        <form action="{{ route('owner.unblock') }}" method="POST">
             @if ($errors->any())
                 <ul class="list-group mt-4 w-75 mx-auto">
                     @foreach ($errors->all() as $error)
@@ -106,7 +106,7 @@
                 <label for="checkout">Check-out:</label>
                 <input type="date" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
             </div>
-            <button type="submit" class="block-button">Bloquear</button>
+            <button type="submit" class="block-button">Desbloquear</button>
         </form>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>

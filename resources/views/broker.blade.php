@@ -7,7 +7,7 @@
     <link rel="icon" href="https://temporadapaulista.com.br/wp-content/uploads/2022/06/FAVICON-36x36.png"
         sizes="32x32">
 
-    <title>Proprietário - Temporada Paulista</title>
+    <title>Corretor - Temporada Paulista</title>
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -38,7 +38,7 @@
                     <a href="#">Bloquear Agenda</a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
+                    <a href="#">Desbloquear Agenda</a>
                 </li>
                 <li class="menu-item username">
                     <p>{{ $name }}</p>
