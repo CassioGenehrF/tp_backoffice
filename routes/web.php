@@ -32,9 +32,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/block', [OwnerController::class, 'block'])->name('owner.block');
         Route::post('/unblock', [OwnerController::class, 'unblock'])->name('owner.unblock');
     });
-
+    
     Route::middleware(['broker'])->group(function () {
         Route::get('/broker', [BrokerController::class, 'index'])->name('broker.page');
+
+        Route::post('/rent', [BrokerController::class, 'rent'])->name('broker.rent');
     });
 
     Route::resource('user', UserController::class);

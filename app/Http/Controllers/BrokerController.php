@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Owner\BlockRequest;
+use App\Http\Requests\Broker\RentRequest;
 use App\Models\Commitment;
+use App\Models\Property;
+use App\Models\RentalInformation;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
@@ -14,29 +16,17 @@ class BrokerController extends Controller
 
     public function index()
     {
-        $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
+        $firstPropertyID = Property::all()[0]->ID ? Property::all()[0]->ID : null;
         $calendar = $this->createCalendar($firstPropertyID);
 
         return view('broker')
             ->with('name', Auth::user()->display_name)
-            ->with('properties', Auth::user()->properties)
-            ->with('calendar', $calendar);
-    }
-
-    public function unblockPage()
-    {
-        $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
-        $calendar = $this->createCalendar($firstPropertyID);
-
-        return view('owner-unblock')
-            ->with('name', Auth::user()->display_name)
-            ->with('properties', Auth::user()->properties)
+            ->with('properties', Property::all())
             ->with('calendar', $calendar);
     }
 
     private function hasCommitment($date)
     {
-        return false;
         $startMonth = now()->startOfMonth();
         $endMonth = now()->endOfMonth();
 
@@ -153,19 +143,17 @@ class BrokerController extends Controller
         return $row;
     }
 
-    public function block(BlockRequest $request)
+    public function rent(RentRequest $request)
     {
-        $data = $request->only(['checkin', 'checkout', 'propriedade']);
-
-        $checkin = $data['checkin'];
-        $checkout = $data['checkout'];
+        $checkin = $request->checkin;
+        $checkout = $request->checkout;
 
         if (Carbon::createFromFormat('Y-m-d', $checkin) > Carbon::createFromFormat('Y-m-d', $checkout)) {
             return back()->withErrors('Data de Check-in deve ser menor do que Check-out.');
         }
 
         $hasCommitment = Commitment::query()
-            ->where('property_id', $data['propriedade'])
+            ->where('property_id', $request->propriedade)
             ->where(function ($query) use ($checkin) {
                 $query->whereDate('checkin', '<=', $checkin);
                 $query->whereDate('checkout', '>=', $checkin);
@@ -180,44 +168,39 @@ class BrokerController extends Controller
             return back()->withErrors('Já existe um registro cadastrado nessa data.');
         }
 
+        $fileNameToStore = '';
+        if ($request->hasFile('contrato')) {
+            $filenameWithExt = $request->file('contrato')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('contrato')->getClientOriginalExtension();
+
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $request->file('contrato')->storeAs('public/contracts', $fileNameToStore);
+        }
+
         $commitment = new Commitment([
             'user_id' => Auth::id(),
-            'property_id' => $data['propriedade'],
+            'property_id' => $request->propriedade,
             'checkin' => $checkin,
             'checkout' => $checkout,
-            'type' => 'blocked'
+            'type' => 'rented'
         ]);
 
         $commitment->save();
 
-        return redirect('/owner');
-    }
+        $rentalInformation = new RentalInformation([
+            'user_id' => Auth::id(),
+            'commitment_id' => $commitment->id,
+            'guest_name' => $request->hospede,
+            'guest_phone' => $request->telefone,
+            'price' => $request->preco,
+            'adults' => $request->adultos,
+            'kids' => $request->criancas,
+            'contract' => $fileNameToStore
+        ]);
 
-    public function unblock(BlockRequest $request)
-    {
-        $data = $request->only(['checkin', 'checkout', 'propriedade']);
+        $rentalInformation->save();
 
-        $checkin = $data['checkin'];
-        $checkout = $data['checkout'];
-
-        if (Carbon::createFromFormat('Y-m-d', $checkin) > Carbon::createFromFormat('Y-m-d', $checkout)) {
-            return back()->withErrors('Data de Check-in deve ser menor do que Check-out.');
-        }
-
-        $commitment = Commitment::query()
-            ->where('user_id', Auth::id())
-            ->where('property_id', $data['propriedade'])
-            ->where('type', 'blocked')
-            ->whereDate('checkin', '=', $checkin)
-            ->whereDate('checkout', '=', $checkout)
-            ->first();
-
-        if (!$commitment) {
-            return back()->withErrors('Nenhum registro encontrado nessas datas.');
-        }
-
-        $commitment->delete();
-
-        return redirect('/owner');
+        return redirect('/broker');
     }
 }

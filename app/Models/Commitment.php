@@ -20,7 +20,7 @@ class Commitment extends Model
 
     public $timestamps = false;
 
-    public function properties(): HasOne
+    public function property(): HasOne
     {
         return $this->hasOne(Property::class, 'ID', 'property_id');
     }

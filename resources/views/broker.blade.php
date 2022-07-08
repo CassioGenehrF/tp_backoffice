@@ -14,7 +14,10 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" /> --}}
+    <!-- Boostrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owner.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/broker.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 
@@ -35,10 +38,13 @@
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <li class="menu-item active">
-                    <a href="#">Bloquear Agenda</a>
+                    <a href="#">Efetuar Reserva</a>
                 </li>
                 <li class="menu-item">
-                    <a href="#">Desbloquear Agenda</a>
+                    <a href="#">Minhas Reservas</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">Relatório Mensal</a>
                 </li>
                 <li class="menu-item username">
                     <p>{{ $name }}</p>
@@ -53,12 +59,12 @@
         </nav>
     </header>
     <main class="conteudo">
-        <section class="p-4 mw-60">
+        <section class="p-4 mw-40">
             <div class="calendar">
                 <section class="filter">
-                    <div class="input-box">
+                    <div class="form-group">
                         <label for="filtro-propriedade">Propriedade:</label>
-                        <select name="filtro-propriedade" id="filtro-propriedade">
+                        <select name="filtro-propriedade" id="filtro-propriedade" class="form-control">
                             @foreach ($properties as $property)
                                 <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
                             @endforeach
@@ -88,7 +94,7 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('owner.block') }}" method="POST">
+        <form action="{{ route('broker.rent') }}" method="POST" enctype="multipart/form-data">
             @if ($errors->any())
                 <ul class="list-group mt-4 w-75 mx-auto">
                     @foreach ($errors->all() as $error)
@@ -97,25 +103,103 @@
                 </ul>
             @endif
             @csrf
-            <input type="hidden" name="propriedade" id="propriedade" value="{{$properties[0]->ID}}">
-            <div class="input-box">
-                <label for="checkin">Check-in:</label>
-                <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
+            <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="checkin">Check-in:</label>
+                    <input class="form-control" type="date" id="checkin" name="checkin" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="checkout">Check-out:</label>
+                    <input class="form-control" type="date" id="checkout" name="checkout" required>
+                </div>
             </div>
-            <div class="input-box">
-                <label for="checkout">Check-out:</label>
-                <input type="date" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
+            <div class="row mt-2">
+                <div class="form-group col-md-6">
+                    <label for="hospede">Nome hóspede:</label>
+                    <input class="form-control" type="text" id="hospede" name="hospede" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="telefone">Telefone:</label>
+                    <input class="form-control" type="tel" id="telefone" name="telefone" required>
+                </div>
             </div>
-            <button type="submit" class="block-button">Bloquear</button>
+            <div class="row mt-2">
+                <div class="form-group col-md-4">
+                    <label for="preco">Preço:</label>
+                    <input class="form-control" type="text" id="preco" name="preco" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="adultos">Adultos:</label>
+                    <select name="adultos" id="adultos" class="form-control" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="criancas">Crianças:</label>
+                    <select name="criancas" id="criancas" class="form-control" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+            <div class="custom-file mt-2">
+                <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
+                <input type="file" class="custom-file-input" name="contrato" id="contrato">
+            </div>
+            <button type="submit" class="block-button">ALUGAR</button>
         </form>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
     <script type="text/javascript">
+        $('#contrato').change(function() {
+            var file = $('#contrato')[0].files[0].name;
+            $(this).prev('label').text(file);
+        });
+
         $('#filtro-propriedade').on('change', function() {
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/api/getCalendar/"+this.value,
+                url: "/api/getCalendar/" + this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }
