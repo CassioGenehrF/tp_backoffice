@@ -65,19 +65,12 @@
                     <th scope="col">Reservas</th>
                     <th scope="col">Diárias</th>
                     <th scope="col">Total</th>
+                    <th scope="col">Taxa de Anfitrião</th>
                     <th scope="col">Comissão</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($report as $data => $row)
-                    <tr>
-                        <td> {{ $data }} </td>
-                        <td> {{ $row['reservations'] }} </td>
-                        <td> {{ $row['daily'] }} </td>
-                        <td> {{ "R$ " . str_replace('.', ',', $row['total']) }} </td>
-                        <td> {{ "R$ " . str_replace('.', ',', $row['comission']) }} </td>
-                    </tr>
-                @endforeach
+                {!! $report !!}
             </tbody>
         </table>
     </main>
