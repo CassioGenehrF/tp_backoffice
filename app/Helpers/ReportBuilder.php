@@ -23,7 +23,10 @@ class ReportBuilder
             $report["$index/$year"]['reservations'] = 0;
             $report["$index/$year"]['daily'] = 0;
             $report["$index/$year"]['total'] = 0;
-            $report["$index/$year"]['tax'] = 0;
+
+            if (!$isBroker) {
+                $report["$index/$year"]['tax'] = 0;
+            }
 
             if (!$propertyId || $isBroker) {
                 $report["$index/$year"]['comission'] = 0;
@@ -35,8 +38,13 @@ class ReportBuilder
 
             $report["$month/$year"]['reservations'] += 1;
             $report["$month/$year"]['daily'] += Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkin));
-            $report["$month/$year"]['total'] += ($reservation->price * 90 / 100);
-            $report["$month/$year"]['tax'] += ($reservation->price * 10 / 100);
+
+            if (!$isBroker) {
+                $report["$month/$year"]['total'] += ($reservation->price * 90 / 100);
+                $report["$month/$year"]['tax'] += ($reservation->price * 10 / 100);
+            } else {
+                $report["$month/$year"]['total'] += $reservation->price;
+            }
 
             if ($isBroker) {
                 $report["$month/$year"]['comission'] += $reservation->user_id == $reservation->commitment->property->post_author
@@ -49,17 +57,22 @@ class ReportBuilder
             }
         }
 
-        $reportHTML = self::printReport($report, $propertyId);
+        $reportHTML = self::printReport($report, $propertyId, $isBroker);
         return $reportHTML;
     }
 
-    private static function printReport($report, $propertyId)
+    private static function printReport($report, $propertyId, $isBroker)
     {
         $html = '';
         foreach ($report as $data => $row) {
+            $tax = '';
             $comission = '';
             if (!$propertyId) {
                 $comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['comission']) . " </td>";
+            }
+
+            if (!$isBroker) {
+                $tax = "<td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>";
             }
 
             $html .= "
@@ -68,7 +81,7 @@ class ReportBuilder
                     <td> " . $row['reservations'] . " </td>
                     <td> " . $row['daily'] . " </td>
                     <td> " . 'R$ ' . str_replace('.', ',', $row['total']) . " </td>
-                    <td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>
+                    $tax
                     $comission
                 </tr>
             ";

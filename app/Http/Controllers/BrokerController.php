@@ -8,7 +8,6 @@ use App\Http\Requests\Broker\RentRequest;
 use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\RentalInformation;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -60,7 +59,7 @@ class BrokerController extends Controller
 
     public function report()
     {
-        $report = ReportBuilder::report(Auth::id());
+        $report = ReportBuilder::report(Auth::id(), 0, true);
 
         return view('broker-report')
             ->with('name', Auth::user()->display_name)

@@ -65,7 +65,6 @@
                     <th scope="col">Reservas</th>
                     <th scope="col">Diárias</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Taxa de Anfitrião</th>
                     <th scope="col">Comissão</th>
                 </tr>
             </thead>
