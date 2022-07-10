@@ -7,7 +7,7 @@
     <link rel="icon" href="https://temporadapaulista.com.br/wp-content/uploads/2022/06/FAVICON-36x36.png"
         sizes="32x32">
 
-    <title>Proprietário - Temporada Paulista</title>
+    <title>Administrador - Temporada Paulista</title>
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -34,17 +34,20 @@
         <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
         <nav class="cabecalho-menu">
             <ul class="list-itens">
-                <li class="menu-item">
-                    <a href="{{ route('owner.page') }}">Bloquear Agenda</a>
-                </li>
                 <li class="menu-item active">
-                    <a href="#">Desbloquear Agenda</a>
+                    <a href="#">Bloquear Agenda</a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('owner.report') }}">Relatório Mensal</a>
+                    <a href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a>
                 </li>
-                <li class="menu-item username">
-                    <p>{{ $name }}</p>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reservations') }}">Minhas Reservas</a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.report') }}">Relatório Mensal</a>
                 </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">
@@ -91,7 +94,7 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('owner.unblock') }}" method="POST">
+        <form action="{{ route('admin.block') }}" method="POST">
             @if ($errors->any())
                 <ul class="list-group mt-4 w-75 mx-auto">
                     @foreach ($errors->all() as $error)
@@ -100,7 +103,7 @@
                 </ul>
             @endif
             @csrf
-            <input type="hidden" name="propriedade" id="propriedade" value="{{$properties[0]->ID}}">
+            <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
             <div class="input-box">
                 <label for="checkin">Check-in:</label>
                 <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
@@ -109,7 +112,7 @@
                 <label for="checkout">Check-out:</label>
                 <input type="date" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
             </div>
-            <button type="submit" class="block-button">Desbloquear</button>
+            <button type="submit" class="block-button">Bloquear</button>
         </form>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
@@ -118,7 +121,7 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/owner/api/getCalendar/"+this.value,
+                url: "/admin/getCalendar/" + this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }

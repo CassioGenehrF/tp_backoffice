@@ -54,9 +54,6 @@ class LoginController extends Controller
             } else if ($user->role == 'administrator') {
                 return redirect('/admin');
             }
-
-            // TODO: redirect para "permission not found", algo do genero
-            return redirect('/user');
         }
 
         return back()->withErrors([

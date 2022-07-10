@@ -1,0 +1,13 @@
+/* Main - Conteudo da pagina */
+
+main {
+    height: 90vh;
+}
+
+.thead-light tr th {
+    background-color: rgba(217, 217, 217, 35%) !important;
+}
+
+.table th {
+    border-top: none;
+}

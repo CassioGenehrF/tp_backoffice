@@ -40,6 +40,9 @@
                 <li class="menu-item">
                     <a href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
                 </li>
+                <li class="menu-item">
+                    <a href="{{ route('owner.report') }}">Relatório Mensal</a>
+                </li>
                 <li class="menu-item username">
                     <p>{{ $name }}</p>
                 </li>
@@ -97,7 +100,7 @@
                 </ul>
             @endif
             @csrf
-            <input type="hidden" name="propriedade" id="propriedade" value="{{$properties[0]->ID}}">
+            <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
             <div class="input-box">
                 <label for="checkin">Check-in:</label>
                 <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
@@ -115,7 +118,7 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/api/getCalendar/"+this.value,
+                url: "/owner/getCalendar/" + this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }

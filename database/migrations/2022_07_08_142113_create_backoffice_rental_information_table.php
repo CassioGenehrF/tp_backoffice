@@ -23,7 +23,9 @@ class CreateBackofficeRentalInformationTable extends Migration
             $table->integer('adults');
             $table->integer('kids');
             $table->string('contract');
-            $table->timestamps();
+            $table->decimal('site_tax', 8, 2);
+            $table->decimal('broker_tax', 8, 2);
+            $table->decimal('publisher_tax', 8, 2);
         });
     }
 

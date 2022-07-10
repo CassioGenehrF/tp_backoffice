@@ -7,7 +7,7 @@
     <link rel="icon" href="https://temporadapaulista.com.br/wp-content/uploads/2022/06/FAVICON-36x36.png"
         sizes="32x32">
 
-    <title>Proprietário - Temporada Paulista</title>
+    <title>Administrador - Temporada Paulista</title>
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -35,16 +35,19 @@
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <li class="menu-item">
-                    <a href="{{ route('owner.page') }}">Bloquear Agenda</a>
+                    <a href="{{ route('admin.page') }}">Bloquear Agenda</a>
                 </li>
                 <li class="menu-item active">
                     <a href="#">Desbloquear Agenda</a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('owner.report') }}">Relatório Mensal</a>
+                    <a href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
                 </li>
-                <li class="menu-item username">
-                    <p>{{ $name }}</p>
+                <li class="menu-item">
+                    <a href="{{ route('admin.reservations') }}">Minhas Reservas</a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.report') }}">Relatório Mensal</a>
                 </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">
@@ -91,7 +94,7 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('owner.unblock') }}" method="POST">
+        <form action="{{ route('admin.unblock') }}" method="POST">
             @if ($errors->any())
                 <ul class="list-group mt-4 w-75 mx-auto">
                     @foreach ($errors->all() as $error)
@@ -118,7 +121,7 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/owner/api/getCalendar/"+this.value,
+                url: "/admin/api/getCalendar/"+this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }

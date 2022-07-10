@@ -2,3 +2,90 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     --cor-primaria: #0DAEBD;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+/* Menu- Header*/
+
+.menu-logo {
+    width: 250px;
+    height: 10vh;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 15px;
+}
+
+.menu-content {
+    display: flex;
+    width: 100%;
+    height: 10vh;
+}
+
+.cabecalho-menu {
+    width: 100%;
+}
+
+.list-itens {
+    display: flex;
+    list-style: none;
+    width: 100%;
+    height: 100%;
+}
+
+.menu-item {
+    width: 25%;
+    text-align: center;
+    line-height: 10vh;
+    color: #ffffff;
+    background-color: var(--cor-primaria);
+}
+
+.menu-item a {
+    display: block;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.menu-item button {
+    font-size: 20px;
+    color: #ffffff;
+    background-color: var(--cor-primaria);
+    cursor: pointer;
+    width: 100%;
+}
+
+.menu-item p {
+    font-size: 20px;
+}
+
+.menu-item:hover {
+    background-color: transparent;
+}
+
+.menu-item:hover button {
+    background-color: rgba(217, 217, 217, 35%);
+    color: var(--cor-primaria);
+}
+
+.menu-item:hover a {
+    background-color: rgba(217, 217, 217, 35%);
+    color: var(--cor-primaria);
+}
+
+.username:hover {
+    background-color: var(--cor-primaria);
+}
+
+.active {
+    background-color: rgba(217, 217, 217, 35%);
+    color: var(--cor-primaria);
+}
+
+.menu-item:hover p {
+    cursor: default;
+}

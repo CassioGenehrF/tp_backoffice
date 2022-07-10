@@ -7,7 +7,7 @@
     <link rel="icon" href="https://temporadapaulista.com.br/wp-content/uploads/2022/06/FAVICON-36x36.png"
         sizes="32x32">
 
-    <title>Corretor - Temporada Paulista</title>
+    <title>Administrador - Temporada Paulista</title>
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -37,17 +37,20 @@
         <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
         <nav class="cabecalho-menu">
             <ul class="list-itens">
+                <li class="menu-item">
+                    <a href="{{ route('admin.page') }}">Bloquear Agenda</a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a>
+                </li>
                 <li class="menu-item active">
                     <a href="#">Efetuar Reserva</a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('broker.reservations') }}">Minhas Reservas</a>
+                    <a href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('broker.report') }}">Relatório Mensal</a>
-                </li>
-                <li class="menu-item username">
-                    <p>{{ $name }}</p>
+                    <a href="{{ route('admin.report') }}">Relatório Mensal</a>
                 </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">
@@ -94,7 +97,7 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('broker.rent') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.rent') }}" method="POST" enctype="multipart/form-data">
             @if ($errors->any())
                 <ul class="list-group mt-4 w-75 mx-auto">
                     @foreach ($errors->all() as $error)
@@ -199,7 +202,7 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/api/getCalendar/" + this.value,
+                url: "/admin/api/getCalendar/" + this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }

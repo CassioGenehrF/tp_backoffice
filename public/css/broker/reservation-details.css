@@ -1,0 +1,56 @@
+main {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(217, 217, 217, 35%);
+}
+
+article {
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.details {
+    height: 30vh;
+    background-color: #fff;
+    border-right: 2px solid rgba(217, 217, 217, 80%);
+    border-bottom: 2px solid rgba(217, 217, 217, 80%);
+    border-bottom-right-radius: 5px;
+}
+
+.thead-light tr th {
+    background-color: rgba(217, 217, 217, 35%) !important;
+}
+
+.table th {
+    border-top: none;
+}
+
+.payment {
+    height: 55vh;
+    background-color: #fff;
+    border-right: 2px solid rgba(217, 217, 217, 80%);
+    border-top: 2px solid rgba(217, 217, 217, 80%);
+    border-top-right-radius: 5px;
+}
+
+aside {
+    width: 27vw;
+    height: 90vh;
+    background-color: #fff;
+    border-left: 2px solid rgba(217, 217, 217, 80%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+aside a {
+    width: 70%;
+    background-color: var(--cor-primaria);
+    color: #fff;
+}
+
+aside a:hover {
+    color: #fff;
+}
