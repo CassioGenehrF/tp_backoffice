@@ -88,7 +88,7 @@ class BrokerController extends Controller
             $request->hasFile('contrato'),
             $request->file('contrato'),
             Auth::id(),
-            redirect(route('broker.reservation'))
+            redirect(route('broker.page'))
         );
     }
 }
