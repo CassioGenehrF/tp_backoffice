@@ -10,7 +10,6 @@ class ReportBuilder
     public static function report($user_id, $propertyId = 0, $isBroker = false)
     {
         $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId);
-
         $year = now()->year;
 
         for ($i = 0; $i < 12; $i++) {
@@ -50,9 +49,7 @@ class ReportBuilder
                 $report["$month/$year"]['comission'] += $reservation->user_id == $reservation->commitment->property->post_author
                     ? $reservation->broker_tax + $reservation->publisher_tax
                     : $reservation->broker_tax;
-            }
-
-            if (!$propertyId) {
+            } else {
                 $report["$month/$year"]['comission'] += $reservation->publisher_tax;
             }
         }

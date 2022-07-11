@@ -68,7 +68,7 @@ class RentalInformation extends Model
             ->first();
     }
 
-    public static function reportPropertyInformations($user_id, $propertyId)
+    public static function reportPropertyInformations($user_id, $propertyId = 0)
     {
         return self::query()
             ->with('commitment.property')
@@ -76,9 +76,8 @@ class RentalInformation extends Model
                 $query->whereDate('backoffice_commitments.checkin', '>=', now()->startOfYear());
                 $query->whereDate('backoffice_commitments.checkin', '<=', now()->endOfYear());
             })
+            ->where('user_id', $user_id)
             ->whereHas('commitment.property', function ($query) use ($user_id, $propertyId) {
-                $query->where('wp_posts.post_author', $user_id);
-
                 if ($propertyId) {
                     $query->where('wp_posts.ID', $propertyId);
                 }

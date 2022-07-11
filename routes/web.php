@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');
         Route::get('report', [BrokerController::class, 'report'])->name('broker.report');
 
+        Route::get('getCalendar/{propertyId}', [BrokerController::class, 'getCalendarAsJson']);
+
         Route::post('rent', [BrokerController::class, 'rent'])->name('broker.rent');
         Route::delete('reservation/destroy', [BrokerController::class, 'reservationDestroy'])->name('broker.reservation_destroy');
         Route::put('reservation/edit', [BrokerController::class, 'reservationEdit'])->name('broker.reservation_edit');

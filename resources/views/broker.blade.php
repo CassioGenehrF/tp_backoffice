@@ -156,7 +156,7 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/api/getCalendar/" + this.value,
+                url: "/broker/getCalendar/" + this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }

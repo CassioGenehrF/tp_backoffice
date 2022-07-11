@@ -159,7 +159,7 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/admin/api/getCalendar/" + this.value,
+                url: "/admin/getCalendar/" + this.value,
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }
