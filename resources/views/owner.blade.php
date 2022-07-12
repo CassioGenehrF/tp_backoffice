@@ -69,8 +69,20 @@
                     </div>
                 </section>
                 <div class="calendar-tools">
+                    <input type="hidden" name="month_id" id="month_id" value="{{ $monthId }}">
+                    <input type="hidden" name="year_id" id="year_id" value="{{ $yearId }}">
                     <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
-                        <span class="calendar-heading">Julho 2022</span>
+                        <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
+                            <button onclick="prevMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        <span class="calendar-heading">{{ $month }}</span>
+                        <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
+                            <button onclick="nextMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <table class="month">
@@ -118,12 +130,59 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/owner/getCalendar/" + this.value,
+                url: "/owner/getCalendar/" + this.value + "/" + $('#month_id').val() + "/" + $('#year_id')
+                    .val(),
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }
             });
         });
+
+        function prevMonth() {
+            let month = parseInt($('#month_id').val()) - 1
+            let year = parseInt($('#year_id').val())
+            let propriedade = $('#propriedade').val()
+
+            if (month >= 1) {
+                $('#month_id').val(month)
+            } else {
+                month = 12
+                year = parseInt($('#year_id').val()) - 1
+                $('#month_id').val(month)
+                $('#year_id').val(year)
+            }
+
+            $.ajax({
+                url: "/owner/getCalendar/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $(".calendar-heading").html(result['month']);
+                    $("#calendar-content").html(result['data']);
+                }
+            });
+        }
+
+        function nextMonth() {
+            let month = parseInt($('#month_id').val()) + 1
+            let year = parseInt($('#year_id').val())
+            let propriedade = $('#propriedade').val()
+
+            if (month <= 12) {
+                $('#month_id').val(month);
+            } else {
+                month = 1
+                year = parseInt(year) + 1
+                $('#month_id').val(month)
+                $('#year_id').val(year)
+            }
+
+            $.ajax({
+                url: "/owner/getCalendar/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $(".calendar-heading").html(result['month']);
+                    $("#calendar-content").html(result['data']);
+                }
+            });
+        }
     </script>
 </body>
 

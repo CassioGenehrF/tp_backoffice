@@ -9,6 +9,7 @@ use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\RentalInformation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -18,11 +19,18 @@ class AdminController extends Controller
     {
         $firstPropertyID = Property::published()->get()[0]->ID ? Property::published()->get()[0]->ID : null;
         $calendar = CalendarBuilder::create($firstPropertyID);
+        setlocale(LC_TIME, 'ptb');
+        $monthId = now()->month;
+        $month = ucfirst(now()->localeMonth);
+        $year = now()->year;
 
         return view($viewName)
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
-            ->with('calendar', $calendar);
+            ->with('calendar', $calendar)
+            ->with('month', "$month $year")
+            ->with('monthId', "$monthId")
+            ->with('yearId', "$year");
     }
 
     public function index()
@@ -72,10 +80,18 @@ class AdminController extends Controller
         return Response::download($filePath, $reservation->contract);
     }
 
-    public function getCalendarAsJson($propertyId)
+    public function getCalendarAsJson($propertyId, $monthId, $yearId)
     {
-        $row = CalendarBuilder::create($propertyId);
-        $data = ['data' => $row];
+        setlocale(LC_TIME, 'ptb');
+        $date = Carbon::createFromDate($yearId, $monthId);
+        $month = ucfirst($date->localeMonth);
+
+        $row = CalendarBuilder::create($propertyId, $monthId, $yearId);
+
+        $data = [
+            'data' => $row,
+            'month' => "$month $date->year"
+        ];
 
         return response()->json($data, 200);
     }

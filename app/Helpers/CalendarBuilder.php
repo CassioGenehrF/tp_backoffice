@@ -8,10 +8,15 @@ use Carbon\CarbonPeriod;
 
 class CalendarBuilder
 {
-    public static function create($propertyId)
+    public static function create($propertyId, $monthId = null, $yearId = null)
     {
         $startMonth = now()->startOfMonth();
         $endMonth = now()->endOfMonth();
+
+        if ($monthId && $yearId) {
+            $startMonth = (Carbon::createFromDate($yearId, $monthId))->startOfMonth();
+            $endMonth = (Carbon::createFromDate($yearId, $monthId))->endOfMonth();
+        }
 
         $weekDay = [
             'Sun' => 0,
@@ -24,9 +29,7 @@ class CalendarBuilder
         ];
 
         $period = CarbonPeriod::create($startMonth, $endMonth);
-
         $row = "<tr>";
-
         foreach ($period->toArray() as $key => $date) {
             if ($key == 0) {
                 $dayOfWeek = date('D', $date->timestamp);
@@ -42,7 +45,7 @@ class CalendarBuilder
                 $class = "class='last-element'";
             }
 
-            $commitment = self::hasCommitment($propertyId, $date);
+            $commitment = self::hasCommitment($propertyId, $date, $startMonth, $endMonth);
 
             $row .= "
             <td $class data-date='" . $date->format('d/m/Y') . "'>
@@ -64,11 +67,8 @@ class CalendarBuilder
         return $row;
     }
 
-    private static function hasCommitment($propertyId, $date)
+    private static function hasCommitment($propertyId, $date, $startMonth, $endMonth)
     {
-        $startMonth = now()->startOfMonth();
-        $endMonth = now()->endOfMonth();
-
         $commitments = Commitment::between($propertyId, $startMonth, $endMonth);
 
         foreach ($commitments as $commitment) {

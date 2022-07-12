@@ -6,6 +6,7 @@ use App\Helpers\CalendarBuilder;
 use App\Helpers\ReportBuilder;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Commitment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class OwnerController extends Controller
@@ -14,11 +15,18 @@ class OwnerController extends Controller
     {
         $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
         $calendar = CalendarBuilder::create($firstPropertyID);
+        setlocale(LC_TIME, 'ptb');
+        $monthId = now()->month;
+        $month = ucfirst(now()->localeMonth);
+        $year = now()->year;
 
         return view($viewName)
             ->with('name', Auth::user()->display_name)
             ->with('properties', Auth::user()->properties)
-            ->with('calendar', $calendar);
+            ->with('calendar', $calendar)
+            ->with('month', "$month $year")
+            ->with('monthId', "$monthId")
+            ->with('yearId', "$year");
     }
 
     public function index()
@@ -49,10 +57,18 @@ class OwnerController extends Controller
             ->with('report', $report);
     }
 
-    public function getCalendarAsJson($propertyId)
+    public function getCalendarAsJson($propertyId, $monthId, $yearId)
     {
-        $row = CalendarBuilder::create($propertyId);
-        $data = ['data' => $row];
+        setlocale(LC_TIME, 'ptb');
+        $date = Carbon::createFromDate($yearId, $monthId);
+        $month = ucfirst($date->localeMonth);
+
+        $row = CalendarBuilder::create($propertyId, $monthId, $yearId);
+
+        $data = [
+            'data' => $row,
+            'month' => "$month $date->year"
+        ];
 
         return response()->json($data, 200);
     }

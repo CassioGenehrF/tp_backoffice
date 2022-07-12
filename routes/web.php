@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}/contract', [AdminController::class, 'downloadContract'])->name('admin.download_contract');
         Route::get('report', [AdminController::class, 'report'])->name('admin.report');
 
-        Route::get('getCalendar/{propertyId}', [AdminController::class, 'getCalendarAsJson']);
+        Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
 
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');
         Route::get('report', [BrokerController::class, 'report'])->name('broker.report');
 
-        Route::get('getCalendar/{propertyId}', [BrokerController::class, 'getCalendarAsJson']);
+        Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [BrokerController::class, 'getCalendarAsJson']);
 
         Route::post('rent', [BrokerController::class, 'rent'])->name('broker.rent');
         Route::delete('reservation/destroy', [BrokerController::class, 'reservationDestroy'])->name('broker.reservation_destroy');
@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('unblock', [OwnerController::class, 'unblockPage'])->name('owner.unblock_page');
         Route::get('report', [OwnerController::class, 'report'])->name('owner.report');
 
-        Route::get('getCalendar/{propertyId}', [OwnerController::class, 'getCalendarAsJson']);
+        Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [OwnerController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [OwnerController::class, 'getReport']);
 
         Route::post('block', [OwnerController::class, 'block'])->name('owner.block');

@@ -13,11 +13,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" /> --}}
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,8 +75,20 @@
                     </div>
                 </section>
                 <div class="calendar-tools">
+                    <input type="hidden" name="month_id" id="month_id" value="{{ $monthId }}">
+                    <input type="hidden" name="year_id" id="year_id" value="{{ $yearId }}">
                     <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
-                        <span class="calendar-heading">Julho 2022</span>
+                        <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
+                            <button onclick="prevMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        <span class="calendar-heading">{{ $month }}</span>
+                        <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
+                            <button onclick="nextMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <table class="month">
@@ -159,12 +171,59 @@
             $('#propriedade').val(this.value);
 
             $.ajax({
-                url: "/admin/getCalendar/" + this.value,
+                url: "/admin/getCalendar/" + this.value + "/" + $('#month_id').val() + "/" + $('#year_id')
+                    .val(),
                 success: function(result) {
                     $("#calendar-content").html(result['data']);
                 }
             });
         });
+
+        function prevMonth() {
+            let month = parseInt($('#month_id').val()) - 1
+            let year = parseInt($('#year_id').val())
+            let propriedade = $('#propriedade').val()
+
+            if (month >= 1) {
+                $('#month_id').val(month)
+            } else {
+                month = 12
+                year = parseInt($('#year_id').val()) - 1
+                $('#month_id').val(month)
+                $('#year_id').val(year)
+            }
+
+            $.ajax({
+                url: "/admin/getCalendar/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $(".calendar-heading").html(result['month']);
+                    $("#calendar-content").html(result['data']);
+                }
+            });
+        }
+
+        function nextMonth() {
+            let month = parseInt($('#month_id').val()) + 1
+            let year = parseInt($('#year_id').val())
+            let propriedade = $('#propriedade').val()
+
+            if (month <= 12) {
+                $('#month_id').val(month);
+            } else {
+                month = 1
+                year = parseInt(year) + 1
+                $('#month_id').val(month)
+                $('#year_id').val(year)
+            }
+
+            $.ajax({
+                url: "/admin/getCalendar/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $(".calendar-heading").html(result['month']);
+                    $("#calendar-content").html(result['data']);
+                }
+            });
+        }
     </script>
 </body>
 
