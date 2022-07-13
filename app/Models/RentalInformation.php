@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Commitment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -77,7 +76,7 @@ class RentalInformation extends Model
                 $query->whereDate('backoffice_commitments.checkin', '<=', now()->endOfYear());
             })
             ->where('user_id', $user_id)
-            ->whereHas('commitment.property', function ($query) use ($user_id, $propertyId) {
+            ->whereHas('commitment.property', function ($query) use ($propertyId) {
                 if ($propertyId) {
                     $query->where('wp_posts.ID', $propertyId);
                 }

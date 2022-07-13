@@ -8,7 +8,9 @@ use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Commitment;
 use App\Models\Property;
+use App\Models\PropertyInfo;
 use App\Models\RentalInformation;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -130,6 +132,68 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
             ->with('report', $report);
+    }
+
+    public function properties()
+    {
+        return view('admin-properties')
+            ->with('name', Auth::user()->display_name)
+            ->with('properties', Property::all())
+            ->with('users', User::all());
+    }
+
+    public function getProperty($propertyId)
+    {
+        $property = PropertyInfo::where('property_id', $propertyId)->first();
+
+        $data = [
+            'user_indication_id' => $property->user_indication_id ?? '',
+            'contract' => $property->contract ?? ''
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function propertyInfo(RentRequest $request)
+    {
+        $hasPropertyInfo = PropertyInfo::where('property_id', $request->propriedade)->first();
+
+        $fileNameToStore = '';
+        if ($request->hasFile('contrato')) {
+            $filenameWithExt = $request->file('contrato')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('contrato')->getClientOriginalExtension();
+
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $request->file('contrato')->storeAs('public/contracts', $fileNameToStore);
+        }
+
+        if (!$hasPropertyInfo) {
+            $propertyInfo = new PropertyInfo([
+                'property_id' => $request->propriedade,
+                'user_indication_id' => $request->indicacao ?? null,
+                'contract' => $fileNameToStore
+            ]);
+
+            $propertyInfo->save();
+        } else {
+            $hasPropertyInfo->update([
+                'property_id' => $request->propriedade,
+                'user_indication_id' =>  $request->indicacao && $request->indicacao != 0 ?
+                    $request->indicacao : null,
+                'contract' => empty($fileNameToStore) && $hasPropertyInfo->contract ?
+                    $hasPropertyInfo->contract : $fileNameToStore
+            ]);
+        }
+
+        return redirect(route('admin.properties'));
+    }
+
+    public function downloadContractProperty($propertyId)
+    {
+        $propertyInfo = PropertyInfo::where('property_id', $propertyId)->first();
+        $filePath = public_path() . "/storage/contracts/$propertyInfo->contract";
+        return Response::download($filePath, $propertyInfo->contract);
     }
 
     public function block(BlockRequest $request)

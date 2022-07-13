@@ -21,14 +21,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
         Route::get('reservations/{id}', [AdminController::class, 'reservationDetails'])->name('admin.reservations_details');
         Route::get('reservations/{id}/contract', [AdminController::class, 'downloadContract'])->name('admin.download_contract');
+        Route::get('property/{id}/contract', [AdminController::class, 'downloadContractProperty'])->name('admin.download_contract_property');
         Route::get('report', [AdminController::class, 'report'])->name('admin.report');
-
+        Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
+        
+        Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
-
+        
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
         Route::post('rent', [AdminController::class, 'rent'])->name('admin.rent');
+        Route::post('property', [AdminController::class, 'propertyInfo'])->name('admin.property_info');
         Route::delete('reservation/destroy', [AdminController::class, 'reservationDestroy'])->name('admin.reservation_destroy');
         Route::put('reservation/edit', [AdminController::class, 'reservationEdit'])->name('admin.reservation_edit');
     });

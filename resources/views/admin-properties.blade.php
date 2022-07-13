@@ -22,11 +22,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -60,33 +58,49 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <section class="row mt-2">
-            <div class="form-group col-md-4 ml-4">
-                <label for="filtro-propriedade">Propriedade:</label>
-                <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
-                    <option value="0">Todas</option>
-                    @foreach ($properties as $property)
-                        <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                    @endforeach
-                </select>
+    <main class="container">
+        <form action="{{ route('admin.property_info') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="propriedade">Propriedade:</label>
+                    <select class="form-control" name="propriedade" id="propriedade" required>
+                        <option value="" disabeld selected hidden>Selecione uma opção</option>
+                        @foreach ($properties as $property)
+                            <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </section>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Reservas</th>
-                    <th scope="col">Diárias</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Taxa de Anfitrião</th>
-                    <th id="comission" scope="col">Comissão</th>
-                </tr>
-            </thead>
-            <tbody id="report-content">
-                {!! $report !!}
-            </tbody>
-        </table>
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="indicacao">Indicação:</label>
+                    <select class="form-control" name="indicacao" id="indicacao">
+                        <option value="" disabled selected hidden>Selecione uma opção</option>
+                        <option value="0">REMOVER INDICAÇÃO</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->ID }}">{{ $user->display_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row custom-file mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
+                    <input type="file" class="custom-file-input" name="contrato" id="contrato">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <a class="col-md-12 ml-4 btn btn-lg hidden" id="contract_download" target="_blank">
+                    BAIXAR CONTRATO
+                </a>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 ml-4">
+                    <button type="submit" class="save-button">SALVAR</button>
+                </div>
+            </div>
+        </form>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -97,20 +111,35 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
-        $('#filtro-propriedade').on('change', function() {
-            $.ajax({
-                url: "/admin/getReport/" + this.value,
-                success: function(result) {
-                    value = $('#filtro-propriedade').val();
+        $('#contrato').change(function() {
+            var file = $('#contrato')[0].files[0].name;
+            $(this).prev('label').text(file);
+            console.log($('#contrato'));
+        });
 
-                    if (value == '0') {
-                        $('#comission').show();
+        $('#propriedade').on('change', function() {
+            $.ajax({
+                url: "/admin/getProperty/" + this.value,
+                success: function(result) {
+                    if (result['user_indication_id']) {
+                        $('#indicacao option[value="' + result['user_indication_id'] + '"]').prop(
+                            'selected', 'selected');
                     } else {
-                        $('#comission').hide();
+                        $('#indicacao').prop(
+                            'selectedIndex', 0);
                     }
 
-                    $("#report-content").html(result['data']);
+                    if (result['contract']) {
+                        id = $('#propriedade').val()
+                        $('#contract_download').prop('href', `${window.location.origin}/admin/property/${id}/contract`)
+                        $('#contract_download').removeClass('hidden')
+                        $('.custom-file-label').text(result['contract'])
+                    } else {
+                        $('#contract_download').addClass('hidden')
+                        $('.custom-file-label').text('Escolher Arquivo')
+                    }
                 }
             });
         });

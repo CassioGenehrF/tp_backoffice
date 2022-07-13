@@ -1,7 +1,6 @@
 /* Main - Conteudo da pagina */
 
 .conteudo {
-    height: 80vh;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -47,7 +46,7 @@ input::placeholder {
     width: 350px;
     height: 60px;
     margin-top: 3rem;
-    border-radius: 10px;
+    border-radius: 0.25rem;
     font-size: 30px;
     color: #ffffff;
     cursor: pointer;
@@ -56,25 +55,4 @@ input::placeholder {
 .block-button:hover {
     background-color: rgba(217, 217, 217, 35%);
     color: var(--cor-primaria);
-}
-
-.filter {
-    height: 10vh;
-    width: 90vw;
-    margin: 0 auto;
-    align-items: center;
-}
-
-.filter .input-box {
-    width: 40%;
-}
-
-.filter .input-box label {
-    margin-top: 1rem;
-    font-size: 16px;
-}
-
-.filter .input-box select {
-    height: 30px;
-    font-size: 18px;
 }

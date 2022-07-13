@@ -15,7 +15,7 @@ class OwnerController extends Controller
     {
         $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
         $calendar = CalendarBuilder::create($firstPropertyID);
-        setlocale(LC_TIME, 'ptb');
+        setlocale(LC_TIME, 'pt_BR');
         $monthId = now()->month;
         $month = ucfirst(now()->localeMonth);
         $year = now()->year;
@@ -59,7 +59,7 @@ class OwnerController extends Controller
 
     public function getCalendarAsJson($propertyId, $monthId, $yearId)
     {
-        setlocale(LC_TIME, 'ptb');
+        setlocale(LC_TIME, 'pt_BR');
         $date = Carbon::createFromDate($yearId, $monthId);
         $month = ucfirst($date->localeMonth);
 

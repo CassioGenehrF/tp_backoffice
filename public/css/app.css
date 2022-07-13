@@ -44,6 +44,7 @@ input[type=number] {
     list-style: none;
     width: 100%;
     height: 100%;
+    justify-content: end;
 }
 
 .menu-item {
@@ -52,6 +53,8 @@ input[type=number] {
     line-height: 10vh;
     color: #ffffff;
     background-color: var(--cor-primaria);
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .menu-item a {
@@ -66,6 +69,7 @@ input[type=number] {
     background-color: var(--cor-primaria);
     cursor: pointer;
     width: 100%;
+    text-transform: none;
 }
 
 .menu-item p {
@@ -74,6 +78,7 @@ input[type=number] {
 
 .menu-item:hover {
     background-color: transparent;
+    box-shadow: none;
 }
 
 .menu-item:hover button {
@@ -81,9 +86,15 @@ input[type=number] {
     color: var(--cor-primaria);
 }
 
-.menu-item:hover a {
+.menu-item:hover>a {
     background-color: rgba(217, 217, 217, 35%);
     color: var(--cor-primaria);
+}
+
+.menu-item .dropdown-item:active {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
 }
 
 .username:hover {
@@ -97,4 +108,16 @@ input[type=number] {
 
 .menu-item:hover p {
     cursor: default;
+}
+
+/* Content */
+
+.form-group input, .form-group select {
+    border: 2px var(--cor-primaria) solid;
+    border-radius: 0.25rem;
+}
+
+.form-group label {
+    color: var(--cor-primaria);
+    font-weight: bold;
 }

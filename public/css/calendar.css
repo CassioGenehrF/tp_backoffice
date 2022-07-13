@@ -1,3 +1,18 @@
+.filter {
+    width: 30rem;
+    align-items: center;
+}
+
+.filter .input-box label {
+    margin-top: 1rem;
+    font-size: 16px;
+}
+
+.filter .input-box select {
+    height: 30px;
+    font-size: 18px;
+}
+
 .calendar {
     font-size: .9rem
 }
