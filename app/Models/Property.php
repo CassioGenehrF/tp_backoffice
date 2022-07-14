@@ -38,7 +38,12 @@ class Property extends Model
 
     public function newQuery(): Builder
     {
-        return $this->registerGlobalScopes($this->newQueryWithoutScopes())->property();
+        return $this->registerGlobalScopes($this->newQueryWithoutScopes())->property()->active();
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('post_status', '!=', 'trash');
     }
 
     public function scopePublished(Builder $query): Builder
