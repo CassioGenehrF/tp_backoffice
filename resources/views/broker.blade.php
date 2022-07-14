@@ -133,21 +133,24 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="telefone">Telefone:</label>
-                    <input class="form-control" type="tel" id="telefone" name="telefone" required>
+                    <input class="form-control" type="tel" id="telefone" name="telefone" required
+                        onkeypress="return onlyNumberKey(event)">
                 </div>
             </div>
             <div class="row mt-2">
                 <div class="form-group col-md-4">
                     <label for="preco">Preço:</label>
-                    <input class="form-control" type="text" id="preco" name="preco" required>
+                    <input class="form-control" type="number" id="preco" name="preco" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="adultos">Adultos:</label>
-                    <input class="form-control" type="number" id="adultos" name="adultos" required>
+                    <input class="form-control" type="number" id="adultos" name="adultos" required
+                        onkeypress="return onlyNumberKey(event)">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="criancas">Crianças:</label>
-                    <input class="form-control" type="number" id="criancas" name="criancas" required>
+                    <input class="form-control" type="number" id="criancas" name="criancas" required
+                        onkeypress="return onlyNumberKey(event)">
                 </div>
             </div>
             <div class="custom-file mt-2">
@@ -230,6 +233,11 @@
                     $("#calendar-content").html(result['data']);
                 }
             });
+        }
+
+        function onlyNumberKey(evt) {
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            return !(ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
         }
     </script>
 </body>
