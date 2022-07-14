@@ -136,13 +136,14 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="telefone">Telefone:</label>
-                    <input class="form-control" type="tel" id="telefone" name="telefone" required>
+                    <input class="form-control" type="tel" id="telefone" name="telefone"
+                        onkeypress="return onlyNumberKey(event)" required>
                 </div>
             </div>
             <div class="row mt-2">
                 <div class="form-group col-md-4">
                     <label for="preco">Preço:</label>
-                    <input class="form-control" type="text" id="preco" name="preco" required>
+                    <input class="form-control" type="number" id="preco" name="preco" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="adultos">Adultos:</label>
@@ -243,6 +244,11 @@
             $('script[src="' + src + '"]').remove();
             $('<script>').attr('src', src).appendTo('body');
         }
+
+        function onlyNumberKey(evt) {
+          var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+          return !(ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      }
     </script>
 </body>
 

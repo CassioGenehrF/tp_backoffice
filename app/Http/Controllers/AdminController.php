@@ -104,7 +104,7 @@ class AdminController extends Controller
             $request->propriedade,
             $request->checkin,
             $request->checkout,
-            $request->preco,
+            str_replace(',', '.', $request->preco),
             $request->hospede,
             $request->telefone,
             $request->adultos,
