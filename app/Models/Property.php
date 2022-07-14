@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Property extends Model
 {
@@ -59,5 +60,10 @@ class Property extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'ID', 'post_author');
+    }
+
+    public function propertyInfo(): HasOne
+    {
+        return $this->hasOne(PropertyInfo::class, 'property_id', 'ID');
     }
 }

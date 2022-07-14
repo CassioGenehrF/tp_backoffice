@@ -10,6 +10,7 @@ class ReportBuilder
     public static function report($user_id, $propertyId = 0, $isBroker = false)
     {
         $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId);
+
         $year = now()->year;
 
         for ($i = 0; $i < 12; $i++) {
@@ -33,10 +34,10 @@ class ReportBuilder
         }
 
         foreach ($reservations as $reservation) {
-            $month = Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkin)->format('m');
+            $month = Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('m');
 
             $report["$month/$year"]['reservations'] += 1;
-            $report["$month/$year"]['daily'] += Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkin));
+            $report["$month/$year"]['daily'] += Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $reservation->checkin));
 
             if (!$isBroker) {
                 $report["$month/$year"]['total'] += ($reservation->price * 90 / 100);
@@ -49,7 +50,7 @@ class ReportBuilder
                 $report["$month/$year"]['comission'] += $reservation->user_id == $reservation->commitment->property->post_author
                     ? $reservation->broker_tax + $reservation->publisher_tax
                     : $reservation->broker_tax;
-            } else {
+            } else if (!$propertyId) {
                 $report["$month/$year"]['comission'] += $reservation->publisher_tax;
             }
         }

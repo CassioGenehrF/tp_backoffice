@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 class Commitment extends Model
 {
@@ -182,8 +183,17 @@ class Commitment extends Model
         $commitment->save();
 
         $tax = $preco * 10 / 100;
-        $broker_tax = $tax * 30 / 100;
-        $publisher_tax = $property->post_author == $user_id ? 0 : $tax * 30 / 100;
+
+        $broker_tax = 0;
+        if (!Auth::user()->role == 'administrator') {
+            $broker_tax = $tax * 30 / 100;
+        }
+
+        $publisher_tax = 0;
+        if ($property->propertyInfo && $property->propertyInfo->user_indication_id) {
+            $publisher_tax = $property->propertyInfo->user_indication_id == $user_id ? 0 : $tax * 30 / 100;
+        }
+
         $site_tax = $tax - $publisher_tax - $broker_tax;
 
         $rentalInformation = new RentalInformation([

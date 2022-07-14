@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 class RentalInformation extends Model
 {
@@ -70,16 +71,22 @@ class RentalInformation extends Model
     public static function reportPropertyInformations($user_id, $propertyId = 0)
     {
         return self::query()
-            ->with('commitment.property')
-            ->whereHas('commitment', function ($query) {
+            ->join('backoffice_commitments', 'backoffice_commitments.id', '=', 'backoffice_rental_information.commitment_id')
+            ->join('wp_posts', 'wp_posts.ID', '=', 'backoffice_commitments.property_id')
+            ->leftJoin('property_info', 'property_info.property_id', '=', 'backoffice_commitments.property_id')
+            ->where(function ($query) {
                 $query->whereDate('backoffice_commitments.checkin', '>=', now()->startOfYear());
                 $query->whereDate('backoffice_commitments.checkin', '<=', now()->endOfYear());
             })
-            ->where('user_id', $user_id)
-            ->whereHas('commitment.property', function ($query) use ($propertyId) {
-                if ($propertyId) {
-                    $query->where('wp_posts.ID', $propertyId);
-                }
+            ->where(function ($query) use ($user_id, $propertyId) {
+                $query->where('wp_posts.post_author', $user_id);
+                $query->orWhere('backoffice_rental_information.user_id', $user_id);
+                $query->orWhere(function ($query) use ($user_id, $propertyId) {
+                    $query->where('property_info.user_indication_id', $user_id);
+                    if ($propertyId) {
+                        $query->where('property_info.property_id', $propertyId);
+                    }
+                });
             })
             ->get();
     }
