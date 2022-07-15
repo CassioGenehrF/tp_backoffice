@@ -185,7 +185,7 @@ class Commitment extends Model
         $tax = $preco * 10 / 100;
 
         $broker_tax = 0;
-        if (!Auth::user()->role == 'administrator') {
+        if (Auth::user()->role != 'administrator') {
             $broker_tax = $tax * 30 / 100;
         }
 
