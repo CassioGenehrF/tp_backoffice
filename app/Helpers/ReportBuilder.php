@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\RentalInformation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ReportBuilder
 {
@@ -47,11 +48,19 @@ class ReportBuilder
             }
 
             if ($isBroker) {
-                $report["$month/$year"]['comission'] += $reservation->user_id == $reservation->commitment->property->post_author
-                    ? $reservation->broker_tax + $reservation->publisher_tax
-                    : $reservation->broker_tax;
+                $comission = $user_id == $reservation->user_indication_id ? $reservation->publisher_tax : 0;
+                $comission += $user_id == $reservation->user_id ? $reservation->broker_tax : 0;
+                $report["$month/$year"]['comission'] += $comission;
             } else if (!$propertyId) {
                 $report["$month/$year"]['comission'] += $reservation->publisher_tax;
+            }
+        }
+
+        if (Auth::user()->role == 'administrator') {
+            $site_tax = RentalInformation::select('site_tax', 'commitment_id')->with('commitment')->get();
+            foreach ($site_tax as $tax) {
+                $month = Carbon::createFromFormat('Y-m-d', $tax->commitment->checkin)->format('m');
+                $report["$month/$year"]['comission'] += $tax->site_tax;
             }
         }
 
