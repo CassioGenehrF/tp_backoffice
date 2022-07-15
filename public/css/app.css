@@ -112,7 +112,8 @@ input[type=number] {
 
 /* Content */
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
     border: 2px var(--cor-primaria) solid;
     border-radius: 0.25rem;
 }
@@ -120,4 +121,34 @@ input[type=number] {
 .form-group label {
     color: var(--cor-primaria);
     font-weight: bold;
+}
+
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]:after {
+    content: "\1F4C5";
+    color: #555;
+    padding: 0 5px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
+input[type="date"]::-webkit-inner-spin-button {
+    z-index: 1;
+}
+
+input[type="date"]::-webkit-clear-button {
+    z-index: 1;
 }

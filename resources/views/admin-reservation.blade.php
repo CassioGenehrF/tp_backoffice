@@ -156,6 +156,17 @@
                         onkeypress="return onlyNumberKey(event)">
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="form-group col-md-6">
+                    <label for="clean">Taxa de Limpeza:</label>
+                    <input class="form-control" type="number" id="clean" name="clean" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="bail">Taxa de Caução:</label>
+                    <input class="form-control" type="number" id="bail" name="bail" required
+                        onkeypress="return onlyNumberKey(event)">
+                </div>
+            </div>
             <div class="custom-file mt-2">
                 <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
                 <input type="file" class="custom-file-input" name="contrato" id="contrato">
@@ -191,6 +202,11 @@
                     reloadJs("https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js")
                 }
             });
+        });
+
+        $('#checkin').on('change', function() {
+            $('#checkout').val($('#checkin').val())
+            $('#checkout').prop('min', $('#checkin').val())
         });
 
         function prevMonth() {

@@ -151,6 +151,11 @@
             });
         });
 
+        $('#checkin').on('change', function() {
+            $('#checkout').val($('#checkin').val())
+            $('#checkout').prop('min', $('#checkin').val())
+        });
+
         function prevMonth() {
             let month = parseInt($('#month_id').val()) - 1
             let year = parseInt($('#year_id').val())

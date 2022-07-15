@@ -81,6 +81,7 @@
                     <th scope="col">Total</th>
                     <th scope="col">Taxa de Anfitrião</th>
                     <th id="comission" scope="col">Comissão</th>
+                    <th id="regional_comission" scope="col">Comissão Regional</th>
                 </tr>
             </thead>
             <tbody id="report-content">
@@ -97,6 +98,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
         $('#filtro-propriedade').on('change', function() {
             $.ajax({
@@ -104,11 +106,13 @@
                 success: function(result) {
                     value = $('#filtro-propriedade').val();
 
-                    if (value == '0') {
-                        $('#comission').show();
-                    } else {
-                        $('#comission').hide();
-                    }
+                    // if (value == '0') {
+                    //     $('#comission').show();
+                    //     $('#regional_comission').show();
+                    // } else {
+                    //     $('#comission').hide();
+                    //     $('#regional_comission').hide();
+                    // }
 
                     $("#report-content").html(result['data']);
                 }

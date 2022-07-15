@@ -68,7 +68,7 @@ class RentalInformation extends Model
             ->first();
     }
 
-    public static function reportPropertyInformations($user_id, $propertyId = 0)
+    public static function reportPropertyInformations($user_id, $propertyId, $isAdmin)
     {
         return self::query()
             ->join('backoffice_commitments', 'backoffice_commitments.id', '=', 'backoffice_rental_information.commitment_id')
@@ -78,15 +78,21 @@ class RentalInformation extends Model
                 $query->whereDate('backoffice_commitments.checkin', '>=', now()->startOfYear());
                 $query->whereDate('backoffice_commitments.checkin', '<=', now()->endOfYear());
             })
-            ->where(function ($query) use ($user_id, $propertyId) {
-                $query->where('wp_posts.post_author', $user_id);
-                $query->orWhere('backoffice_rental_information.user_id', $user_id);
-                $query->orWhere(function ($query) use ($user_id, $propertyId) {
-                    $query->where('property_info.user_indication_id', $user_id);
-                    if ($propertyId) {
-                        $query->where('property_info.property_id', $propertyId);
-                    }
-                });
+            ->where(function ($query) use ($user_id, $propertyId, $isAdmin) {
+                if (!$isAdmin) {
+                    $query->where('wp_posts.post_author', $user_id);
+                    $query->orWhere('backoffice_rental_information.user_id', $user_id);
+                    $query->orWhere(function ($query) use ($user_id, $propertyId) {
+                        $query->where('property_info.user_indication_id', $user_id);
+                        if ($propertyId) {
+                            $query->where('property_info.property_id', $propertyId);
+                        }
+                    });
+                }
+
+                if ($isAdmin && $propertyId) {
+                    $query->where('property_info.property_id', $propertyId);
+                }
             })
             ->get();
     }

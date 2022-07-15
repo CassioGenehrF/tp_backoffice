@@ -118,7 +118,7 @@ class AdminController extends Controller
 
     public function getReport($propertyId)
     {
-        $report = ReportBuilder::report(Auth::id(), $propertyId);
+        $report = ReportBuilder::report(Auth::id(), $propertyId, false, true);
         $data = ['data' => $report];
 
         return response()->json($data, 200);
@@ -126,7 +126,7 @@ class AdminController extends Controller
 
     public function report()
     {
-        $report = ReportBuilder::report(Auth::id());
+        $report = ReportBuilder::report(Auth::id(), 0, false, true);
 
         return view('admin-report')
             ->with('name', Auth::user()->display_name)

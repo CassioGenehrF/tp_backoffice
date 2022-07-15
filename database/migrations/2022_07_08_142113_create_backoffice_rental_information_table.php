@@ -26,6 +26,9 @@ class CreateBackofficeRentalInformationTable extends Migration
             $table->decimal('site_tax', 8, 2);
             $table->decimal('broker_tax', 8, 2);
             $table->decimal('publisher_tax', 8, 2);
+            $table->decimal('regional_tax', 8, 2);
+            $table->decimal('bail_tax', 8, 2);
+            $table->decimal('clean_tax', 8, 2);
         });
     }
 

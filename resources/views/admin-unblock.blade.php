@@ -121,11 +121,13 @@
             <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
             <div class="form-group input-box">
                 <label for="checkin">Check-in:</label>
-                <input type="date" class="form-control" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
+                <input type="date" class="form-control" id="checkin" name="checkin" placeholder="xx/xx/xxxx"
+                    required>
             </div>
             <div class="form-group input-box">
                 <label for="checkout">Check-out:</label>
-                <input type="date" class="form-control" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
+                <input type="date" class="form-control" id="checkout" name="checkout" placeholder="xx/xx/xxxx"
+                    required>
             </div>
             <button type="submit" class="block-button">DESBLOQUEAR</button>
         </form>
@@ -153,6 +155,11 @@
                     reloadJs("https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js")
                 }
             });
+        });
+
+        $('#checkin').on('change', function() {
+            $('#checkout').val($('#checkin').val())
+            $('#checkout').prop('min', $('#checkin').val())
         });
 
         function prevMonth() {

@@ -194,7 +194,9 @@ class Commitment extends Model
             $publisher_tax = $property->propertyInfo->user_indication_id == $user_id ? 0 : $tax * 30 / 100;
         }
 
-        $site_tax = $tax - $publisher_tax - $broker_tax;
+        $regional_tax = $tax * 10 / 100;
+
+        $site_tax = $tax - $publisher_tax - $broker_tax - $regional_tax;
 
         $rentalInformation = new RentalInformation([
             'user_id' => $user_id,
@@ -207,7 +209,8 @@ class Commitment extends Model
             'contract' => $fileNameToStore,
             'site_tax' => $site_tax,
             'broker_tax' => $broker_tax,
-            'publisher_tax' => $publisher_tax
+            'publisher_tax' => $publisher_tax,
+            'regional_tax' => $regional_tax
         ]);
 
         $rentalInformation->save();

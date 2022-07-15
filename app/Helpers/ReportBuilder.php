@@ -4,13 +4,12 @@ namespace App\Helpers;
 
 use App\Models\RentalInformation;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class ReportBuilder
 {
-    public static function report($user_id, $propertyId = 0, $isBroker = false)
+    public static function report($user_id, $propertyId = 0, $isBroker = false, $isAdmin = false)
     {
-        $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId);
+        $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId, $isAdmin);
 
         $year = now()->year;
 
@@ -24,13 +23,14 @@ class ReportBuilder
             $report["$index/$year"]['reservations'] = 0;
             $report["$index/$year"]['daily'] = 0;
             $report["$index/$year"]['total'] = 0;
-
-            if (!$isBroker) {
-                $report["$index/$year"]['tax'] = 0;
-            }
+            $report["$index/$year"]['tax'] = 0;
 
             if (!$propertyId || $isBroker) {
                 $report["$index/$year"]['comission'] = 0;
+            }
+
+            if ($isAdmin) {
+                $report["$index/$year"]['regional_comission'] = 0;
             }
         }
 
@@ -39,13 +39,8 @@ class ReportBuilder
 
             $report["$month/$year"]['reservations'] += 1;
             $report["$month/$year"]['daily'] += Carbon::createFromFormat('Y-m-d', $reservation->commitment->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $reservation->checkin));
-
-            if (!$isBroker) {
-                $report["$month/$year"]['total'] += ($reservation->price * 90 / 100);
-                $report["$month/$year"]['tax'] += ($reservation->price * 10 / 100);
-            } else {
-                $report["$month/$year"]['total'] += $reservation->price;
-            }
+            $report["$month/$year"]['total'] += $reservation->price;
+            $report["$month/$year"]['tax'] += ($reservation->price * 10 / 100);
 
             if ($isBroker) {
                 $comission = $user_id == $reservation->user_indication_id ? $reservation->publisher_tax : 0;
@@ -54,32 +49,34 @@ class ReportBuilder
             } else if (!$propertyId) {
                 $report["$month/$year"]['comission'] += $reservation->publisher_tax;
             }
-        }
 
-        if (Auth::user()->role == 'administrator') {
-            $site_tax = RentalInformation::select('site_tax', 'commitment_id')->with('commitment')->get();
-            foreach ($site_tax as $tax) {
-                $month = Carbon::createFromFormat('Y-m-d', $tax->commitment->checkin)->format('m');
-                $report["$month/$year"]['comission'] += $tax->site_tax;
+            if ($isAdmin) {
+                $report["$month/$year"]['regional_comission'] += $reservation->regional_tax;
             }
         }
 
-        $reportHTML = self::printReport($report, $propertyId, $isBroker);
+        $reportHTML = self::printReport($report, $propertyId, $isBroker, $isAdmin);
         return $reportHTML;
     }
 
-    private static function printReport($report, $propertyId, $isBroker)
+    private static function printReport($report, $propertyId, $isBroker, $isAdmin)
     {
         $html = '';
+
         foreach ($report as $data => $row) {
             $tax = '';
             $comission = '';
-            if (!$propertyId) {
+            $regional_comission = '';
+            if (!$isBroker) {
+                $tax = "<td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>";
+            }
+
+            if (!$propertyId || $isAdmin) {
                 $comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['comission']) . " </td>";
             }
 
-            if (!$isBroker) {
-                $tax = "<td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>";
+            if ($isAdmin) {
+                $regional_comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['regional_comission']) . " </td>";
             }
 
             $html .= "
@@ -90,6 +87,7 @@ class ReportBuilder
                     <td> " . 'R$ ' . str_replace('.', ',', $row['total']) . " </td>
                     $tax
                     $comission
+                    $regional_comission
                 </tr>
             ";
         }
