@@ -46,6 +46,7 @@
                         <a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Agenda</a>
                         <a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
                         <a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a>
+                        <a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
                     </div>
                 </div>
                 <li class="menu-item username">

@@ -137,6 +137,8 @@ class Commitment extends Model
         $telefone,
         $adultos,
         $criancas,
+        $clean,
+        $bail,
         $hasFile,
         $contrato,
         $user_id,
@@ -210,7 +212,9 @@ class Commitment extends Model
             'site_tax' => $site_tax,
             'broker_tax' => $broker_tax,
             'publisher_tax' => $publisher_tax,
-            'regional_tax' => $regional_tax
+            'regional_tax' => $regional_tax,
+            'clean_tax' => $clean,
+            'bail_tax' => $bail
         ]);
 
         $rentalInformation->save();

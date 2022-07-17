@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 class Property extends Model
 {
@@ -37,6 +38,200 @@ class Property extends Model
         'comment_count'
     ];
 
+    protected $appends = [
+        'city',
+        'state',
+        'street',
+        'externalArea',
+        'kitchen',
+        'entertainment',
+        'internet',
+        'popularItens',
+        'location',
+        'pool',
+        'room',
+        'sustainable'
+    ];
+
+    protected function getCityAttribute(): string
+    {
+        $city = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.taxonomy', 'property_city')
+            ->where('wp_posts.ID', $this->ID)
+            ->first();
+
+        $city = $city ? $city->name : '';
+        return $city;
+    }
+
+    protected function getStateAttribute(): string
+    {
+        $state = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.taxonomy', 'property_county_state')
+            ->where('wp_posts.ID', $this->ID)
+            ->first();
+
+        $state = $state ? $state->name : '';
+        return $state;
+    }
+
+    protected function getStreetAttribute(): string
+    {
+        $street = DB::query()
+            ->select('meta_value')
+            ->from('wp_postmeta')
+            ->where('post_id', $this->ID)
+            ->where('meta_key', 'property_address')
+            ->first();
+
+        $street = $street ? $street->meta_value : '';
+        return $street;
+    }
+
+    protected function getExternalAreaAttribute(): array
+    {
+        $externalArea = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 186)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $externalArea->all();
+    }
+
+    protected function getKitchenAttribute(): array
+    {
+        $kitchen = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 155)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $kitchen->all();
+    }
+
+    protected function getEntertainmentAttribute(): array
+    {
+        $externalArea = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 111)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $externalArea->all();
+    }
+
+    protected function getInternetAttribute(): array
+    {
+        $internet = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 149)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $internet->all();
+    }
+
+    protected function getPopularItensAttribute(): array
+    {
+        $popularItens = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 216)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+        return $popularItens->all();
+    }
+
+    protected function getLocationAttribute(): array
+    {
+        $location = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 178)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $location->all();
+    }
+
+    protected function getPoolAttribute(): array
+    {
+        $pool = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 199)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $pool->all();
+    }
+
+    protected function getRoomAttribute(): array
+    {
+        $room = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 100)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $room->all();
+    }
+
+    protected function getSustainableAttribute(): array
+    {
+        $room = DB::query()
+            ->select('wp_terms.name')
+            ->from('wp_posts')
+            ->join('wp_term_relationships', 'wp_term_relationships.object_id', '=', 'wp_posts.ID')
+            ->join('wp_term_taxonomy', 'wp_term_taxonomy.term_taxonomy_id', '=', 'wp_term_relationships.term_taxonomy_id')
+            ->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', 292)
+            ->where('wp_posts.ID', $this->ID)
+            ->get();
+
+        return $room->all();
+    }
+
     public function newQuery(): Builder
     {
         return $this->registerGlobalScopes($this->newQueryWithoutScopes())->property()->active();
@@ -59,7 +254,7 @@ class Property extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'ID', 'post_author');
+        return $this->belongsTo(User::class, 'post_author', 'ID');
     }
 
     public function propertyInfo(): HasOne

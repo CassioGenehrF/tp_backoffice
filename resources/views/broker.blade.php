@@ -153,6 +153,17 @@
                         onkeypress="return onlyNumberKey(event)">
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="form-group col-md-6">
+                    <label for="clean">Taxa de Limpeza:</label>
+                    <input class="form-control" type="number" id="clean" name="clean" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="bail">Taxa de Caução:</label>
+                    <input class="form-control" type="number" id="bail" name="bail" required
+                        onkeypress="return onlyNumberKey(event)">
+                </div>
+            </div>
             <div class="custom-file mt-2">
                 <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
                 <input type="file" class="custom-file-input" name="contrato" id="contrato">

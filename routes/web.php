@@ -55,10 +55,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [OwnerController::class, 'index'])->name('owner.page');
         Route::get('unblock', [OwnerController::class, 'unblockPage'])->name('owner.unblock_page');
         Route::get('report', [OwnerController::class, 'report'])->name('owner.report');
-
+        Route::get('properties', [OwnerController::class, 'properties'])->name('owner.properties');
+        Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
+        
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [OwnerController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [OwnerController::class, 'getReport']);
-
+        
+        Route::post('contract', [OwnerController::class, 'createContract'])->name('owner.create_contract');
         Route::post('block', [OwnerController::class, 'block'])->name('owner.block');
         Route::post('unblock', [OwnerController::class, 'unblock'])->name('owner.unblock');
     });

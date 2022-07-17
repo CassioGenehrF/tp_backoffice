@@ -109,6 +109,8 @@ class AdminController extends Controller
             $request->telefone,
             $request->adultos,
             $request->criancas,
+            $request->clean,
+            $request->bail,
             $request->hasFile('contrato'),
             $request->file('contrato'),
             Auth::id(),

@@ -15,7 +15,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'wp_users';
-    
+
     protected $fillable = [
         'ID',
         'user_login',
@@ -29,7 +29,7 @@ class User extends Authenticatable
         'display_name'
     ];
 
-    protected $appends = ['role'];
+    protected $appends = ['role', 'phone', 'cpf', 'street', 'streetNumber', 'city', 'state', 'cep'];
 
     public function getAuthIdentifier()
     {
@@ -49,10 +49,101 @@ class User extends Authenticatable
             ->where('meta_key', 'wp_capabilities')
             ->where('user_id', $this->ID)
             ->first();
-            
+
         $role = $role ? str_replace('"', '', substr(substr($role->meta_value, 0, -7), 10)) : '';
-        
+
         return $role;
+    }
+
+    protected function getCPFAttribute(): string
+    {
+        $cpf = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'facebook')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $cpf = $cpf ? $cpf->meta_value : '';
+        return $cpf;
+    }
+
+    protected function getPhoneAttribute(): string
+    {
+        $phone = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'phone')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $phone = $phone ? $phone->meta_value : '';
+        return $phone;
+    }
+
+    protected function getStreetAttribute(): string
+    {
+        $street = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'twitter')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $street = $street ? $street->meta_value : '';
+        return $street;
+    }
+
+    protected function getStreetNumberAttribute(): string
+    {
+        $streetNumber = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'linkedin')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $streetNumber = $streetNumber ? $streetNumber->meta_value : '';
+        return $streetNumber;
+    }
+
+    protected function getCityAttribute(): string
+    {
+        $city = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'pinterest')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $city = $city ? $city->meta_value : '';
+        return $city;
+    }
+
+    protected function getStateAttribute(): string
+    {
+        $state = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'website')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $state = $state ? $state->meta_value : '';
+        return $state;
+    }
+
+    protected function getCEPAttribute(): string
+    {
+        $cep = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'instagram')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $cep = $cep ? $cep->meta_value : '';
+        return $cep;
     }
 
     public function properties(): HasMany

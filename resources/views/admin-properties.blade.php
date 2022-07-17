@@ -116,7 +116,6 @@
         $('#contrato').change(function() {
             var file = $('#contrato')[0].files[0].name;
             $(this).prev('label').text(file);
-            console.log($('#contrato'));
         });
 
         $('#propriedade').on('change', function() {

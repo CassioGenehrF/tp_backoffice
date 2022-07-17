@@ -104,16 +104,6 @@
             $.ajax({
                 url: "/admin/getReport/" + this.value,
                 success: function(result) {
-                    value = $('#filtro-propriedade').val();
-
-                    // if (value == '0') {
-                    //     $('#comission').show();
-                    //     $('#regional_comission').show();
-                    // } else {
-                    //     $('#comission').hide();
-                    //     $('#regional_comission').hide();
-                    // }
-
                     $("#report-content").html(result['data']);
                 }
             });

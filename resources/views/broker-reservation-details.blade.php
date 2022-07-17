@@ -110,39 +110,49 @@
                     <tbody>
                         <tr>
                             <td></td>
-                            <td> Diárias </td>
-                            <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td> Serviços </td>
-                            <td> {{ "R$ 0,00" }} </td>
+                            <td> Valor do Imóvel </td>
+                            <td> {{ "R$ " . number_format($reservation->price, 2, ',', '') }} </td>
                         </tr>
                         @if ($user->role == 'administrator')
                             <tr>
                                 <td></td>
                                 <td> Tarifa do Site </td>
-                                <td> {{ "R$ " . str_replace('.', ',', $reservation->site_tax) }} </td>
+                                <td> {{ "R$ " . number_format($reservation->site_tax, 2, ',', '') }} </td>
                             </tr>
                         @endif
                         @if ($user->role == 'administrator' || $user->role == 'contributor')
                             <tr>
                                 <td></td>
-                                <td> Corretor </td>
-                                <td> {{ "R$ " . str_replace('.', ',', $reservation->broker_tax) }} </td>
+                                <td> Comissão sob o Imóvel </td>
+                                <td> {{ "R$ " . number_format($reservation->broker_tax, 2, ',', '') }} </td>
                             </tr>
                         @endif
                         @if ($user->role == 'administrator' || $user->role == 'editor')
                             <tr>
                                 <td></td>
-                                <td> Publicador </td>
-                                <td> {{ "R$ " . str_replace('.', ',', $reservation->publisher_tax) }} </td>
+                                <td> Indicação sob o Imóvel </td>
+                                <td> {{ "R$ " . number_format($reservation->publisher_tax, 2, ',', '') }} </td>
+                            </tr>
+                        @endif
+                        @if ($reservation->clean_tax > 0)
+                            <tr>
+                                <td></td>
+                                <td> Taxa de Limpeza </td>
+                                <td> {{ "R$ " . number_format($reservation->clean_tax, 2, ',', '') }} </td>
+                            </tr>
+                        @endif
+                        @if ($reservation->bail_tax > 0)
+                            <tr>
+                                <td></td>
+                                <td> Taxa de Caução </td>
+                                <td> {{ "R$ " . number_format($reservation->bail_tax, 2, ',', '') }} </td>
                             </tr>
                         @endif
                         <tr>
                             <td></td>
                             <td><b> Total </b></td>
-                            <td><b> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </b></td>
+                            <td><b> {{ "R$ " . number_format($reservation->price + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
+                                </b></td>
                         </tr>
                     </tbody>
                 </table>

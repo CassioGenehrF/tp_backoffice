@@ -163,8 +163,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="bail">Taxa de Caução:</label>
-                    <input class="form-control" type="number" id="bail" name="bail" required
-                        onkeypress="return onlyNumberKey(event)">
+                    <input class="form-control" type="number" id="bail" name="bail" required>
                 </div>
             </div>
             <div class="custom-file mt-2">

@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owner/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 
@@ -61,30 +61,23 @@
         </nav>
     </header>
     <main>
-        <section class="row mt-2">
-            <div class="form-group col-md-4 ml-4">
-                <label for="filtro-propriedade">Propriedade:</label>
-                <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
-                    <option value="0">Todas</option>
-                    @foreach ($properties as $property)
-                        <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </section>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Reservas</th>
-                    <th scope="col">Diárias</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Taxa de Anfitrião</th>
-                    <th id="comission" scope="col">Comissão</th>
+                    <th scope="col">Propriedade</th>
+                    <th class="action" scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody id="report-content">
-                {!! $report !!}
+                @foreach ($properties as $property)
+                    <tr>
+                        <td>{{ $property->post_title }}</td>
+                        <td>
+                            <a href="{{ route('owner.contract', ['propertyId' => $property->ID]) }}"
+                                class="btn btn-danger">Gerar Contrato</a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </main>

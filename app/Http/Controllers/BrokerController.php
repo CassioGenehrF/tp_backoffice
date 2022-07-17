@@ -36,7 +36,7 @@ class BrokerController extends Controller
     {
         $reservations = RentalInformation::getReservations(Auth::id());
 
-        return view('reservations')
+        return view('broker-reservations')
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations);
     }
@@ -51,7 +51,7 @@ class BrokerController extends Controller
     {
         $reservation = RentalInformation::getReservationDetails($id);
 
-        return view('reservation-details')
+        return view('broker-reservation-details')
             ->with('name', Auth::user()->display_name)
             ->with('reservation', $reservation)
             ->with('user', Auth::user());
@@ -100,6 +100,8 @@ class BrokerController extends Controller
             $request->telefone,
             $request->adultos,
             $request->criancas,
+            $request->clean,
+            $request->bail,
             $request->hasFile('contrato'),
             $request->file('contrato'),
             Auth::id(),
