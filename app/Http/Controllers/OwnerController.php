@@ -124,10 +124,10 @@ class OwnerController extends Controller
             'cpf_banco' => $request->cpf_bank ?? '',
             'pix' => $request->pix ?? ''
         ];
-        return view('template.contract', $data);
-        // $pdf = PDF::loadView('template.contract', $data);
-        // $fileName = "contrato_" . str_replace(' ', '_', strtolower($property->post_title)) . ".pdf";
-        // return $pdf->download($fileName);
+
+        $pdf = PDF::loadView('template.contract', $data);
+        $fileName = "contrato_" . str_replace(' ', '_', strtolower($property->post_title)) . ".pdf";
+        return $pdf->download($fileName);
     }
 
     public function getCalendarAsJson($propertyId, $monthId, $yearId)
