@@ -80,7 +80,7 @@
                     <th scope="col">Diárias</th>
                     <th scope="col">Total</th>
                     <th scope="col">Taxa de Anfitrião</th>
-                    <th id="comission" scope="col">Comissão</th>
+                    <th id="comission" scope="col">Ganhos sob Indicação</th>
                     <th id="regional_comission" scope="col">Comissão Regional</th>
                 </tr>
             </thead>
