@@ -15,8 +15,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
-use function PHPSTORM_META\map;
-
 class OwnerController extends Controller
 {
     private function calendarPage($viewName)

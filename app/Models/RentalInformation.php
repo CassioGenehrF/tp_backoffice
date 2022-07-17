@@ -22,7 +22,10 @@ class RentalInformation extends Model
         'contract',
         'site_tax',
         'broker_tax',
-        'publisher_tax'
+        'publisher_tax',
+        'regional_tax',
+        'clean_tax',
+        'bail_tax'
     ];
 
     public $timestamps = false;

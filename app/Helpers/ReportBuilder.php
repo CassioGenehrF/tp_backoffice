@@ -47,7 +47,8 @@ class ReportBuilder
                 $comission += $user_id == $reservation->user_id ? $reservation->broker_tax : 0;
                 $report["$month/$year"]['comission'] += $comission;
             } else if (!$propertyId) {
-                $report["$month/$year"]['comission'] += $reservation->publisher_tax;
+                $comission = $user_id == $reservation->user_indication_id ? $reservation->publisher_tax : 0;
+                $report["$month/$year"]['comission'] += $comission;
             }
 
             if ($isAdmin) {

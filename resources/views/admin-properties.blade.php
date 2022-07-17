@@ -43,7 +43,7 @@
                         <a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
-                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Propriedades</a>
+                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -74,7 +74,7 @@
             </div>
             <div class="row mt-2">
                 <div class="form-group col-md-12 ml-4">
-                    <label for="indicacao">Indicação:</label>
+                    <label for="indicacao">Indicado Por:</label>
                     <select class="form-control" name="indicacao" id="indicacao">
                         <option value="" disabled selected hidden>Selecione uma opção</option>
                         <option value="0">REMOVER INDICAÇÃO</option>
@@ -132,7 +132,8 @@
 
                     if (result['contract']) {
                         id = $('#propriedade').val()
-                        $('#contract_download').prop('href', `${window.location.origin}/admin/property/${id}/contract`)
+                        $('#contract_download').prop('href',
+                            `${window.location.origin}/admin/property/${id}/contract`)
                         $('#contract_download').removeClass('hidden')
                         $('.custom-file-label').text(result['contract'])
                     } else {

@@ -47,7 +47,7 @@
                         <a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
-                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Propriedades</a>
+                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a>
                     </div>
                 </div>
                 <li class="menu-item username">
