@@ -30,6 +30,8 @@ class ReportBuilder
             }
 
             if ($isAdmin) {
+                $report["$index/$year"]['direct_rent'] = 0;
+                $report["$index/$year"]['comission'] = 0;
                 $report["$index/$year"]['regional_comission'] = 0;
             }
         }
@@ -46,6 +48,15 @@ class ReportBuilder
                 $comission = $user_id == $reservation->user_indication_id ? $reservation->publisher_tax : 0;
                 $comission += $user_id == $reservation->user_id ? $reservation->broker_tax : 0;
                 $report["$month/$year"]['comission'] += $comission;
+            } else if ($isAdmin) {
+                $comission = (($reservation->site_tax + $reservation->regional_tax) == $reservation->price * 10 / 100) ?
+                    'direct' : 'comission';
+
+                if ($comission == 'direct') {
+                    $report["$month/$year"]['direct_rent'] += $reservation->site_tax;
+                } else {
+                    $report["$month/$year"]['comission'] += $reservation->site_tax;
+                }
             } else if (!$propertyId) {
                 $comission = $user_id == $reservation->user_indication_id ? $reservation->publisher_tax : 0;
                 $report["$month/$year"]['comission'] += $comission;
@@ -68,15 +79,17 @@ class ReportBuilder
             $tax = '';
             $comission = '';
             $regional_comission = '';
+            $direct_rent = '';
             if (!$isBroker) {
                 $tax = "<td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>";
             }
 
-            if (!$propertyId || $isAdmin) {
+            if (!$propertyId || $isBroker || $isAdmin) {
                 $comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['comission']) . " </td>";
             }
 
             if ($isAdmin) {
+                $direct_rent = "<td> " . 'R$ ' . str_replace('.', ',', $row['direct_rent']) . " </td>";
                 $regional_comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['regional_comission']) . " </td>";
             }
 
@@ -87,6 +100,7 @@ class ReportBuilder
                     <td> " . $row['daily'] . " </td>
                     <td> " . 'R$ ' . str_replace('.', ',', $row['total']) . " </td>
                     $tax
+                    $direct_rent
                     $comission
                     $regional_comission
                 </tr>

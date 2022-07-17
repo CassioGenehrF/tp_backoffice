@@ -118,27 +118,21 @@
                             <td> Diárias </td>
                             <td> {{ "R$ " . number_format($reservation->price, 2, ',', '') }} </td>
                         </tr>
-                        @if ($user->role == 'administrator')
-                            <tr>
-                                <td></td>
-                                <td> Tarifa do Site </td>
-                                <td> {{ "R$ " . number_format($reservation->site_tax, 2, ',', '') }} </td>
-                            </tr>
-                        @endif
-                        @if ($user->role == 'administrator' || $user->role == 'contributor')
-                            <tr>
-                                <td></td>
-                                <td> Corretor </td>
-                                <td> {{ "R$ " . number_format($reservation->broker_tax, 2, ',', '') }} </td>
-                            </tr>
-                        @endif
-                        @if ($user->role == 'administrator' || $user->role == 'editor')
-                            <tr>
-                                <td></td>
-                                <td> Publicador </td>
-                                <td> {{ "R$ " . number_format($reservation->publisher_tax, 2, ',', '') }} </td>
-                            </tr>
-                        @endif
+                        <tr>
+                            <td></td>
+                            <td> Tarifa do Site </td>
+                            <td> {{ "R$ " . number_format($reservation->site_tax, 2, ',', '') }} </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> Corretor </td>
+                            <td> {{ "R$ " . number_format($reservation->broker_tax, 2, ',', '') }} </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> Publicador </td>
+                            <td> {{ "R$ " . number_format($reservation->publisher_tax, 2, ',', '') }} </td>
+                        </tr>
                         @if ($reservation->clean_tax > 0)
                             <tr>
                                 <td></td>
@@ -156,8 +150,11 @@
                         <tr>
                             <td></td>
                             <td><b> Total </b></td>
-                            <td><b> {{ "R$ " . number_format($reservation->price + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
-                                </b></td>
+                            <td>
+                                <b>
+                                    {{ "R$ " . number_format($reservation->price + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
+                                </b>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -175,9 +172,7 @@
                     <tr>
                         <td> {{ $name }} </td>
                         <td>
-                            {{ $reservation->user_id == $reservation->commitment->property->post_author
-                                ? "R$ " . str_replace('.', ',', $reservation->broker_tax + $reservation->publisher_tax)
-                                : "R$ " . str_replace('.', ',', $reservation->broker_tax) }}
+                            {{ "R$ " . number_format($reservation->site_tax, 2, ',', '') }}
                         </td>
                     </tr>
                 </tbody>
