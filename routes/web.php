@@ -26,12 +26,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report/indication', [AdminController::class, 'reportIndication'])->name('admin.report_indication');
         Route::get('report/regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
-        
+
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
-        
+
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
         Route::post('rent', [AdminController::class, 'rent'])->name('admin.rent');
@@ -59,14 +59,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [OwnerController::class, 'index'])->name('owner.page');
         Route::get('unblock', [OwnerController::class, 'unblockPage'])->name('owner.unblock_page');
         Route::get('report', [OwnerController::class, 'report'])->name('owner.report');
+        Route::get('reservations', [OwnerController::class, 'reservations'])->name('owner.reservations');
+        Route::get('reservations/{id}', [OwnerController::class, 'reservationDetails'])->name('owner.reservations_details');
+        Route::get('reservations/{id}/contract', [OwnerController::class, 'downloadContract'])->name('owner.download_contract');
         Route::get('properties', [OwnerController::class, 'properties'])->name('owner.properties');
         Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
-        
+
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [OwnerController::class, 'getCalendarAsJson']);
+        Route::get('getReservations/{propertyId}/{month}/{year}', [OwnerController::class, 'getReservations']);
         Route::get('getReport/{propertyId}', [OwnerController::class, 'getReport']);
-        
+
         Route::post('contract', [OwnerController::class, 'createContract'])->name('owner.create_contract');
         Route::post('block', [OwnerController::class, 'block'])->name('owner.block');
         Route::post('unblock', [OwnerController::class, 'unblock'])->name('owner.unblock');
+        Route::delete('reservation/destroy', [OwnerController::class, 'reservationDestroy'])->name('owner.reservation_destroy');
     });
 });

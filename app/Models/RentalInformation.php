@@ -36,7 +36,7 @@ class RentalInformation extends Model
         return $this->hasOne(Commitment::class, 'id', 'commitment_id');
     }
 
-    public static function getReservations($user_id = false, $propertyId = false, $month = false, $year = false)
+    public static function getReservations($user_id = false, $propertyId = false, $month = false, $year = false, $isOwner = false)
     {
         return self::query()
             ->select(
@@ -46,7 +46,8 @@ class RentalInformation extends Model
                 'backoffice_rental_information.user_id',
                 'backoffice_commitments.checkin',
                 'backoffice_commitments.checkout',
-                'wp_posts.post_title'
+                'wp_posts.post_title',
+                'wp_posts.post_author'
             )
             ->join(
                 'backoffice_commitments',
@@ -66,11 +67,15 @@ class RentalInformation extends Model
                 '=',
                 'wp_posts.ID',
             )
-            ->where(function ($query) use ($user_id, $propertyId, $month, $year) {
+            ->where(function ($query) use ($user_id, $propertyId, $month, $year, $isOwner) {
                 if ($user_id) {
-                    $query->where(function ($query) use ($user_id) {
+                    $query->where(function ($query) use ($user_id, $isOwner) {
                         $query->where('backoffice_rental_information.user_id', $user_id);
                         $query->orWhere('property_info.user_indication_id', $user_id);
+
+                        if ($isOwner) {
+                            $query->orWhere('wp_posts.post_author', $user_id);
+                        }
                     });
                 }
 

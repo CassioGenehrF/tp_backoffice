@@ -6,14 +6,16 @@ use App\Helpers\CalendarBuilder;
 use App\Helpers\Enums\BankEnum;
 use App\Helpers\Enums\StateEnum;
 use App\Helpers\ReportBuilder;
+use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Http\Requests\Owner\ContractRequest;
 use App\Models\Commitment;
 use App\Models\Property;
+use App\Models\RentalInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Response;
 
 class OwnerController extends Controller
 {
@@ -43,6 +45,87 @@ class OwnerController extends Controller
     public function unblockPage()
     {
         return $this->calendarPage('owner.owner-unblock');
+    }
+
+    private function reservationsAsHtml($reservations)
+    {
+        $html = '';
+
+        foreach ($reservations as $reservation) {
+            $delete = "";
+
+            $delete = !(Auth::id() == $reservation->user_id) ? '' :
+                "<form action='" . route('admin.reservation_destroy', ['id' => $reservation->id]) . "'
+                    method='post'>
+                    <input type='hidden' name='_method' value='delete'>
+                    " . csrf_field() . "
+                    <button type='submit' class='btn btn-danger'>Excluir</button>
+                </form>";
+
+            $color = (Auth::id() == $reservation->post_author) ? '' :
+                'style="background-color: #ff9900;"';
+
+            $html .= "
+                <tr $color>
+                    <td> $reservation->post_title </td>
+                    <td> $reservation->guest_name </td>
+                    <td> R$ " . number_format($reservation->price, 2, ',', '') . " </td>
+                    <td> " . Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') . "
+                    </td>
+                    <td>
+                        <form action='/admin/reservations/" . $reservation->id . "' method='get'>
+                            " . csrf_field() . "
+                            <button type='submit' class='btn btn-light'>Visualizar</button>
+                        </form>
+                        $delete
+                    </td>
+                </tr>
+            ";
+        }
+
+        return $html;
+    }
+
+    public function getReservations($propertyId, $month, $year)
+    {
+        $reservations = RentalInformation::getReservations(Auth::id(), $propertyId, $month, $year, true);
+        $html = $this->reservationsAsHtml($reservations);
+        $data = ['data' => $html];
+
+        return response()->json($data, 200);
+    }
+
+    public function reservations()
+    {
+        $reservations = RentalInformation::getReservations(Auth::id(), false, false, false, true);
+
+        return view('owner.owner-reservations')
+            ->with('name', Auth::user()->display_name)
+            ->with('reservations', $reservations)
+            ->with('properties', Property::published()->get());
+    }
+
+    public function reservationDestroy(RentRequest $request)
+    {
+        RentalInformation::reservationDestroy($request->id);
+        return redirect(route('owner.reservations'));
+    }
+
+    public function reservationDetails($id)
+    {
+        $reservation = RentalInformation::getReservationDetails($id);
+
+        return view('owner.owner-reservation-details')
+            ->with('name', Auth::user()->display_name)
+            ->with('reservation', $reservation)
+            ->with('user', Auth::user());
+    }
+
+    public function downloadContract($id)
+    {
+        $reservation = RentalInformation::find($id);
+        $filePath = public_path() . "/storage/contracts/$reservation->contract";
+        return Response::download($filePath, $reservation->contract);
     }
 
     public function getReport($propertyId)
