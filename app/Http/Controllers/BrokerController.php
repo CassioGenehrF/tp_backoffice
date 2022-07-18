@@ -37,6 +37,16 @@ class BrokerController extends Controller
         $html = '';
 
         foreach ($reservations as $reservation) {
+            $delete = "";
+
+            $delete = !(Auth::id() == $reservation->user_id) ? '' :
+                "<form action='" . route('admin.reservation_destroy', ['id' => $reservation->id]) . "'
+                    method='post'>
+                    <input type='hidden' name='_method' value='delete'>
+                    " . csrf_field() . "
+                    <button type='submit' class='btn btn-danger'>Excluir</button>
+                </form>";
+
             $html .= "
                 <tr>
                     <td> $reservation->post_title </td>
@@ -49,12 +59,7 @@ class BrokerController extends Controller
                             " . csrf_field() . "
                             <button type='submit' class='btn btn-light'>Visualizar</button>
                         </form>
-                        <form action='" . route('admin.reservation_destroy', ['id' => $reservation->id]) . "'
-                            method='post'>
-                            <input type='hidden' name='_method' value='delete'>
-                            " . csrf_field() . "
-                            <button type='submit' class='btn btn-danger'>Excluir</button>
-                        </form>
+                        $delete
                     </td>
                 </tr>
             ";
