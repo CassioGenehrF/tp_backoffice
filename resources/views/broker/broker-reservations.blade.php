@@ -94,12 +94,14 @@
                                 @csrf
                                 <button type="submit" class="btn btn-light">Visualizar</button>
                             </form>
-                            <form action="{{ route('broker.reservation_destroy', ['id' => $reservation->id]) }}"
-                                method="post">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
+                            @if (Auth::id() == $reservation->user_id)
+                                <form action="{{ route('broker.reservation_destroy', ['id' => $reservation->id]) }}"
+                                    method="post">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

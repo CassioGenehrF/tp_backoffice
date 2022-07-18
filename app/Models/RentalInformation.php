@@ -43,6 +43,7 @@ class RentalInformation extends Model
                 'backoffice_rental_information.id',
                 'backoffice_rental_information.guest_name',
                 'backoffice_rental_information.price',
+                'backoffice_rental_information.user_id',
                 'backoffice_commitments.checkin',
                 'backoffice_commitments.checkout',
                 'wp_posts.post_title'
