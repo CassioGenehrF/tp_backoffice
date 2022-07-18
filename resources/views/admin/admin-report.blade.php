@@ -64,7 +64,7 @@
         </nav>
     </header>
     <main>
-        <section class="row mt-2">
+        <section class="flex mt-2">
             <div class="form-group col-md-4 ml-4">
                 <label for="filtro-propriedade">Propriedade:</label>
                 <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">

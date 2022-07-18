@@ -83,26 +83,30 @@
             </thead>
             <tbody id="reservations">
                 @foreach ($reservations as $reservation)
-                    <tr>
-                        <td> {{ $reservation->post_title }} </td>
-                        <td> {{ $reservation->guest_name }} </td>
-                        <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
-                        <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
-                        </td>
-                        <td>
-                            <form action="/broker/reservations/{{ $reservation->id }}" method="get">
+                    @if (Auth::id() == $reservation->user_id)
+                        <tr>
+                        @else
+                        <tr style="background-color: #ffd589;">
+                    @endif
+                    <td> {{ $reservation->post_title }} </td>
+                    <td> {{ $reservation->guest_name }} </td>
+                    <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
+                    <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
+                    </td>
+                    <td>
+                        <form action="/broker/reservations/{{ $reservation->id }}" method="get">
+                            @csrf
+                            <button type="submit" class="btn btn-light">Visualizar</button>
+                        </form>
+                        @if (Auth::id() == $reservation->user_id)
+                            <form action="{{ route('broker.reservation_destroy', ['id' => $reservation->id]) }}"
+                                method="post">
+                                @method('delete')
                                 @csrf
-                                <button type="submit" class="btn btn-light">Visualizar</button>
+                                <button type="submit" class="btn btn-danger">Excluir</button>
                             </form>
-                            @if (Auth::id() == $reservation->user_id)
-                                <form action="{{ route('broker.reservation_destroy', ['id' => $reservation->id]) }}"
-                                    method="post">
-                                    @method('delete')
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger">Excluir</button>
-                                </form>
-                            @endif
-                        </td>
+                        @endif
+                    </td>
                     </tr>
                 @endforeach
             </tbody>
