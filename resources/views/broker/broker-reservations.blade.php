@@ -86,7 +86,7 @@
                     @if (Auth::id() == $reservation->user_id)
                         <tr>
                         @else
-                        <tr style="background-color: #ffd589;">
+                        <tr style="background-color: #ff9900;">
                     @endif
                     <td> {{ $reservation->post_title }} </td>
                     <td> {{ $reservation->guest_name }} </td>
