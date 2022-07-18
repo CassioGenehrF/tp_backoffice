@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,7 @@ class RentalInformation extends Model
         return $this->hasOne(Commitment::class, 'id', 'commitment_id');
     }
 
-    public static function getReservations($user_id)
+    public static function getReservations($user_id = false, $propertyId = false, $month = false, $year = false)
     {
         return self::query()
             ->select(
@@ -58,7 +59,37 @@ class RentalInformation extends Model
                 '=',
                 'backoffice_commitments.property_id',
             )
-            ->where('backoffice_rental_information.user_id', $user_id)
+            ->leftJoin(
+                'property_info',
+                'property_info.property_id',
+                '=',
+                'wp_posts.ID',
+            )
+            ->where(function ($query) use ($user_id, $propertyId, $month, $year) {
+                if ($user_id) {
+                    $query->where(function ($query) use ($user_id) {
+                        $query->where('backoffice_rental_information.user_id', $user_id);
+                        $query->orWhere('property_info.user_indication_id', $user_id);
+                    });
+                }
+
+                if ($propertyId) {
+                    $query->where(function ($query) use ($user_id, $propertyId) {
+                        $query->where('backoffice_commitments.property_id', $propertyId);
+                        $query->orWhere('property_info.property_id', $propertyId);
+                    });
+                }
+
+                if ($month && $year) {
+                    $startMonth = Carbon::createFromDate($year, $month)->startOfMonth()->format('Y-m-d');
+                    $endMonth = Carbon::createFromDate($year, $month)->lastOfMonth()->format('Y-m-d');
+
+                    $query->where(function ($query) use ($startMonth, $endMonth) {
+                        $query->whereDate('backoffice_commitments.checkin', '>=', $startMonth);
+                        $query->whereDate('backoffice_commitments.checkin', '<=', $endMonth);
+                    });
+                }
+            })
             ->where('type', 'rented')
             ->get();
     }

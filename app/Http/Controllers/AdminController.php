@@ -53,11 +53,52 @@ class AdminController extends Controller
 
     public function reservations()
     {
-        $reservations = RentalInformation::getReservations(Auth::id());
+        $reservations = RentalInformation::getReservations();
 
         return view('admin.admin-reservations')
+            ->with('properties', Property::all())
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations);
+    }
+
+    private function reservationsAsHtml($reservations)
+    {
+        $html = '';
+
+        foreach ($reservations as $reservation) {
+            $html .= "
+                <tr>
+                    <td> $reservation->post_title </td>
+                    <td> $reservation->guest_name </td>
+                    <td> R$ " . number_format($reservation->price, 2, ',', '') . " </td>
+                    <td> " . Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') . "
+                    </td>
+                    <td>
+                        <form action='/admin/reservations/" . $reservation->id . "' method='get'>
+                            " . csrf_field() . "
+                            <button type='submit' class='btn btn-light'>Visualizar</button>
+                        </form>
+                        <form action='" . route('admin.reservation_destroy', ['id' => $reservation->id]) . "'
+                            method='post'>
+                            <input type='hidden' name='_method' value='delete'>
+                            " . csrf_field() . "
+                            <button type='submit' class='btn btn-danger'>Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            ";
+        }
+
+        return $html;
+    }
+
+    public function getReservations($propertyId, $month, $year)
+    {
+        $reservations = RentalInformation::getReservations(false, $propertyId, $month, $year);
+        $html = $this->reservationsAsHtml($reservations);
+        $data = ['data' => $html];
+
+        return response()->json($data, 200);
     }
 
     public function reservationDestroy(RentRequest $request)

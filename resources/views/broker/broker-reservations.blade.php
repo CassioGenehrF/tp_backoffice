@@ -16,8 +16,6 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,6 +55,21 @@
             </ul>
         </nav>
     </header>
+    <section class="flex mt-2">
+        <div class="form-group col-md-4 ml-4">
+            <label for="filtro-propriedade">Propriedade:</label>
+            <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
+                <option value="0">Todas</option>
+                @foreach ($properties as $property)
+                    <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-2 ml-4">
+            <label for="month">Mês</label>
+            <input type="month" name="month" id="month" class="form-control">
+        </div>
+    </section>
     <main>
         <table class="table">
             <thead class="thead-light">
@@ -68,7 +81,7 @@
                     <th class="action" scope="col">Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="reservations">
                 @foreach ($reservations as $reservation)
                     <tr>
                         <td> {{ $reservation->post_title }} </td>
@@ -103,6 +116,33 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $('#filtro-propriedade').on('change', function() {
+            propriedade = $('#filtro-propriedade').val() ?? 0;
+            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
+            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
+
+            $.ajax({
+                url: "/broker/getReservations/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $("#reservations").html(result['data']);
+                }
+            });
+        });
+
+        $('#month').on('change', function() {
+            propriedade = $('#filtro-propriedade').val() ?? 0;
+            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
+            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
+
+            $.ajax({
+                url: "/broker/getReservations/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $("#reservations").html(result['data']);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

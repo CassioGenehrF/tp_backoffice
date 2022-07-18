@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
+        Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
         
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
@@ -47,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report', [BrokerController::class, 'report'])->name('broker.report');
 
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [BrokerController::class, 'getCalendarAsJson']);
+        Route::get('getReservations/{propertyId}/{month}/{year}', [BrokerController::class, 'getReservations']);
 
         Route::post('rent', [BrokerController::class, 'rent'])->name('broker.rent');
         Route::delete('reservation/destroy', [BrokerController::class, 'reservationDestroy'])->name('broker.reservation_destroy');
