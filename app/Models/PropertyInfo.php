@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PropertyInfo extends Model
 {
@@ -16,4 +17,14 @@ class PropertyInfo extends Model
     ];
 
     public $timestamps = false;
+
+    public function property(): HasOne
+    {
+        return $this->hasOne(Property::class, 'ID', 'property_id');
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'ID', 'user_indication_id');
+    }
 }

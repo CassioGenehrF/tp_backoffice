@@ -23,7 +23,7 @@ class BrokerController extends Controller
         $month = ucfirst(now()->localeMonth);
         $year = now()->year;
 
-        return view('broker')
+        return view('broker.broker')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
             ->with('calendar', $calendar)
@@ -36,7 +36,7 @@ class BrokerController extends Controller
     {
         $reservations = RentalInformation::getReservations(Auth::id());
 
-        return view('broker-reservations')
+        return view('broker.broker-reservations')
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations);
     }
@@ -51,7 +51,7 @@ class BrokerController extends Controller
     {
         $reservation = RentalInformation::getReservationDetails($id);
 
-        return view('broker-reservation-details')
+        return view('broker.broker-reservation-details')
             ->with('name', Auth::user()->display_name)
             ->with('reservation', $reservation)
             ->with('user', Auth::user());
@@ -68,7 +68,7 @@ class BrokerController extends Controller
     {
         $report = ReportBuilder::report(Auth::id(), 0, true);
 
-        return view('broker-report')
+        return view('broker.broker-report')
             ->with('name', Auth::user()->display_name)
             ->with('report', $report);
     }

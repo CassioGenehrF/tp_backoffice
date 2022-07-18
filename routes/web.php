@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}/contract', [AdminController::class, 'downloadContract'])->name('admin.download_contract');
         Route::get('property/{id}/contract', [AdminController::class, 'downloadContractProperty'])->name('admin.download_contract_property');
         Route::get('report', [AdminController::class, 'report'])->name('admin.report');
+        Route::get('report/indication', [AdminController::class, 'reportIndication'])->name('admin.report_indication');
+        Route::get('report/regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
         
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');

@@ -47,6 +47,9 @@
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
                         <a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a>
+                        <a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
+                            Indicações</a>
+                        <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -121,11 +124,13 @@
             <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
             <div class="form-group input-box">
                 <label for="checkin">Check-in:</label>
-                <input type="date" class="form-control" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
+                <input type="date" class="form-control" id="checkin" name="checkin" placeholder="xx/xx/xxxx"
+                    required>
             </div>
             <div class="form-group input-box">
                 <label for="checkout">Check-out:</label>
-                <input type="date" class="form-control" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
+                <input type="date" class="form-control" id="checkout" name="checkout" placeholder="xx/xx/xxxx"
+                    required>
             </div>
             <button type="submit" class="block-button">BLOQUEAR</button>
         </form>

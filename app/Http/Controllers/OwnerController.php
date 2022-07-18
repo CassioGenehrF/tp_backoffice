@@ -37,12 +37,12 @@ class OwnerController extends Controller
 
     public function index()
     {
-        return $this->calendarPage('owner');
+        return $this->calendarPage('owner.owner');
     }
 
     public function unblockPage()
     {
-        return $this->calendarPage('owner-unblock');
+        return $this->calendarPage('owner.owner-unblock');
     }
 
     public function getReport($propertyId)
@@ -57,7 +57,7 @@ class OwnerController extends Controller
     {
         $report = ReportBuilder::report(Auth::id());
 
-        return view('owner-report')
+        return view('owner.owner-report')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Auth::user()->properties)
             ->with('report', $report);
@@ -65,14 +65,14 @@ class OwnerController extends Controller
 
     public function properties()
     {
-        return view('owner-properties')
+        return view('owner.owner-properties')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Auth::user()->properties);
     }
 
     public function contract($propertyId)
     {
-        return view('owner-contract')
+        return view('owner.owner-contract')
             ->with('name', Auth::user()->display_name)
             ->with('property', Property::find($propertyId))
             ->with('banks', BankEnum::bankList)

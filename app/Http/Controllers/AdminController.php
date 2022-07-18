@@ -9,6 +9,7 @@ use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\PropertyInfo;
+use App\Models\RegionalTax;
 use App\Models\RentalInformation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -37,24 +38,24 @@ class AdminController extends Controller
 
     public function index()
     {
-        return $this->calendarPage('admin');
+        return $this->calendarPage('admin.admin');
     }
 
     public function unblockPage()
     {
-        return $this->calendarPage('admin-unblock');
+        return $this->calendarPage('admin.admin-unblock');
     }
 
     public function reservation()
     {
-        return $this->calendarPage('admin-reservation');
+        return $this->calendarPage('admin.admin-reservation');
     }
 
     public function reservations()
     {
         $reservations = RentalInformation::getReservations(Auth::id());
 
-        return view('admin-reservations')
+        return view('admin.admin-reservations')
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations);
     }
@@ -69,7 +70,7 @@ class AdminController extends Controller
     {
         $reservation = RentalInformation::getReservationDetails($id);
 
-        return view('admin-reservation-details')
+        return view('admin.admin-reservation-details')
             ->with('name', Auth::user()->display_name)
             ->with('reservation', $reservation)
             ->with('user', Auth::user());
@@ -130,15 +131,29 @@ class AdminController extends Controller
     {
         $report = ReportBuilder::report(Auth::id(), 0, false, true);
 
-        return view('admin-report')
+        return view('admin.admin-report')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
             ->with('report', $report);
     }
 
+    public function reportIndication()
+    {
+        return view('admin.admin-report-indication')
+            ->with('name', Auth::user()->display_name)
+            ->with('properties', PropertyInfo::all());
+    }
+
+    public function reportRegional()
+    {
+        return view('admin.admin-report-regional')
+            ->with('name', Auth::user()->display_name)
+            ->with('regional_tax', RegionalTax::all());
+    }
+
     public function properties()
     {
-        return view('admin-properties')
+        return view('admin.admin-properties')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::all())
             ->with('users', User::all());

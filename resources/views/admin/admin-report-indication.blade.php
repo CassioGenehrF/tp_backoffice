@@ -22,9 +22,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/reservation.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/broker/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -44,6 +46,9 @@
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
                         <a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a>
+                        <a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
+                            Indicações</a>
+                        <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -59,36 +64,18 @@
         </nav>
     </header>
     <main>
-        <table class="table">
-            <thead class="thead-light">
+        <table class="table table-striped">
+            <thead>
                 <tr>
                     <th scope="col">Propriedade</th>
-                    <th scope="col">Hóspede</th>
-                    <th scope="col">Valor</th>
-                    <th scope="col">Checkin/Checkout</th>
-                    <th class="action" scope="col">Ações</th>
+                    <th scope="col">Indicador</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($reservations as $reservation)
+                @foreach ($properties as $property)
                     <tr>
-                        <td> {{ $reservation->post_title }} </td>
-                        <td> {{ $reservation->guest_name }} </td>
-                        <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
-                        <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
-                        </td>
-                        <td>
-                            <form action="/admin/reservations/{{ $reservation->id }}" method="get">
-                                @csrf
-                                <button type="submit" class="btn btn-light">Visualizar</button>
-                            </form>
-                            <form action="{{ route('admin.reservation_destroy', ['id' => $reservation->id]) }}"
-                                method="post">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        </td>
+                        <td>{{ $property->property->post_title }}</td>
+                        <td>{{ $property->user->display_name }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -103,7 +90,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </body>
 
 </html>
