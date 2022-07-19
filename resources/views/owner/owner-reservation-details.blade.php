@@ -168,7 +168,8 @@
                     <tr>
                         <td> {{ $name }} </td>
                         <td>
-                            @if (Auth::id() == $reservation->commitment->property->propertyInfo->user_indication_id)
+                            @if ($reservation->commitment->property->propertyInfo &&
+                                Auth::id() == $reservation->commitment->property->propertyInfo->user_indication_id)
                                 {{ "R$ " . number_format($reservation->publisher_tax, 2, ',', '') }}
                             @endif
 
