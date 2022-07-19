@@ -18,6 +18,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('unblock', [AdminController::class, 'unblockPage'])->name('admin.unblock_page');
         Route::get('report', [AdminController::class, 'report'])->name('admin.report');
         Route::get('reservation', [AdminController::class, 'reservation'])->name('admin.reservation');
+        Route::get('reservation/{id}', [AdminController::class, 'reservation'])->name('admin.reservation_edit_page');
         Route::get('reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
         Route::get('reservations/{id}', [AdminController::class, 'reservationDetails'])->name('admin.reservations_details');
         Route::get('reservations/{id}/contract', [AdminController::class, 'downloadContract'])->name('admin.download_contract');
@@ -37,22 +38,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('rent', [AdminController::class, 'rent'])->name('admin.rent');
         Route::post('property', [AdminController::class, 'propertyInfo'])->name('admin.property_info');
         Route::delete('reservation/destroy', [AdminController::class, 'reservationDestroy'])->name('admin.reservation_destroy');
-        Route::put('reservation/edit', [AdminController::class, 'reservationEdit'])->name('admin.reservation_edit');
     });
 
     Route::group(['prefix' => 'broker', 'middleware' => ['broker']], function () {
-        Route::get('', [BrokerController::class, 'index'])->name('broker.page');
+        Route::get('/', [BrokerController::class, 'index'])->name('broker.page');
         Route::get('reservations', [BrokerController::class, 'reservations'])->name('broker.reservations');
         Route::get('reservations/{id}', [BrokerController::class, 'reservationDetails'])->name('broker.reservations_details');
         Route::get('reservations/{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');
         Route::get('report', [BrokerController::class, 'report'])->name('broker.report');
-
+        Route::get('/{id}', [BrokerController::class, 'index'])->name('broker.reservation_edit');
+        
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [BrokerController::class, 'getCalendarAsJson']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [BrokerController::class, 'getReservations']);
 
         Route::post('rent', [BrokerController::class, 'rent'])->name('broker.rent');
         Route::delete('reservation/destroy', [BrokerController::class, 'reservationDestroy'])->name('broker.reservation_destroy');
-        Route::put('reservation/edit', [BrokerController::class, 'reservationEdit'])->name('broker.reservation_edit');
     });
 
     Route::group(['prefix' => 'owner', 'middleware' => ['owner']], function () {

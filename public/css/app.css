@@ -106,6 +106,65 @@ input[type=number] {
     color: var(--cor-primaria);
 }
 
+.notification {
+    width: 5%;
+    min-width: 70px;
+}
+
+.notification .fa-bell {
+    position: relative;
+    left: 13px;
+}
+
+.notification-count {
+    position: relative;
+    top: -20px;
+    border-radius: 50%;
+    background-color: #ff3547;
+    color: #fff;
+    font-size: 12px;
+}
+
+.notification:hover {
+    color: var(--cor-primaria);
+    cursor: pointer;
+}
+
+.notification .dropdown-menu {
+    max-height: 40%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 20%;
+    cursor: default;
+}
+
+.notification p {
+    font-size: 15px;
+    padding: 1rem 1rem 0 1rem;
+    margin-bottom: 0;
+}
+
+.notification-menu {
+    display: initial !important;
+    font-size: initial !important;
+    text-decoration: underline !important;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    border: 1px solid #d5d5d5;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: #eeeeee;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background: #b0b0b0;
+}
+
 .menu-item:hover p {
     cursor: default;
 }

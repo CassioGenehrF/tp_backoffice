@@ -9,12 +9,13 @@ use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\RentalInformation;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class BrokerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $firstPropertyID = Property::published()->get()[0]->ID ? Property::published()->get()[0]->ID : null;
         $calendar = CalendarBuilder::create($firstPropertyID);
@@ -23,13 +24,25 @@ class BrokerController extends Controller
         $month = ucfirst(now()->localeMonth);
         $year = now()->year;
 
+        $id = $request->query('id');
+
+        $rentalInformation = '';
+        $commitment = '';
+
+        if ($id) {
+            $rentalInformation = RentalInformation::find($id);
+            $commitment = Commitment::find($rentalInformation->commitment_id);
+        }
+
         return view('broker.broker')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
             ->with('calendar', $calendar)
             ->with('month', "$month $year")
             ->with('monthId', "$monthId")
-            ->with('yearId', "$year");
+            ->with('yearId', "$year")
+            ->with('rentalInformation', $rentalInformation)
+            ->with('commitment', $commitment);
     }
 
     private function reservationsAsHtml($reservations)
@@ -137,6 +150,26 @@ class BrokerController extends Controller
 
     public function rent(RentRequest $request)
     {
+        if ($request->rentalInformation) {
+            return Commitment::updateRent(
+                $request->rentalInformation,
+                $request->propriedade,
+                $request->checkin,
+                $request->checkout,
+                str_replace(',', '.', $request->preco),
+                $request->hospede,
+                $request->telefone,
+                $request->adultos,
+                $request->criancas,
+                $request->clean,
+                $request->bail,
+                $request->hasFile('contrato'),
+                $request->file('contrato'),
+                Auth::id(),
+                redirect(route('broker.reservations'))
+            );
+        }
+
         return Commitment::rent(
             $request->propriedade,
             $request->checkin,

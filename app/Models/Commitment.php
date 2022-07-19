@@ -128,6 +128,88 @@ class Commitment extends Model
         return $callback;
     }
 
+    public static function updateRent(
+        $rentalInformationId,
+        $propertyId,
+        $checkin,
+        $checkout,
+        $preco,
+        $hospede,
+        $telefone,
+        $adultos,
+        $criancas,
+        $clean,
+        $bail,
+        $hasFile,
+        $contrato,
+        $user_id,
+        $callback
+    ) {
+        $rentalInformation = RentalInformation::find($rentalInformationId);
+        $fileNameToStore = '';
+
+        if ($hasFile) {
+            $filenameWithExt = $contrato->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $contrato->getClientOriginalExtension();
+
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $contrato->storeAs('public/contracts', $fileNameToStore);
+        }
+
+        $property = Property::find($propertyId);
+
+        $commitment = Commitment::find($rentalInformation->commitment_id);
+
+        $commitment->update([
+            'user_id' => $user_id,
+            'property_id' => $propertyId,
+            'checkin' => $checkin,
+            'checkout' => $checkout
+        ]);
+
+        $commitment->save();
+
+        $tax = $preco * 10 / 100;
+
+        $broker_tax = 0;
+
+        if (Auth::user()->role != 'administrator') {
+            $broker_tax = $tax * 30 / 100;
+        }
+
+        $publisher_tax = 0;
+
+        if ($property->propertyInfo && $property->propertyInfo->user_indication_id) {
+            $publisher_tax = $property->propertyInfo->user_indication_id == $user_id ? 0 : $tax * 30 / 100;
+        }
+
+        $regional_tax = $tax * 10 / 100;
+
+        $site_tax = $tax - $publisher_tax - $broker_tax - $regional_tax;
+
+        $rentalInformation->update([
+            'user_id' => $user_id,
+            'commitment_id' => $commitment->id,
+            'guest_name' => $hospede,
+            'guest_phone' => $telefone,
+            'price' => $preco,
+            'adults' => $adultos,
+            'kids' => $criancas,
+            'contract' => $rentalInformation->contract && !$fileNameToStore ? $rentalInformation->contract : $fileNameToStore,
+            'site_tax' => $site_tax,
+            'broker_tax' => $broker_tax,
+            'publisher_tax' => $publisher_tax,
+            'regional_tax' => $regional_tax,
+            'clean_tax' => $clean,
+            'bail_tax' => $bail
+        ]);
+
+        $rentalInformation->save();
+
+        return $callback;
+    }
+
     public static function rent(
         $propertyId,
         $checkin,

@@ -13,6 +13,7 @@ use App\Models\RegionalTax;
 use App\Models\RentalInformation;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -46,9 +47,21 @@ class AdminController extends Controller
         return $this->calendarPage('admin.admin-unblock');
     }
 
-    public function reservation()
+    public function reservation(Request $request)
     {
-        return $this->calendarPage('admin.admin-reservation');
+        $id = $request->query('id');
+
+        $rentalInformation = '';
+        $commitment = '';
+
+        if ($id) {
+            $rentalInformation = RentalInformation::find($id);
+            $commitment = Commitment::find($rentalInformation->commitment_id);
+        }
+
+        return $this->calendarPage('admin.admin-reservation')
+            ->with('rentalInformation', $rentalInformation)
+            ->with('commitment', $commitment);
     }
 
     public function reservations()
@@ -142,6 +155,26 @@ class AdminController extends Controller
 
     public function rent(RentRequest $request)
     {
+        if ($request->rentalInformation) {
+            return Commitment::updateRent(
+                $request->rentalInformation,
+                $request->propriedade,
+                $request->checkin,
+                $request->checkout,
+                str_replace(',', '.', $request->preco),
+                $request->hospede,
+                $request->telefone,
+                $request->adultos,
+                $request->criancas,
+                $request->clean,
+                $request->bail,
+                $request->hasFile('contrato'),
+                $request->file('contrato'),
+                Auth::id(),
+                redirect(route('admin.reservations'))
+            );
+        }
+
         return Commitment::rent(
             $request->propriedade,
             $request->checkin,
