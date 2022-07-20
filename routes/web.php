@@ -27,12 +27,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report/indication', [AdminController::class, 'reportIndication'])->name('admin.report_indication');
         Route::get('report/regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
-
+        Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
+        
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
-
+        
+        Route::post('receipts', [AdminController::class, 'createReceipt'])->name('admin.create_receipt');
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
         Route::post('rent', [AdminController::class, 'rent'])->name('admin.rent');
@@ -41,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['prefix' => 'broker', 'middleware' => ['broker']], function () {
-        Route::get('/', [BrokerController::class, 'index'])->name('broker.page');
+        Route::get('', [BrokerController::class, 'index'])->name('broker.page');
         Route::get('reservations', [BrokerController::class, 'reservations'])->name('broker.reservations');
         Route::get('reservations/{id}', [BrokerController::class, 'reservationDetails'])->name('broker.reservations_details');
         Route::get('reservations/{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');

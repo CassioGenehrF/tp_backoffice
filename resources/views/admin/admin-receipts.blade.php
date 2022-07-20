@@ -22,11 +22,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -64,23 +62,50 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Propriedade</th>
-                    <th scope="col">Indicador</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($properties as $property)
-                    <tr>
-                        <td>{{ $property->property->post_title }}</td>
-                        <td>{{ $property->user->display_name }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <main class="container">
+        <form action="{{ route('admin.create_receipt') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="owner">Proprietário:</label>
+                    <select class="form-control" name="owner" id="owner" required>
+                        <option value="" disabled selected hidden>Selecione uma opção</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->ID }}">{{ $user->display_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="month">Mês:</label>
+                    <input type="month" name="month" id="month" class="form-control" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="value">Valor:</label>
+                    <input class="form-control" type="number" id="value" name="value" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="reason">Motivo:</label>
+                    <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="row custom-file mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label class="custom-file-label" for="receipt" id="labelContrato">Escolher arquivo</label>
+                    <input type="file" class="custom-file-input" name="receipt" id="receipt" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 ml-4">
+                    <button type="submit" class="save-button">SALVAR</button>
+                </div>
+            </div>
+        </form>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -90,6 +115,13 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $('#receipt').change(function() {
+            var file = $('#receipt')[0].files[0].name;
+            $(this).prev('label').text(file);
+        });
     </script>
 </body>
 

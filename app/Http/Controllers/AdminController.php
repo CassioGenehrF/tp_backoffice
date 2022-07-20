@@ -9,6 +9,7 @@ use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\PropertyInfo;
+use App\Models\Receipt;
 use App\Models\RegionalTax;
 use App\Models\RentalInformation;
 use App\Models\User;
@@ -45,6 +46,45 @@ class AdminController extends Controller
     public function unblockPage()
     {
         return $this->calendarPage('admin.admin-unblock');
+    }
+
+    public function receipts()
+    {
+        $user = User::all();
+        $owners = array_filter($user->all(), function ($user) {
+            return $user->role == 'editor';
+        });
+
+        return view('admin.admin-receipts')
+            ->with('name', Auth::user()->display_name)
+            ->with('properties', Property::published()->get())
+            ->with('users', $owners);
+    }
+
+    public function createReceipt(Request $request)
+    {
+        $fileNameToStore = '';
+
+        if ($request->hasFile('receipt')) {
+            $filenameWithExt = $request->file('receipt')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('receipt')->getClientOriginalExtension();
+
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $request->file('receipt')->storeAs('public/receipts', $fileNameToStore);
+        }
+
+        $receipt = new Receipt([
+            'user_id' => $request->owner,
+            'month' => Carbon::createFromFormat('Y-m', $request->month)->format('Y-m-d'),
+            'value' => $request->value,
+            'reason' => $request->reason,
+            'receipt' => $fileNameToStore
+        ]);
+
+        $receipt->save();
+
+        return redirect(route('admin.receipts'));
     }
 
     public function reservation(Request $request)

@@ -130,6 +130,13 @@ input[type=number] {
     cursor: pointer;
 }
 
+.dropdown-menu {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+    cursor: default;
+}
+
 .notification .dropdown-menu {
     max-height: 40%;
     overflow-x: hidden;
@@ -172,7 +179,8 @@ input[type=number] {
 /* Content */
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     border: 2px var(--cor-primaria) solid;
     border-radius: 0.25rem;
 }
@@ -182,17 +190,20 @@ input[type=number] {
     font-weight: bold;
 }
 
-input[type="date"] {
+input[type="date"],
+input[type="month"] {
     position: relative;
 }
 
-input[type="date"]:after {
+input[type="date"]:after,
+input[type="month"]:after {
     content: "\1F4C5";
     color: #555;
     padding: 0 5px;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator {
     position: absolute;
     top: 0;
     left: 0;
@@ -204,10 +215,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
 }
 
-input[type="date"]::-webkit-inner-spin-button {
+input[type="date"]::-webkit-inner-spin-button,
+input[type="month"]::-webkit-inner-spin-button {
     z-index: 1;
 }
 
-input[type="date"]::-webkit-clear-button {
+input[type="date"]::-webkit-clear-button,
+input[type="month"]::-webkit-clear-button {
     z-index: 1;
+}
+
+textarea {
+    resize: none;
 }

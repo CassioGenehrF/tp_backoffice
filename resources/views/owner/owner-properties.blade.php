@@ -52,6 +52,22 @@
                 <li class="menu-item username">
                     <p>{{ $name }}</p>
                 </li>
+                <li class="menu-item notification">
+                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="badge notification-count">1</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <p>
+                            Você possui valores disponíveis para saque, clique
+                            <a class="notification-menu"
+                                href="https://api.whatsapp.com/send/?phone=5511963626375&text=Olá%2C+sou+proprietário+e+quero+sacar+o+valor+regional&type=phone_number&app_absent=0"
+                                target="_blank">
+                                aqui</a>
+                            e saiba mais.
+                        </p>
+                    </div>
+                </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">
                         @csrf
