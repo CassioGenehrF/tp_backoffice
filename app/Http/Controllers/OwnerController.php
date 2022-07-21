@@ -11,6 +11,7 @@ use App\Http\Requests\Owner\BlockRequest;
 use App\Http\Requests\Owner\ContractRequest;
 use App\Models\Commitment;
 use App\Models\Property;
+use App\Models\Receipt;
 use App\Models\RentalInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -126,6 +127,13 @@ class OwnerController extends Controller
         $reservation = RentalInformation::find($id);
         $filePath = public_path() . "/storage/contracts/$reservation->contract";
         return Response::download($filePath, $reservation->contract);
+    }
+
+    public function downloadReceipt($id)
+    {
+        $receipt = Receipt::find($id);
+        $filePath = public_path() . "/storage/receipts/$receipt->receipt";
+        return Response::download($filePath, $receipt->receipt);
     }
 
     public function getReport($propertyId)

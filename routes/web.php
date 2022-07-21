@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}/contract', [OwnerController::class, 'downloadContract'])->name('owner.download_contract');
         Route::get('properties', [OwnerController::class, 'properties'])->name('owner.properties');
         Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
+        Route::get('receipts/{id}', [OwnerController::class, 'downloadReceipt'])->name('owner.download_receipt');
 
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [OwnerController::class, 'getCalendarAsJson']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [OwnerController::class, 'getReservations']);

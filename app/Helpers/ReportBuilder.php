@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Receipt;
 use App\Models\RentalInformation;
 use Carbon\Carbon;
 
@@ -10,6 +11,12 @@ class ReportBuilder
     public static function report($user_id, $propertyId = 0, $isBroker = false, $isAdmin = false)
     {
         $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId, $isAdmin);
+        $receipts = Receipt::where('user_id', $user_id)
+            ->where(function ($query) {
+                $query->whereDate('backoffice_receipts.month', '>=', now()->startOfYear());
+                $query->whereDate('backoffice_receipts.month', '<=', now()->endOfYear());
+            })
+            ->get();
 
         $year = now()->year;
 
@@ -20,6 +27,9 @@ class ReportBuilder
                 $index = "0$index";
             }
 
+
+            $report["$index/$year"]['receipt']['id'] = 0;
+            $report["$index/$year"]['receipt']['value'] = 0;
             $report["$index/$year"]['reservations'] = 0;
             $report["$index/$year"]['daily'] = 0;
             $report["$index/$year"]['total'] = 0;
@@ -33,6 +43,14 @@ class ReportBuilder
                 $report["$index/$year"]['direct_rent'] = 0;
                 $report["$index/$year"]['comission'] = 0;
                 $report["$index/$year"]['regional_comission'] = 0;
+            }
+        }
+
+        if (!$propertyId) {
+            foreach ($receipts as $receipt) {
+                $month = Carbon::createFromFormat('Y-m-d', $receipt->month)->format('m');
+                $report["$month/$year"]['receipt']['id'] = $receipt->id;
+                $report["$month/$year"]['receipt']['value'] = $receipt->value;
             }
         }
 
@@ -80,6 +98,7 @@ class ReportBuilder
             $comission = '';
             $regional_comission = '';
             $direct_rent = '';
+            
             if (!$isBroker) {
                 $tax = "<td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>";
             }
@@ -105,6 +124,24 @@ class ReportBuilder
                     $regional_comission
                 </tr>
             ";
+
+            if ($row['receipt']['value'] > 0) {
+                $html .= "
+                    <tr style='background-color: rgb(0 0 0 / 30%);'>
+                        <td>Relatório de Repasses</td>
+                        <td></td>
+                        <td></td>
+                        <td>Total</td>
+                        <td> " . 'R$ ' . number_format($row['receipt']['value'], 2, ',', '') . " </td>
+                        <td>
+                            <a class='text-decoration-none' target='_blank'
+                                href='". route('owner.download_receipt', ['id' => $row['receipt']['id']]) ."'>
+                                Visualizar
+                            </a>
+                        </td>
+                    </tr>
+                ";
+            }
         }
 
         return $html;
