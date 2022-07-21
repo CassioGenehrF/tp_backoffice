@@ -5,18 +5,22 @@ namespace App\Helpers;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ReportBuilder
 {
     public static function report($user_id, $propertyId = 0, $isBroker = false, $isAdmin = false)
     {
         $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId, $isAdmin);
-        $receipts = Receipt::where('user_id', $user_id)
-            ->where(function ($query) {
-                $query->whereDate('backoffice_receipts.month', '>=', now()->startOfYear());
-                $query->whereDate('backoffice_receipts.month', '<=', now()->endOfYear());
-            })
-            ->get();
+
+        if (Auth::user()->role == 'editor') {
+            $receipts = Receipt::where('user_id', $user_id)
+                ->where(function ($query) {
+                    $query->whereDate('backoffice_receipts.month', '>=', now()->startOfYear());
+                    $query->whereDate('backoffice_receipts.month', '<=', now()->endOfYear());
+                })
+                ->get();
+        }
 
         $year = now()->year;
 
@@ -100,16 +104,16 @@ class ReportBuilder
             $direct_rent = '';
             
             if (!$isBroker) {
-                $tax = "<td> " . 'R$ ' . str_replace('.', ',', $row['tax']) . " </td>";
+                $tax = "<td> " . 'R$ ' . number_format($row['tax'], 2, ',', '') . " </td>";
             }
 
             if (!$propertyId || $isBroker || $isAdmin) {
-                $comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['comission']) . " </td>";
+                $comission = "<td> " . 'R$ ' . number_format($row['comission'], 2, ',', '') . " </td>";
             }
 
             if ($isAdmin) {
-                $direct_rent = "<td> " . 'R$ ' . str_replace('.', ',', $row['direct_rent']) . " </td>";
-                $regional_comission = "<td> " . 'R$ ' . str_replace('.', ',', $row['regional_comission']) . " </td>";
+                $direct_rent = "<td> " . 'R$ ' . number_format($row['direct_rent'], 2, ',', '') . " </td>";
+                $regional_comission = "<td> " . 'R$ ' . number_format($row['regional_comission'], 2, ',', '') . " </td>";
             }
 
             $html .= "
@@ -117,7 +121,7 @@ class ReportBuilder
                     <td> $data </td>
                     <td> " . $row['reservations'] . " </td>
                     <td> " . $row['daily'] . " </td>
-                    <td> " . 'R$ ' . str_replace('.', ',', $row['total']) . " </td>
+                    <td> " . 'R$ ' . number_format($row['total'], 2, ',', '') . " </td>
                     $tax
                     $direct_rent
                     $comission
