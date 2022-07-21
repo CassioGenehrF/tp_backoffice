@@ -13,10 +13,13 @@ use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
+use App\Models\VerifiedUser;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 class OwnerController extends Controller
 {
@@ -36,6 +39,54 @@ class OwnerController extends Controller
             ->with('month', "$month $year")
             ->with('monthId', "$monthId")
             ->with('yearId', "$year");
+    }
+
+    public function notVerified()
+    {
+        return view('owner.not-verified');
+    }
+
+    public function documents()
+    {
+        $confirmation_code = Str::upper(Str::random(6));
+
+        return view('owner.send-documents')
+            ->with('name', Auth::user()->display_name)
+            ->with('confirmation_code', $confirmation_code);
+    }
+
+    public function sendDocuments(Request $request)
+    {
+        $fileNameDocument = '';
+        $fileNameConfirmation = '';
+
+        if ($request->hasFile('document') && $request->hasFile('confirmation')) {
+            $document = $request->file('document');
+            $confirmation = $request->file('confirmation');
+
+            $documentWithExt = $document->getClientOriginalName();
+            $confirmationWithExt = $confirmation->getClientOriginalName();
+
+            $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
+            $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
+
+            $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
+            $fileNameConfirmation = $fileConfirmation . '_' . time() . '.' . $confirmation->getClientOriginalExtension();
+
+            $document->storeAs('public/documents', $fileNameDocument);
+            $confirmation->storeAs('public/documents', $fileNameConfirmation);
+        }
+
+        $verified = new VerifiedUser([
+            'user_id' => Auth::id(),
+            'document' => $fileNameDocument,
+            'confirmation' => $fileNameConfirmation,
+            'code' => $request->code
+        ]);
+
+        $verified->save();
+
+        return redirect('/');
     }
 
     public function index()

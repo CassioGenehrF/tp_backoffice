@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/receipt.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 </head>
@@ -51,7 +51,24 @@
                     </div>
                 </div>
                 <li class="menu-item username">
-                    <p>{{ $name }}</p>
+                    <p>{{ Auth::user()->display_name }}</p>
+                </li>
+                <li class="menu-item notification">
+                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-bell"></i>
+                        @if ($unverified)
+                            <span class="badge notification-count">1</span>
+                        @endif
+                    </button>
+                    <div class="dropdown-menu">
+                        @if ($unverified)
+                            <p>
+                                Você possui {{ $unverified }} proprietário(s) aguardando aprovação de documentos.
+                                <a class="notification-menu" href="{{ route('admin.verify') }}">
+                                    Verificar agora</a>
+                            </p>
+                        @endif
+                    </div>
                 </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">

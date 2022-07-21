@@ -11,6 +11,9 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('auth', [LoginController::class, 'auth'])->name('auth.user');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('documents', [OwnerController::class, 'documents'])->name('owner.documents');
+    Route::get('notverified', [OwnerController::class, 'notVerified'])->name('owner.not_verified');
+    Route::post('documents', [OwnerController::class, 'sendDocuments'])->name('owner.send_documents');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.user');
 
     Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
@@ -28,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report/regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
+        Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
         
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
@@ -39,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
         Route::post('rent', [AdminController::class, 'rent'])->name('admin.rent');
         Route::post('property', [AdminController::class, 'propertyInfo'])->name('admin.property_info');
+        Route::post('verify', [AdminController::class, 'verified'])->name('admin.verified');
         Route::delete('reservation/destroy', [AdminController::class, 'reservationDestroy'])->name('admin.reservation_destroy');
     });
 
@@ -57,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('reservation/destroy', [BrokerController::class, 'reservationDestroy'])->name('broker.reservation_destroy');
     });
 
-    Route::group(['prefix' => 'owner', 'middleware' => ['owner']], function () {
+    Route::group(['prefix' => 'owner', 'middleware' => ['owner', 'verified']], function () {
         Route::get('', [OwnerController::class, 'index'])->name('owner.page');
         Route::get('unblock', [OwnerController::class, 'unblockPage'])->name('owner.unblock_page');
         Route::get('report', [OwnerController::class, 'report'])->name('owner.report');

@@ -54,7 +54,24 @@
                     </div>
                 </div>
                 <li class="menu-item username">
-                    <p>{{ $name }}</p>
+                    <p>{{ Auth::user()->display_name }}</p>
+                </li>
+                <li class="menu-item notification">
+                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-bell"></i>
+                        @if ($unverified)
+                            <span class="badge notification-count">1</span>
+                        @endif
+                    </button>
+                    <div class="dropdown-menu">
+                        @if ($unverified)
+                            <p>
+                                Você possui {{ $unverified }} proprietário(s) aguardando aprovação de documentos.
+                                <a class="notification-menu" href="{{ route('admin.verify') }}">
+                                    Verificar agora</a>
+                            </p>
+                        @endif
+                    </div>
                 </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">
@@ -89,7 +106,8 @@
                         </div>
                         <span class="calendar-heading">{{ $month }}</span>
                         <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
-                            <button onclick="nextMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
+                            <button onclick="nextMonth()" data-mdb-ripple-color="dark"
+                                class="btn btn-link text-dark">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
                         </div>

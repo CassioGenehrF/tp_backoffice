@@ -13,6 +13,7 @@ use App\Models\Receipt;
 use App\Models\RegionalTax;
 use App\Models\RentalInformation;
 use App\Models\User;
+use App\Models\VerifiedUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,13 @@ use Illuminate\Support\Facades\Response;
 
 class AdminController extends Controller
 {
+    private $unverified;
+
+    public function __construct()
+    {
+        $this->unverified = VerifiedUser::where('verified', 0)->count();
+    }
+
     private function calendarPage($viewName)
     {
         $firstPropertyID = Property::published()->get()[0]->ID ? Property::published()->get()[0]->ID : null;
@@ -40,12 +48,15 @@ class AdminController extends Controller
 
     public function index()
     {
-        return $this->calendarPage('admin.admin');
+
+        return $this->calendarPage('admin.admin')
+            ->with('unverified', $this->unverified);
     }
 
     public function unblockPage()
     {
-        return $this->calendarPage('admin.admin-unblock');
+        return $this->calendarPage('admin.admin-unblock')
+            ->with('unverified', $this->unverified);
     }
 
     public function receipts()
@@ -58,7 +69,28 @@ class AdminController extends Controller
         return view('admin.admin-receipts')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
-            ->with('users', $owners);
+            ->with('users', $owners)
+            ->with('unverified', $this->unverified);
+    }
+
+    public function verify()
+    {
+        $pendingVerified = VerifiedUser::where('verified', 0)->get();
+
+        return view('admin.admin-verify')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('pending', $pendingVerified);
+    }
+
+    public function verified(Request $request)
+    {
+        $verifyUser = VerifiedUser::find($request->id);
+        $verifyUser->update([
+            'verified' => 1
+        ]);
+
+        return redirect(route('admin.page'));
     }
 
     public function createReceipt(Request $request)
@@ -101,7 +133,8 @@ class AdminController extends Controller
 
         return $this->calendarPage('admin.admin-reservation')
             ->with('rentalInformation', $rentalInformation)
-            ->with('commitment', $commitment);
+            ->with('commitment', $commitment)
+            ->with('unverified', $this->unverified);
     }
 
     public function reservations()
@@ -111,7 +144,8 @@ class AdminController extends Controller
         return view('admin.admin-reservations')
             ->with('properties', Property::all())
             ->with('name', Auth::user()->display_name)
-            ->with('reservations', $reservations);
+            ->with('reservations', $reservations)
+            ->with('unverified', $this->unverified);
     }
 
     private function reservationsAsHtml($reservations)
@@ -167,7 +201,8 @@ class AdminController extends Controller
         return view('admin.admin-reservation-details')
             ->with('name', Auth::user()->display_name)
             ->with('reservation', $reservation)
-            ->with('user', Auth::user());
+            ->with('user', Auth::user())
+            ->with('unverified', $this->unverified);
     }
 
     public function downloadContract($id)
@@ -248,21 +283,24 @@ class AdminController extends Controller
         return view('admin.admin-report')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
-            ->with('report', $report);
+            ->with('report', $report)
+            ->with('unverified', $this->unverified);
     }
 
     public function reportIndication()
     {
         return view('admin.admin-report-indication')
             ->with('name', Auth::user()->display_name)
-            ->with('properties', PropertyInfo::all());
+            ->with('properties', PropertyInfo::all())
+            ->with('unverified', $this->unverified);
     }
 
     public function reportRegional()
     {
         return view('admin.admin-report-regional')
             ->with('name', Auth::user()->display_name)
-            ->with('regional_tax', RegionalTax::all());
+            ->with('regional_tax', RegionalTax::all())
+            ->with('unverified', $this->unverified);
     }
 
     public function properties()
@@ -270,7 +308,8 @@ class AdminController extends Controller
         return view('admin.admin-properties')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::all())
-            ->with('users', User::all());
+            ->with('users', User::all())
+            ->with('unverified', $this->unverified);
     }
 
     public function getProperty($propertyId)

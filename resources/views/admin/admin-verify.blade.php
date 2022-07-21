@@ -82,32 +82,38 @@
         </nav>
     </header>
     <main>
-        <section class="flex mt-2">
-            <div class="form-group col-md-4 ml-4">
-                <label for="filtro-propriedade">Propriedade:</label>
-                <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
-                    <option value="0">Todas</option>
-                    @foreach ($properties as $property)
-                        <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </section>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Reservas</th>
-                    <th scope="col">Diárias</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Taxa de Anfitrião</th>
-                    <th id="comission" scope="col">Locações Diretas</th>
-                    <th id="comission" scope="col">Comissões Gerais</th>
-                    <th id="regional_comission" scope="col">Comissão Regional</th>
+                    <th scope="col">Proprietário</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Confirmação</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
-            <tbody id="report-content">
-                {!! $report !!}
+            <tbody>
+                @foreach ($pending as $user)
+                    <tr>
+                        <td>{{ $user->user->display_name }}</td>
+                        <td>
+                            <a href="{{ url("/storage/documents/$user->document") }}" target="_blank">
+                                Visualizar
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url("/storage/documents/$user->confirmation") }}" target="_blank">
+                                Visualizar
+                            </a>
+                        </td>
+                        <td>{{ $user->code }}</td>
+                        <td>
+                            <form action="{{ route('admin.verified', ['id' => $user->id]) }}" method="post">
+                                <button type="submit" class="btn btn-success">Verificado</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </main>
@@ -119,17 +125,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript">
-        $('#filtro-propriedade').on('change', function() {
-            $.ajax({
-                url: "/admin/getReport/" + this.value,
-                success: function(result) {
-                    $("#report-content").html(result['data']);
-                }
-            });
-        });
     </script>
 </body>
 

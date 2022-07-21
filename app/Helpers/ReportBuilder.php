@@ -49,8 +49,8 @@ class ReportBuilder
                 $report["$index/$year"]['regional_comission'] = 0;
             }
         }
-
-        if (!$propertyId) {
+        
+        if (Auth::user()->role == 'editor' && !$propertyId) {
             foreach ($receipts as $receipt) {
                 $month = Carbon::createFromFormat('Y-m-d', $receipt->month)->format('m');
                 $report["$month/$year"]['receipt']['id'] = $receipt->id;

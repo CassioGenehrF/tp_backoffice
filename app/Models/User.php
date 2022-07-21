@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -149,5 +150,10 @@ class User extends Authenticatable
     public function properties(): HasMany
     {
         return $this->hasMany(Property::class, 'post_author', 'ID');
+    }
+
+    public function verified(): HasOne
+    {
+        return $this->hasOne(VerifiedUser::class, 'user_id', 'ID');
     }
 }
