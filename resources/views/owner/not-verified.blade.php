@@ -31,11 +31,16 @@
 </head>
 
 <body>
-    <main class="container p-4 text-center flex justify-content-center flex-column">
+    <main class="container p-2 text-center flex justify-content-center flex-column">
         <h1>Aprovação de documentos pendente.</h1>
-        <h5 class="mb-4">Tenta novamente mais tarde.</h5>
-        <img src="{{ asset('images/approved.jpg') }}" alt="Documentos em aprovação" style="height: 500px; width: 950px; margin: 0 auto;">
-        <a class="mt-4 btn btn-light btn-lg" href="https://temporadapaulista.com.br">Voltar para o site</a>
+        <h5>Tenta novamente mais tarde.</h5>
+        <img src="{{ asset('images/approved.jpg') }}" alt="Documentos em aprovação"
+            style="height: 500px; width: 950px; margin: 0 auto;">
+        <form action="{{ route('logout.user') }}" method="post" class="row p-3">
+            @csrf
+            <button class="btn btn-danger" type="submit">Sair</button>
+        </form>
+        <a class="btn btn-light btn-lg" href="https://temporadapaulista.com.br">Voltar para o site</a>
     </main>
 </body>
 

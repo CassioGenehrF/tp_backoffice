@@ -133,7 +133,7 @@
                 </ul>
             @endif
             @csrf
-            <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
+            <input type="hidden" name="propriedade" id="propriedade" value="{{ count($properties) > 0 ? $properties[0]->ID : '' }}">
             <div class="input-box">
                 <label for="checkin">Check-in:</label>
                 <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>

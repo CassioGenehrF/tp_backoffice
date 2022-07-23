@@ -16,19 +16,15 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/owner/properties.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -77,35 +73,33 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Propriedade</th>
-                    <th class="action" scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="report-content">
-                @foreach ($properties as $property)
-                    <tr>
-                        <td>{{ $property->post_title }}</td>
-                        <td>
-                            @if (!$property->verified->verified)
-                                Aguardando Aprovação da Documentação
-                            @endif
-                            @if ($property->verified->verified)
-                                <a href="{{ route('owner.contract', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-danger">Gerar Contrato</a>
-                            @endif
-                            @if (is_null($property->verified))
-                                <a href="{{ route('owner.property_documents', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-success">Enviar Documentos</a>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <main class="container p-4">
+        <form action="{{ route('owner.send_property_documents') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="property_id" id="property_id" value={{ $property->ID }}>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="document">Comprovante de Residência</label>
+                    <input type="file" name="document" id="document" class="form-control" required>
+                    <small class="form-text text-muted">Água, Luz, IPTU, Mátricula do imóvel</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="relation">Comprovação de Vínculo*</label>
+                    <input type="file" name="relation" id="relation" class="form-control">
+                    <small class="form-text text-muted">*Caso o documento esteja em nome de terceiro, deve ser enviado
+                        documento que explique qual o vínculo do anunciante com o títular do comprovante de
+                        endereço. Como uma Certidão de Casamento, Certidão de Nascimento, Contrato de União Estável,
+                        entre outros.</small>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 ml-4">
+                    <button type="submit" class="save-button">Enviar Documentos</button>
+                </div>
+            </div>
+        </form>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -117,24 +111,6 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript">
-        $('#filtro-propriedade').on('change', function() {
-            $.ajax({
-                url: "/owner/getReport/" + this.value,
-                success: function(result) {
-                    value = $('#filtro-propriedade').val();
-
-                    if (value == '0') {
-                        $('#comission').show();
-                    } else {
-                        $('#comission').hide();
-                    }
-
-                    $("#report-content").html(result['data']);
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

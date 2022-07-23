@@ -59,7 +59,7 @@
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-bell"></i>
                         @if ($unverified)
-                            <span class="badge notification-count">1</span>
+                            <span class="badge notification-count">{{ $unverified }}</span>
                         @endif
                     </button>
                     <div class="dropdown-menu">
@@ -85,7 +85,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Proprietário</th>
+                    <th scope="col">Proprietário/Imóvel</th>
                     <th scope="col">Documento</th>
                     <th scope="col">Confirmação</th>
                     <th scope="col">Código</th>
@@ -93,26 +93,51 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pending as $user)
-                    <tr>
-                        <td>{{ $user->user->display_name }}</td>
-                        <td>
-                            <a href="{{ url("/storage/documents/$user->document") }}" target="_blank">
-                                Visualizar
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url("/storage/documents/$user->confirmation") }}" target="_blank">
-                                Visualizar
-                            </a>
-                        </td>
-                        <td>{{ $user->code }}</td>
-                        <td>
-                            <form action="{{ route('admin.verified', ['id' => $user->id]) }}" method="post">
-                                <button type="submit" class="btn btn-success">Verificado</button>
-                            </form>
-                        </td>
-                    </tr>
+                @foreach ($pending as $item)
+                    @if ($item instanceof \App\Models\VerifiedUser)
+                        <tr>
+                            <td>{{ $item->user->display_name }}</td>
+                            <td>
+                                <a href="{{ url("/storage/documents/$item->document") }}" target="_blank">
+                                    Visualizar
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url("/storage/documents/$item->confirmation") }}" target="_blank">
+                                    Visualizar
+                                </a>
+                            </td>
+                            <td>{{ $item->code }}</td>
+                            <td>
+                                <form action="{{ route('admin.verified', ['id' => $item->id]) }}" method="post">
+                                    <button type="submit" class="btn btn-success">Verificado</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endif
+                    @if ($item instanceof \App\Models\VerifiedProperty)
+                        <tr>
+                            <td>{{ $item->property->post_title }}</td>
+                            <td>
+                                <a href="{{ url("/storage/property/documents/$item->document") }}" target="_blank">
+                                    Visualizar
+                                </a>
+                            </td>
+                            <td>
+                                @if ($item->relation)
+                                    <a href="{{ url("/storage/property/documents/$item->relation") }}" target="_blank">
+                                        Visualizar
+                                    </a>
+                                @endif
+                            </td>
+                            <td></td>
+                            <td>
+                                <form action="{{ route('admin.verified_property', ['id' => $item->id]) }}" method="post">
+                                    <button type="submit" class="btn btn-success">Verificado</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

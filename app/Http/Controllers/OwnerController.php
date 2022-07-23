@@ -13,6 +13,7 @@ use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
+use App\Models\VerifiedProperty;
 use App\Models\VerifiedUser;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -25,7 +26,11 @@ class OwnerController extends Controller
 {
     private function calendarPage($viewName)
     {
-        $firstPropertyID = Auth::user()->properties[0]->ID ? Auth::user()->properties[0]->ID : null;
+        $properties = Auth::user()->properties->reject(function ($property) {
+            return !($property->verified && $property->verified->verified);
+        });
+
+        $firstPropertyID = count($properties) > 0 ? $properties[0]->ID : null;
         $calendar = CalendarBuilder::create($firstPropertyID);
         setlocale(LC_TIME, 'pt_BR');
         $monthId = now()->month;
@@ -34,7 +39,7 @@ class OwnerController extends Controller
 
         return view($viewName)
             ->with('name', Auth::user()->display_name)
-            ->with('properties', Auth::user()->properties)
+            ->with('properties', $properties)
             ->with('calendar', $calendar)
             ->with('month', "$month $year")
             ->with('monthId', "$monthId")
@@ -82,6 +87,45 @@ class OwnerController extends Controller
             'document' => $fileNameDocument,
             'confirmation' => $fileNameConfirmation,
             'code' => $request->code
+        ]);
+
+        $verified->save();
+
+        return redirect('/');
+    }
+
+    public function propertyDocuments($propertyId)
+    {
+        return view('owner.property-documents')
+            ->with('name', Auth::user()->display_name)
+            ->with('property', Property::find($propertyId));
+    }
+
+    public function sendPropertyDocuments(Request $request)
+    {
+        $fileNameDocument = '';
+        $fileNameRelation = '';
+
+        $document = $request->file('document');
+        $documentWithExt = $document->getClientOriginalName();
+        $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
+        $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
+
+        $document->storeAs('public/property/documents', $fileNameDocument);
+
+        if ($request->hasFile('relation')) {
+            $relation = $request->file('relation');
+            $confirmationWithExt = $relation->getClientOriginalName();
+            $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
+            $fileNameRelation = $fileConfirmation . '_' . time() . '.' . $relation->getClientOriginalExtension();
+
+            $relation->storeAs('public/property/documents', $fileNameRelation);
+        }
+
+        $verified = new VerifiedProperty([
+            'property_id' => $request->property_id,
+            'document' => $fileNameDocument,
+            'relation' => $fileNameRelation
         ]);
 
         $verified->save();

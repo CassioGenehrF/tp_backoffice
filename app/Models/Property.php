@@ -261,4 +261,9 @@ class Property extends Model
     {
         return $this->hasOne(PropertyInfo::class, 'property_id', 'ID');
     }
+
+    public function verified(): HasOne
+    {
+        return $this->hasOne(VerifiedProperty::class, 'property_id', 'ID');
+    }
 }

@@ -32,18 +32,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
         Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
-        
+
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
-        
+
         Route::post('receipts', [AdminController::class, 'createReceipt'])->name('admin.create_receipt');
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
         Route::post('rent', [AdminController::class, 'rent'])->name('admin.rent');
         Route::post('property', [AdminController::class, 'propertyInfo'])->name('admin.property_info');
         Route::post('verify', [AdminController::class, 'verified'])->name('admin.verified');
+        Route::post('verify/property', [AdminController::class, 'verifiedProperty'])->name('admin.verified_property');
         Route::delete('reservation/destroy', [AdminController::class, 'reservationDestroy'])->name('admin.reservation_destroy');
     });
 
@@ -54,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');
         Route::get('report', [BrokerController::class, 'report'])->name('broker.report');
         Route::get('/{id}', [BrokerController::class, 'index'])->name('broker.reservation_edit');
-        
+
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [BrokerController::class, 'getCalendarAsJson']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [BrokerController::class, 'getReservations']);
 
@@ -70,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reservations/{id}', [OwnerController::class, 'reservationDetails'])->name('owner.reservations_details');
         Route::get('reservations/{id}/contract', [OwnerController::class, 'downloadContract'])->name('owner.download_contract');
         Route::get('properties', [OwnerController::class, 'properties'])->name('owner.properties');
+        Route::get('property/{propertyId}/documents', [OwnerController::class, 'propertyDocuments'])->name('owner.property_documents');
         Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
         Route::get('receipts/{id}', [OwnerController::class, 'downloadReceipt'])->name('owner.download_receipt');
 
@@ -77,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('getReservations/{propertyId}/{month}/{year}', [OwnerController::class, 'getReservations']);
         Route::get('getReport/{propertyId}', [OwnerController::class, 'getReport']);
 
+        Route::post('property/documents', [OwnerController::class, 'sendPropertyDocuments'])->name('owner.send_property_documents');
         Route::post('contract', [OwnerController::class, 'createContract'])->name('owner.create_contract');
         Route::post('block', [OwnerController::class, 'block'])->name('owner.block');
         Route::post('unblock', [OwnerController::class, 'unblock'])->name('owner.unblock');

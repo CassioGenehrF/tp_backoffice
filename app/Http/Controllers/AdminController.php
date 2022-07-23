@@ -13,6 +13,7 @@ use App\Models\Receipt;
 use App\Models\RegionalTax;
 use App\Models\RentalInformation;
 use App\Models\User;
+use App\Models\VerifiedProperty;
 use App\Models\VerifiedUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->unverified = VerifiedUser::where('verified', 0)->count();
+        $this->unverified += VerifiedProperty::where('verified', 0)->count();
     }
 
     private function calendarPage($viewName)
@@ -75,17 +77,29 @@ class AdminController extends Controller
 
     public function verify()
     {
-        $pendingVerified = VerifiedUser::where('verified', 0)->get();
+        $pendingUser = VerifiedUser::where('verified', 0)->get();
+        $pendingProperty = VerifiedProperty::where('verified', 0)->get();
+        $pending = array_merge($pendingUser->all() + $pendingProperty->all());
 
         return view('admin.admin-verify')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
-            ->with('pending', $pendingVerified);
+            ->with('pending', $pending);
     }
 
     public function verified(Request $request)
     {
         $verifyUser = VerifiedUser::find($request->id);
+        $verifyUser->update([
+            'verified' => 1
+        ]);
+
+        return redirect(route('admin.page'));
+    }
+
+    public function verifiedProperty(Request $request)
+    {
+        $verifyUser = VerifiedProperty::find($request->id);
         $verifyUser->update([
             'verified' => 1
         ]);
