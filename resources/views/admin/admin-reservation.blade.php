@@ -98,7 +98,7 @@
                 <div class="calendar-tools">
                     <input type="hidden" name="month_id" id="month_id" value="{{ $monthId }}">
                     <input type="hidden" name="year_id" id="year_id" value="{{ $yearId }}">
-                    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+                    <div class="d-flex flex-lg-row justify-content-center align-items-center">
                         <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
                             <button onclick="prevMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
                                 <i class="fas fa-chevron-left"></i>
@@ -131,127 +131,131 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('admin.rent') }}" method="POST" enctype="multipart/form-data">
-            @if ($errors->any())
-                <ul class="list-group mt-4 w-75 mx-auto">
-                    @foreach ($errors->all() as $error)
-                        <li class="list-group-item list-group-item-danger">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-            @csrf
-            @if ($rentalInformation)
-                <input type="hidden" name="rentalInformation" id="rentalInformation"
-                    value="{{ $rentalInformation->id }}">
-            @endif
-            @if ($commitment)
-                <input type="hidden" name="propriedade" id="propriedade" value="{{ $commitment->property_id }}">
-            @else
-                <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
-            @endif
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="checkin">Check-in:</label>
-                    @if ($commitment)
-                        <input class="form-control" type="date" id="checkin" name="checkin"
-                            value="{{ $commitment->checkin }}" required>
-                    @else
-                        <input class="form-control" type="date" id="checkin" name="checkin" required>
-                    @endif
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="checkout">Check-out:</label>
-                    @if ($commitment)
-                        <input class="form-control" type="date" id="checkout" name="checkout"
-                            value="{{ $commitment->checkout }}" required>
-                    @else
-                        <input class="form-control" type="date" id="checkout" name="checkout" required>
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="form-group col-md-6">
-                    <label for="hospede">Nome hóspede:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="text" id="hospede" name="hospede"
-                            value="{{ $rentalInformation->guest_name }}"" required>
-                    @else
-                        <input class="form-control" type="text" id="hospede" name="hospede" required>
-                    @endif
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="telefone">Telefone:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="tel" id="telefone" name="telefone" required
-                            onkeypress="return onlyNumberKey(event)" value="{{ $rentalInformation->guest_phone }}">
-                    @else
-                        <input class="form-control" type="tel" id="telefone" name="telefone" required
-                            onkeypress="return onlyNumberKey(event)">
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="form-group col-md-4">
-                    <label for="preco">Preço:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="number" id="preco" name="preco"
-                            value="{{ $rentalInformation->price }}" required>
-                    @else
-                        <input class="form-control" type="number" id="preco" name="preco" required>
-                    @endif
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="adultos">Adultos:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="number" id="adultos" name="adultos" required
-                            onkeypress="return onlyNumberKey(event)" value="{{ $rentalInformation->adults }}">
-                    @else
-                        <input class="form-control" type="number" id="adultos" name="adultos" required
-                            onkeypress="return onlyNumberKey(event)">
-                    @endif
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="criancas">Crianças:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="number" id="criancas" name="criancas" required
-                            onkeypress="return onlyNumberKey(event)" value="{{ $rentalInformation->kids }}">
-                    @else
-                        <input class="form-control" type="number" id="criancas" name="criancas" required
-                            onkeypress="return onlyNumberKey(event)">
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="form-group col-md-6">
-                    <label for="clean">Taxa de Limpeza:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="number" id="clean" name="clean"
-                            value="{{ $rentalInformation->clean_tax }}"required>
-                    @else
-                        <input class="form-control" type="number" id="clean" name="clean" required>
-                    @endif
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="bail">Taxa de Caução:</label>
-                    @if ($rentalInformation)
-                        <input class="form-control" type="number" id="bail" name="bail"
-                            value="{{ $rentalInformation->bail_tax }}" required>
-                    @else
-                        <input class="form-control" type="number" id="bail" name="bail" required>
-                    @endif
-                </div>
-            </div>
-            <div class="custom-file mt-2">
-                <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
-                @if ($rentalInformation)
-                    <input type="file" class="custom-file-input" name="contrato" id="contrato"
-                        value="{{ $rentalInformation->contract }}">
-                @else
-                    <input type="file" class="custom-file-input" name="contrato" id="contrato">
+        <section class="p-4">
+            <form action="{{ route('admin.rent') }}" method="POST" enctype="multipart/form-data">
+                @if ($errors->any())
+                    <ul class="list-group mt-4 w-75 mx-auto">
+                        @foreach ($errors->all() as $error)
+                            <li class="list-group-item list-group-item-danger">{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 @endif
-            </div>
-            <button type="submit" class="block-button">ALUGAR</button>
-        </form>
+                @csrf
+                @if ($rentalInformation)
+                    <input type="hidden" name="rentalInformation" id="rentalInformation"
+                        value="{{ $rentalInformation->id }}">
+                @endif
+                @if ($commitment)
+                    <input type="hidden" name="propriedade" id="propriedade"
+                        value="{{ $commitment->property_id }}">
+                @else
+                    <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
+                @endif
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="checkin">Check-in:</label>
+                        @if ($commitment)
+                            <input class="form-control" type="date" id="checkin" name="checkin"
+                                value="{{ $commitment->checkin }}" required>
+                        @else
+                            <input class="form-control" type="date" id="checkin" name="checkin" required>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="checkout">Check-out:</label>
+                        @if ($commitment)
+                            <input class="form-control" type="date" id="checkout" name="checkout"
+                                value="{{ $commitment->checkout }}" required>
+                        @else
+                            <input class="form-control" type="date" id="checkout" name="checkout" required>
+                        @endif
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-md-6">
+                        <label for="hospede">Nome hóspede:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="text" id="hospede" name="hospede"
+                                value="{{ $rentalInformation->guest_name }}"" required>
+                        @else
+                            <input class="form-control" type="text" id="hospede" name="hospede" required>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="telefone">Telefone:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="tel" id="telefone" name="telefone" required
+                                onkeypress="return onlyNumberKey(event)"
+                                value="{{ $rentalInformation->guest_phone }}">
+                        @else
+                            <input class="form-control" type="tel" id="telefone" name="telefone" required
+                                onkeypress="return onlyNumberKey(event)">
+                        @endif
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-md-4">
+                        <label for="preco">Preço:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="number" id="preco" name="preco"
+                                value="{{ $rentalInformation->price }}" required>
+                        @else
+                            <input class="form-control" type="number" id="preco" name="preco" required>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="adultos">Adultos:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="number" id="adultos" name="adultos" required
+                                onkeypress="return onlyNumberKey(event)" value="{{ $rentalInformation->adults }}">
+                        @else
+                            <input class="form-control" type="number" id="adultos" name="adultos" required
+                                onkeypress="return onlyNumberKey(event)">
+                        @endif
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="criancas">Crianças:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="number" id="criancas" name="criancas" required
+                                onkeypress="return onlyNumberKey(event)" value="{{ $rentalInformation->kids }}">
+                        @else
+                            <input class="form-control" type="number" id="criancas" name="criancas" required
+                                onkeypress="return onlyNumberKey(event)">
+                        @endif
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="form-group col-md-6">
+                        <label for="clean">Taxa de Limpeza:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="number" id="clean" name="clean"
+                                value="{{ $rentalInformation->clean_tax }}"required>
+                        @else
+                            <input class="form-control" type="number" id="clean" name="clean" required>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="bail">Taxa de Caução:</label>
+                        @if ($rentalInformation)
+                            <input class="form-control" type="number" id="bail" name="bail"
+                                value="{{ $rentalInformation->bail_tax }}" required>
+                        @else
+                            <input class="form-control" type="number" id="bail" name="bail" required>
+                        @endif
+                    </div>
+                </div>
+                <div class="custom-file mt-2">
+                    <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
+                    @if ($rentalInformation)
+                        <input type="file" class="custom-file-input" name="contrato" id="contrato"
+                            value="{{ $rentalInformation->contract }}">
+                    @else
+                        <input type="file" class="custom-file-input" name="contrato" id="contrato">
+                    @endif
+                </div>
+                <button type="submit" class="block-button">ALUGAR</button>
+            </form>
+        </section>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

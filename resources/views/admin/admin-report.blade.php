@@ -93,23 +93,25 @@
                 </select>
             </div>
         </section>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Reservas</th>
-                    <th scope="col">Diárias</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Taxa de Anfitrião</th>
-                    <th id="comission" scope="col">Locações Diretas</th>
-                    <th id="comission" scope="col">Comissões Gerais</th>
-                    <th id="regional_comission" scope="col">Comissão Regional</th>
-                </tr>
-            </thead>
-            <tbody id="report-content">
-                {!! $report !!}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Reservas</th>
+                        <th scope="col">Diárias</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Taxa de Anfitrião</th>
+                        <th id="comission" scope="col">Locações Diretas</th>
+                        <th id="comission" scope="col">Comissões Gerais</th>
+                        <th id="regional_comission" scope="col">Comissão Regional</th>
+                    </tr>
+                </thead>
+                <tbody id="report-content">
+                    {!! $report !!}
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

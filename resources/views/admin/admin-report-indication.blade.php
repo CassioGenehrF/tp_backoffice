@@ -82,22 +82,24 @@
         </nav>
     </header>
     <main>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Propriedade</th>
-                    <th scope="col">Indicador</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($properties as $property)
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ $property->property->post_title }}</td>
-                        <td>{{ $property->user->display_name }}</td>
+                        <th scope="col">Propriedade</th>
+                        <th scope="col">Indicador</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($properties as $property)
+                        <tr>
+                            <td>{{ $property->property->post_title }}</td>
+                            <td>{{ $property->user->display_name }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

@@ -46,3 +46,26 @@ input::placeholder {
     content: "Contrato";
     height: 100%;
 }
+
+@media (max-width: 1000px) {
+    .conteudo {
+        flex-direction: column;
+        align-items: initial;
+    }
+
+    .mw-40 {
+        max-width: 100% !important;
+    }
+
+    .filter {
+        width: 100%;
+    }
+
+    .calendar .calendar-tools .calendar-heading {
+        order: 0;
+    }
+
+    .block-button {
+        width: 100%;
+    }
+}

@@ -180,6 +180,16 @@ input[type=number] {
     cursor: default;
 }
 
+@media (max-width: 1000px) {
+    .username {
+        display: none;
+    }
+
+    .menu-item {
+        width: 100%;
+    }
+}
+
 /* Content */
 
 .form-group input,

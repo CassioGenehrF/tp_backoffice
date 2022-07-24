@@ -82,22 +82,24 @@
         </nav>
     </header>
     <main>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Cidade</th>
-                    <th scope="col">Valor Acumulado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($regional_tax as $tax)
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ $tax->city }}</td>
-                        <td>{{ "R$ " . number_format($tax->regional_tax, 2, ',', '') }}</td>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">Valor Acumulado</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($regional_tax as $tax)
+                        <tr>
+                            <td>{{ $tax->city }}</td>
+                            <td>{{ "R$ " . number_format($tax->regional_tax, 2, ',', '') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
