@@ -165,8 +165,11 @@
                         <tr>
                             <td></td>
                             <td><b> Total </b></td>
-                            <td><b> {{ "R$ " . number_format($reservation->price - ($reservation->price * 10) / 100 + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
-                                </b></td>
+                            <td>
+                                <b>
+                                    {{ "R$ " . number_format($reservation->price + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
+                                </b>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
