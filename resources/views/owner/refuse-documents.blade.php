@@ -32,14 +32,21 @@
 
 <body>
     <main class="container p-2 text-center flex justify-content-between flex-column vw-100 vh-100">
-        <h1>Aprovação de documentos pendente.</h1>
-        <h5>Tenta novamente mais tarde.</h5>
-        <img src="{{ asset('images/pending.png') }}" alt="Documentos em aprovação"
+        <h1>Sua documentação foi recusada.</h1>
+        <h5>Motivo:</h5>
+        <p>{{ $reason }}</p>
+        <img src="{{ asset('images/refused.jpg') }}" alt="Documentos em aprovação"
             style="height: 282px; width: 537px; margin: 0 auto;">
-        <form action="{{ route('logout.user') }}" method="post" class="row mb-2">
-            @csrf
-            <button class="btn btn-danger" type="submit">Sair</button>
-        </form>
+        <div class="p-3">
+            <form action="{{ route('owner.documents') }}" method="get" class="row mb-2">
+                @csrf
+                <button class="btn btn-primary" type="submit">Enviar Novamente</button>
+            </form>
+            <form action="{{ route('logout.user') }}" method="post" class="row">
+                @csrf
+                <button class="btn btn-danger" type="submit">Sair</button>
+            </form>
+        </div>
     </main>
 </body>
 

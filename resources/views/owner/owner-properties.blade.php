@@ -90,16 +90,24 @@
                     <tr>
                         <td>{{ $property->post_title }}</td>
                         <td>
-                            @if (!$property->verified->verified)
-                                Aguardando Aprovação da Documentação
-                            @endif
-                            @if ($property->verified->verified)
-                                <a href="{{ route('owner.contract', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-danger">Gerar Contrato</a>
-                            @endif
                             @if (is_null($property->verified))
                                 <a href="{{ route('owner.property_documents', ['propertyId' => $property->ID]) }}"
                                     class="btn btn-success">Enviar Documentos</a>
+                            @endif
+                            @if ($property->verified && $property->verified->verified)
+                                <a href="{{ route('owner.contract', ['propertyId' => $property->ID]) }}"
+                                    class="btn btn-danger">Gerar Contrato</a>
+                            @endif
+                            @if ($property->verified && !$property->verified->verified)
+                                @if ($property->verified->reason)
+                                    <p>
+                                        Recusado - Motivo: {{ $property->verified->reason }}
+                                    </p>
+                                    <a href="{{ route('owner.property_documents', ['propertyId' => $property->ID]) }}"
+                                        class="btn btn-success">Enviar Novamente</a>
+                                @else
+                                    Aguardando Aprovação da Documentação
+                                @endif
                             @endif
                         </td>
                     </tr>

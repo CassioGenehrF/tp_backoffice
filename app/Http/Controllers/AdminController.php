@@ -26,8 +26,8 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->unverified = VerifiedUser::where('verified', 0)->count();
-        $this->unverified += VerifiedProperty::where('verified', 0)->count();
+        $this->unverified = VerifiedUser::where('verified', 0)->where('reason', null)->count();
+        $this->unverified += VerifiedProperty::where('verified', 0)->where('reason', null)->count();
     }
 
     private function calendarPage($viewName)
@@ -77,9 +77,9 @@ class AdminController extends Controller
 
     public function verify()
     {
-        $pendingUser = VerifiedUser::where('verified', 0)->get();
-        $pendingProperty = VerifiedProperty::where('verified', 0)->get();
-        $pending = array_merge($pendingUser->all() + $pendingProperty->all());
+        $pendingUser = VerifiedUser::where('verified', 0)->where('reason', null)->get();
+        $pendingProperty = VerifiedProperty::where('verified', 0)->where('reason', null)->get();
+        $pending = array_merge($pendingUser->all(), $pendingProperty->all());
 
         return view('admin.admin-verify')
             ->with('name', Auth::user()->display_name)
@@ -103,6 +103,27 @@ class AdminController extends Controller
         $verifyUser->update([
             'verified' => 1
         ]);
+
+        return redirect(route('admin.page'));
+    }
+
+    public function refuse(Request $request)
+    {
+        if ($request->type == 'user') {
+            $verify = VerifiedUser::find($request->id);
+            $verify->update([
+                'verified' => 0,
+                'reason' => $request->reason
+            ]);
+        }
+
+        if ($request->type == 'property') {
+            $verify = VerifiedProperty::find($request->id);
+            $verify->update([
+                'verified' => 0,
+                'reason' => $request->reason
+            ]);
+        }
 
         return redirect(route('admin.page'));
     }

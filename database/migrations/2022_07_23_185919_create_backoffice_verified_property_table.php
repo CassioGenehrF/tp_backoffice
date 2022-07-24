@@ -19,6 +19,7 @@ class CreateBackofficeVerifiedPropertyTable extends Migration
             $table->string('document');
             $table->string('relation');
             $table->boolean('verified')->default(false);
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

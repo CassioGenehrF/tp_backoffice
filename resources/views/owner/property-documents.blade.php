@@ -73,6 +73,13 @@
             </ul>
         </nav>
     </header>
+    @if ($errors->any())
+        <ul class="list-group mt-4 w-75 mx-auto">
+            @foreach ($errors->all() as $error)
+                <li class="list-group-item list-group-item-danger">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
     <main class="container p-4">
         <form action="{{ route('owner.send_property_documents') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -80,14 +87,14 @@
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="document">Comprovante de Residência</label>
-                    <input type="file" name="document" id="document" class="form-control" required>
+                    <input type="file" name="document" id="document" class="form-control" accept="image/*" required>
                     <small class="form-text text-muted">Água, Luz, IPTU, Mátricula do imóvel</small>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="relation">Comprovação de Vínculo*</label>
-                    <input type="file" name="relation" id="relation" class="form-control">
+                    <input type="file" name="relation" id="relation" class="form-control" accept="image/*">
                     <small class="form-text text-muted">*Caso o documento esteja em nome de terceiro, deve ser enviado
                         documento que explique qual o vínculo do anunciante com o títular do comprovante de
                         endereço. Como uma Certidão de Casamento, Certidão de Nascimento, Contrato de União Estável,
@@ -95,7 +102,7 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-md-12 ml-4">
+                <div class="col-md-12">
                     <button type="submit" class="save-button">Enviar Documentos</button>
                 </div>
             </div>

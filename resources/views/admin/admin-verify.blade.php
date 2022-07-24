@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/broker/reservation.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 
@@ -89,7 +89,7 @@
                     <th scope="col">Documento</th>
                     <th scope="col">Confirmação</th>
                     <th scope="col">Código</th>
-                    <th scope="col">Ações</th>
+                    <th scope="col" class="action">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,6 +112,10 @@
                                 <form action="{{ route('admin.verified', ['id' => $item->id]) }}" method="post">
                                     <button type="submit" class="btn btn-success">Verificado</button>
                                 </form>
+                                <button type="button" class="reason btn btn-danger" data-toggle="modal"
+                                    data-target="#reason" data-type="user" data-id="{{ $item->id }}">
+                                    Recusar
+                                </button>
                             </td>
                         </tr>
                     @endif
@@ -132,14 +136,46 @@
                             </td>
                             <td></td>
                             <td>
-                                <form action="{{ route('admin.verified_property', ['id' => $item->id]) }}" method="post">
+                                <form action="{{ route('admin.verified_property', ['id' => $item->id]) }}"
+                                    method="post">
                                     <button type="submit" class="btn btn-success">Verificado</button>
                                 </form>
+                                <button type="button" class="reason btn btn-danger" data-toggle="modal"
+                                    data-target="#reason" data-type="property" data-id="{{ $item->id }}">
+                                    Recusar
+                                </button>
                             </td>
                         </tr>
                     @endif
                 @endforeach
             </tbody>
+            <div class="modal fade" id="reason" tabindex="-1" role="dialog" aria-labelledby="reason"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reason">Recusar Documentação</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ route('admin.refuse') }}" method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" name="id" id="id">
+                                <input type="hidden" name="type" id="type">
+                                <div class="form-group">
+                                    <label for="reason">Motivo:</label>
+                                    <textarea type="text" name="reason" id="reason" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+                                <button type="submit" class="btn btn-primary">Recusar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </table>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -150,6 +186,14 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript">
+        $(document).on("click", ".reason", function() {
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $(".modal-body #id").val(id);
+            $(".modal-body #type").val(type);
+        });
     </script>
 </body>
 

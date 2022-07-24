@@ -15,7 +15,8 @@ class VerifiedUser extends Model
         'document',
         'confirmation',
         'code',
-        'verified'
+        'verified',
+        'reason'
     ];
 
     public function user(): HasOne

@@ -22,6 +22,10 @@ class VerifiedMiddleware
             return redirect(route('owner.documents'));
         }
 
+        if (Auth::user()->verified->reason) {
+            return redirect(route('owner.refuse_documents'));
+        }
+
         if (!Auth::user()->verified->verified) {
             return redirect(route('owner.not_verified'));
         }

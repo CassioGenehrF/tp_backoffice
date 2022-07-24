@@ -24,6 +24,8 @@ use Illuminate\Support\Str;
 
 class OwnerController extends Controller
 {
+    private $extensions = ['png', 'jpg', 'jpeg', 'jfif'];
+
     private function calendarPage($viewName)
     {
         $properties = Auth::user()->properties->reject(function ($property) {
@@ -60,6 +62,13 @@ class OwnerController extends Controller
             ->with('confirmation_code', $confirmation_code);
     }
 
+    public function documentsRefuse()
+    {
+        return view('owner.refuse-documents')
+            ->with('name', Auth::user()->display_name)
+            ->with('reason', Auth::user()->verified->reason);
+    }
+
     public function sendDocuments(Request $request)
     {
         $fileNameDocument = '';
@@ -68,6 +77,14 @@ class OwnerController extends Controller
         if ($request->hasFile('document') && $request->hasFile('confirmation')) {
             $document = $request->file('document');
             $confirmation = $request->file('confirmation');
+
+            if (
+                !in_array($document->getClientOriginalExtension(), $this->extensions) ||
+                !in_array($confirmation->getClientOriginalExtension(), $this->extensions)
+            )
+                return back()->withErrors([
+                    'document' => 'O Documento informado não é de um tipo válido.',
+                ]);
 
             $documentWithExt = $document->getClientOriginalName();
             $confirmationWithExt = $confirmation->getClientOriginalName();
@@ -81,6 +98,11 @@ class OwnerController extends Controller
             $document->storeAs('public/documents', $fileNameDocument);
             $confirmation->storeAs('public/documents', $fileNameConfirmation);
         }
+
+        $verified = VerifiedUser::where('user_id', Auth::id())->first();
+
+        if ($verified)
+            $verified->delete();
 
         $verified = new VerifiedUser([
             'user_id' => Auth::id(),
@@ -107,6 +129,12 @@ class OwnerController extends Controller
         $fileNameRelation = '';
 
         $document = $request->file('document');
+
+        if (!in_array($document->getClientOriginalExtension(), $this->extensions))
+            return back()->withErrors([
+                'document' => 'O Documento informado não é de um tipo válido.',
+            ]);
+
         $documentWithExt = $document->getClientOriginalName();
         $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
         $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
@@ -115,12 +143,23 @@ class OwnerController extends Controller
 
         if ($request->hasFile('relation')) {
             $relation = $request->file('relation');
+
+            if (!in_array($relation->getClientOriginalExtension(), $this->extensions))
+                return back()->withErrors([
+                    'relation' => 'O Comprovante de Vínculo informado não é de um tipo válido.',
+                ]);
+
             $confirmationWithExt = $relation->getClientOriginalName();
             $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
             $fileNameRelation = $fileConfirmation . '_' . time() . '.' . $relation->getClientOriginalExtension();
 
             $relation->storeAs('public/property/documents', $fileNameRelation);
         }
+
+        $verified = VerifiedProperty::where('property_id', $request->property_id)->first();
+
+        if ($verified)
+            $verified->delete();
 
         $verified = new VerifiedProperty([
             'property_id' => $request->property_id,

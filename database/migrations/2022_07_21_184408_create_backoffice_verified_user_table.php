@@ -20,6 +20,7 @@ class CreateBackofficeVerifiedUserTable extends Migration
             $table->string('confirmation');
             $table->string('code');
             $table->boolean('verified')->default(false);
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

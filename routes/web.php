@@ -12,6 +12,7 @@ Route::post('auth', [LoginController::class, 'auth'])->name('auth.user');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('documents', [OwnerController::class, 'documents'])->name('owner.documents');
+    Route::get('documents/refuse', [OwnerController::class, 'documentsRefuse'])->name('owner.refuse_documents');
     Route::get('notverified', [OwnerController::class, 'notVerified'])->name('owner.not_verified');
     Route::post('documents', [OwnerController::class, 'sendDocuments'])->name('owner.send_documents');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.user');
@@ -45,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('property', [AdminController::class, 'propertyInfo'])->name('admin.property_info');
         Route::post('verify', [AdminController::class, 'verified'])->name('admin.verified');
         Route::post('verify/property', [AdminController::class, 'verifiedProperty'])->name('admin.verified_property');
+        Route::post('refuse', [AdminController::class, 'refuse'])->name('admin.refuse');
         Route::delete('reservation/destroy', [AdminController::class, 'reservationDestroy'])->name('admin.reservation_destroy');
     });
 

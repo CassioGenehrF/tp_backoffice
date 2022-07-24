@@ -61,7 +61,7 @@
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-bell"></i>
                         @if ($unverified)
-                            <span class="badge notification-count">1</span>
+                            <span class="badge notification-count">{{ $unverified }}</span>
                         @endif
                     </button>
                     <div class="dropdown-menu">

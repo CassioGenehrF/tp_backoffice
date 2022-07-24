@@ -29,13 +29,20 @@
 </head>
 
 <body>
+    @if ($errors->any())
+        <ul class="list-group mt-4 w-75 mx-auto">
+            @foreach ($errors->all() as $error)
+                <li class="list-group-item list-group-item-danger">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
     <main class="container p-4 flex justify-content-center flex-column">
         <h1 class="text-center">Verificação de Cadastro</h1>
         <form action="{{ route('owner.send_documents') }}" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="document">Foto do Documento Frente e Verso</label>
-                    <input type="file" name="document" id="document" class="form-control" required>
+                    <input type="file" name="document" id="document" class="form-control" accept="image/*" required>
                     <small class="form-text text-muted">CNH, RG ou Passaporte</small>
                 </div>
             </div>
@@ -49,7 +56,8 @@
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="confirmation">Selfie de Confirmação*</label>
-                    <input type="file" name="confirmation" id="confirmation" class="form-control" required>
+                    <input type="file" name="confirmation" id="confirmation" accept="image/*" class="form-control"
+                        required>
                     <small class="form-text text-muted">Na selfie de confirmação você deve enviar uma
                         foto sua segurando o documento junto de um papel com o código informado acima.</small>
                 </div>
