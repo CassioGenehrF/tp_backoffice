@@ -65,7 +65,7 @@ class AdminController extends Controller
     {
         $user = User::all();
         $owners = array_filter($user->all(), function ($user) {
-            return $user->role == 'editor';
+            return ($user->role == 'editor' || $user->role == 'subscriber');
         });
 
         return view('admin.admin-receipts')
@@ -94,7 +94,7 @@ class AdminController extends Controller
             'verified' => 1
         ]);
 
-        return redirect(route('admin.page'));
+        return redirect(route('admin.verify'));
     }
 
     public function verifiedProperty(Request $request)
@@ -104,7 +104,7 @@ class AdminController extends Controller
             'verified' => 1
         ]);
 
-        return redirect(route('admin.page'));
+        return redirect(route('admin.verify'));
     }
 
     public function refuse(Request $request)
@@ -125,7 +125,7 @@ class AdminController extends Controller
             ]);
         }
 
-        return redirect(route('admin.page'));
+        return redirect(route('admin.verify'));
     }
 
     public function createReceipt(Request $request)

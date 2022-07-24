@@ -64,6 +64,10 @@
             </div>
             <button type="submit" class="btn btn-primary bnt-lg">Enviar Documentação</button>
         </form>
+        <form action="{{ route('logout.user') }}" method="post" class="mt-2">
+            @csrf
+            <button class="btn btn-danger" type="submit">Sair</button>
+        </form>
     </main>
 </body>
 

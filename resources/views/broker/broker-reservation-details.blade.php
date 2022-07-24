@@ -143,7 +143,7 @@
                                 <td> {{ "R$ " . number_format($reservation->broker_tax, 2, ',', '') }} </td>
                             </tr>
                         @endif
-                        @if ($user->role == 'administrator' || $user->role == 'editor')
+                        @if ($user->role == 'administrator' || $user->role == 'editor' || $user->role == 'subscriber')
                             <tr>
                                 <td></td>
                                 <td> Indicação sob o Imóvel </td>

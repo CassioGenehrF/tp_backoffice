@@ -50,6 +50,13 @@ class OwnerController extends Controller
 
     public function notVerified()
     {
+        $verified = VerifiedUser::where('user_id', Auth::id())
+            ->where('verified', 1)
+            ->first();
+
+        if ($verified)
+            return redirect('/');
+
         return view('owner.not-verified');
     }
 

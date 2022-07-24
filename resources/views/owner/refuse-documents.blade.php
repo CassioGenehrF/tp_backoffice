@@ -31,18 +31,16 @@
 </head>
 
 <body>
-    <main class="container p-2 text-center flex justify-content-between flex-column vw-100 vh-100">
+    <main class="container p-2 text-center flex justify-content-center flex-column vw-100 vh-100">
         <h1>Sua documentação foi recusada.</h1>
         <h5>Motivo:</h5>
-        <p>{{ $reason }}</p>
-        <img src="{{ asset('images/refused.jpg') }}" alt="Documentos em aprovação"
-            style="height: 282px; width: 537px; margin: 0 auto;">
+        <p class="text-danger">{{ $reason }}</p>
         <div class="p-3">
-            <form action="{{ route('owner.documents') }}" method="get" class="row mb-2">
+            <form action="{{ route('owner.documents') }}" method="get" class="mb-2">
                 @csrf
                 <button class="btn btn-primary" type="submit">Enviar Novamente</button>
             </form>
-            <form action="{{ route('logout.user') }}" method="post" class="row">
+            <form action="{{ route('logout.user') }}" method="post">
                 @csrf
                 <button class="btn btn-danger" type="submit">Sair</button>
             </form>

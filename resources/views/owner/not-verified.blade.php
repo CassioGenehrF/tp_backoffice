@@ -31,12 +31,10 @@
 </head>
 
 <body>
-    <main class="container p-2 text-center flex justify-content-between flex-column vw-100 vh-100">
-        <h1>Aprovação de documentos pendente.</h1>
-        <h5>Tenta novamente mais tarde.</h5>
-        <img src="{{ asset('images/pending.png') }}" alt="Documentos em aprovação"
-            style="height: 282px; width: 537px; margin: 0 auto;">
-        <form action="{{ route('logout.user') }}" method="post" class="row mb-2">
+    <main class="container p-2 text-center flex justify-content-center flex-column vw-100 vh-100">
+        <h1>Documentos em Análise</h1>
+        <h5>Em até 48h seu painel de acesso será liberado.</h5>
+        <form action="{{ route('logout.user') }}" method="post" class="mb-2">
             @csrf
             <button class="btn btn-danger" type="submit">Sair</button>
         </form>

@@ -13,7 +13,7 @@ class ReportBuilder
     {
         $reservations = RentalInformation::reportPropertyInformations($user_id, $propertyId, $isAdmin);
 
-        if (Auth::user()->role == 'editor') {
+        if (Auth::user()->role == 'editor' || Auth::user()->role == 'subscriber') {
             $receipts = Receipt::where('user_id', $user_id)
                 ->where(function ($query) {
                     $query->whereDate('backoffice_receipts.month', '>=', now()->startOfYear());
@@ -49,8 +49,8 @@ class ReportBuilder
                 $report["$index/$year"]['regional_comission'] = 0;
             }
         }
-        
-        if (Auth::user()->role == 'editor' && !$propertyId) {
+
+        if ((Auth::user()->role == 'editor' || Auth::user()->role == 'subscriber') && !$propertyId) {
             foreach ($receipts as $receipt) {
                 $month = Carbon::createFromFormat('Y-m-d', $receipt->month)->format('m');
                 $report["$month/$year"]['receipt']['id'] = $receipt->id;
@@ -102,7 +102,7 @@ class ReportBuilder
             $comission = '';
             $regional_comission = '';
             $direct_rent = '';
-            
+
             if (!$isBroker) {
                 $tax = "<td> " . 'R$ ' . number_format($row['tax'], 2, ',', '') . " </td>";
             }
@@ -139,7 +139,7 @@ class ReportBuilder
                         <td> " . 'R$ ' . number_format($row['receipt']['value'], 2, ',', '') . " </td>
                         <td>
                             <a class='text-decoration-none' target='_blank'
-                                href='". route('owner.download_receipt', ['id' => $row['receipt']['id']]) ."'>
+                                href='" . route('owner.download_receipt', ['id' => $row['receipt']['id']]) . "'>
                                 Visualizar
                             </a>
                         </td>

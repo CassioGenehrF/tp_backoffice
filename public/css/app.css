@@ -137,6 +137,10 @@ input[type=number] {
     cursor: default;
 }
 
+.dropdown-menu p {
+    line-height: 30px;
+}
+
 .notification .dropdown-menu {
     max-height: 40%;
     overflow-x: hidden;

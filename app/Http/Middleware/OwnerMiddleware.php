@@ -20,7 +20,7 @@ class OwnerMiddleware
     {
         $role = Auth::user()->role;
 
-        if ($role != 'editor') {
+        if ($role != 'editor' && $role != 'subscriber') {
             return redirect('/');
         }
 

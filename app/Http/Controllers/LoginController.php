@@ -16,10 +16,10 @@ class LoginController extends Controller
             return view('login');
         } else {
             $user = Auth::user();
-            
+
             if ($user->role == 'contributor') {
                 return redirect('/broker');
-            } else if ($user->role == 'editor') {
+            } else if ($user->role == 'editor' || $user->role == 'subscriber') {
                 return redirect('/owner');
             } else if ($user->role == 'administrator') {
                 return redirect('/admin');
@@ -46,10 +46,10 @@ class LoginController extends Controller
         if ($wp_auth->checkPassword($credentials['password'], $user->user_pass)) {
             Auth::login($user);
             $request->session()->regenerate();
-            
+
             if ($user->role == 'contributor') {
                 return redirect('/broker');
-            } else if ($user->role == 'editor') {
+            } else if ($user->role == 'editor' || $user->role == 'subscriber') {
                 return redirect('/owner');
             } else if ($user->role == 'administrator') {
                 return redirect('/admin');

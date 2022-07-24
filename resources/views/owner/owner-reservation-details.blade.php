@@ -133,8 +133,8 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td> Tarifa do Site </td>
-                            <td> {{ "R$ " . number_format($reservation->site_tax, 2, ',', '') }} </td>
+                            <td> Taxa de Anfitrião </td>
+                            <td> {{ "R$ " . number_format(($reservation->price * 10) / 100, 2, ',', '') }} </td>
                         </tr>
                         @if ($user->role == 'administrator' || $user->role == 'contributor')
                             <tr>
@@ -165,7 +165,7 @@
                         <tr>
                             <td></td>
                             <td><b> Total </b></td>
-                            <td><b> {{ "R$ " . number_format($reservation->price + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
+                            <td><b> {{ "R$ " . number_format($reservation->price - ($reservation->price * 10) / 100 + $reservation->clean_tax + $reservation->bail_tax, 2, ',', '') }}
                                 </b></td>
                         </tr>
                     </tbody>
