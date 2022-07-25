@@ -92,7 +92,7 @@
                 <div class="calendar-tools">
                     <input type="hidden" name="month_id" id="month_id" value="{{ $monthId }}">
                     <input type="hidden" name="year_id" id="year_id" value="{{ $yearId }}">
-                    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
+                    <div class="d-flex flex-lg-row justify-content-center align-items-center">
                         <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
                             <button onclick="prevMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
                                 <i class="fas fa-chevron-left"></i>
@@ -124,26 +124,29 @@
                 </table>
             </div>
         </section>
-        <form action="{{ route('owner.block') }}" method="POST">
-            @if ($errors->any())
-                <ul class="list-group mt-4 w-75 mx-auto">
-                    @foreach ($errors->all() as $error)
-                        <li class="list-group-item list-group-item-danger">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-            @csrf
-            <input type="hidden" name="propriedade" id="propriedade" value="{{ count($properties) > 0 ? $properties[0]->ID : '' }}">
-            <div class="input-box">
-                <label for="checkin">Check-in:</label>
-                <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
-            </div>
-            <div class="input-box">
-                <label for="checkout">Check-out:</label>
-                <input type="date" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
-            </div>
-            <button type="submit" class="block-button">Bloquear</button>
-        </form>
+        <section class="p-4">
+            <form action="{{ route('owner.block') }}" method="POST">
+                @if ($errors->any())
+                    <ul class="list-group mt-4 w-75 mx-auto">
+                        @foreach ($errors->all() as $error)
+                            <li class="list-group-item list-group-item-danger">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+                @csrf
+                <input type="hidden" name="propriedade" id="propriedade"
+                    value="{{ count($properties) > 0 ? $properties[0]->ID : '' }}">
+                <div class="input-box">
+                    <label for="checkin">Check-in:</label>
+                    <input type="date" id="checkin" name="checkin" placeholder="xx/xx/xxxx" required>
+                </div>
+                <div class="input-box">
+                    <label for="checkout">Check-out:</label>
+                    <input type="date" id="checkout" name="checkout" placeholder="xx/xx/xxxx" required>
+                </div>
+                <button type="submit" class="block-button">Bloquear</button>
+            </form>
+        </section>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

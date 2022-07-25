@@ -87,50 +87,52 @@
         </div>
     </section>
     <main>
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Propriedade</th>
-                    <th scope="col">Hóspede</th>
-                    <th scope="col">Valor</th>
-                    <th scope="col">Checkin/Checkout</th>
-                    <th class="action" scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="reservations">
-                @foreach ($reservations as $reservation)
-                    @if (Auth::id() == $reservation->user_id)
-                        <tr>
-                        @else
-                        <tr style="background-color: #ff9900;">
-                    @endif
-                    <td> {{ $reservation->post_title }} </td>
-                    <td> {{ $reservation->guest_name }} </td>
-                    <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
-                    <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
-                    </td>
-                    <td>
-                        <a href="{{ route('broker.reservations_details', ['id' => $reservation->id]) }}""
-                            class="btn
-                            btn-light">
-                            Visualizar</a>
-                        <a href="{{ route('broker.page', ['id' => $reservation->id]) }}""
-                            class="btn
-                            btn-light">
-                            Editar</a>
-                        @if (Auth::id() == $reservation->user_id)
-                            <form action="{{ route('broker.reservation_destroy', ['id' => $reservation->id]) }}"
-                                method="post">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        @endif
-                    </td>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Propriedade</th>
+                        <th scope="col">Hóspede</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Checkin/Checkout</th>
+                        <th class="action" scope="col">Ações</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="reservations">
+                    @foreach ($reservations as $reservation)
+                        @if (Auth::id() == $reservation->user_id)
+                            <tr>
+                            @else
+                            <tr style="background-color: #ff9900;">
+                        @endif
+                        <td> {{ $reservation->post_title }} </td>
+                        <td> {{ $reservation->guest_name }} </td>
+                        <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
+                        <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
+                        </td>
+                        <td>
+                            <a href="{{ route('broker.reservations_details', ['id' => $reservation->id]) }}""
+                                class="btn
+                                    btn-light">
+                                Visualizar</a>
+                            <a href="{{ route('broker.page', ['id' => $reservation->id]) }}""
+                                class="btn
+                                        btn-light">
+                                Editar</a>
+                            @if (Auth::id() == $reservation->user_id)
+                                <form action="{{ route('broker.reservation_destroy', ['id' => $reservation->id]) }}"
+                                    method="post">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </form>
+                            @endif
+                        </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

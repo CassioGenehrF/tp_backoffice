@@ -77,7 +77,7 @@
             </ul>
         </nav>
     </header>
-    <main>
+    <main class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>

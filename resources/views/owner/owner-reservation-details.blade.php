@@ -77,7 +77,7 @@
     </header>
     <main>
         <article>
-            <section class="details">
+            <section class="details table-responsive">
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
@@ -116,7 +116,7 @@
                     </tbody>
                 </table>
             </section>
-            <section class="payment">
+            <section class="payment table-responsive">
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
@@ -175,7 +175,7 @@
                 </table>
             </section>
         </article>
-        <aside>
+        <aside class="table-responsive">
             <table class="table">
                 <thead class="thead-light">
                     <tr>

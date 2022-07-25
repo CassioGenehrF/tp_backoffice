@@ -78,7 +78,7 @@
             @csrf
             <input type="hidden" name="property_id" id="property_id" value={{ $property->ID }}>
             <h2 class="text-center mt-2">Dados do Cliente:</h2>
-            <div class="row mt-2 ml-4">
+            <div class="row mt-2">
                 <div class="form-group col-md-4">
                     <label for="client">Nome:</label>
                     <input type="text" class="form-control" id="client" name="client">
@@ -98,7 +98,7 @@
                     <input type="text" class="form-control" id="street" name="street">
                 </div>
             </div>
-            <div class="row mt-2 ml-4">
+            <div class="row mt-2 ">
                 <div class="form-group col-md-3">
                     <label class="form-control-label" for="state">Estado</label>
                     <select name="state" id="state" class="form-control">
@@ -125,7 +125,7 @@
                     <input type="number" class="form-control" id="rent" name="rent">
                 </div>
             </div>
-            <div class="row mt-2 ml-4">
+            <div class="row mt-2 ">
                 <div class="form-group col-md-3">
                     <label for="guests">Número de Hospedes:</label>
                     <input type="number" class="form-control" id="guests" name="guests"
@@ -148,7 +148,7 @@
                     <input type="number" class="form-control" id="bail" name="bail">
                 </div>
             </div>
-            <div class="row mt-2 ml-4">
+            <div class="row mt-2 ">
                 <div class="form-group col-md-2">
                     <label for="checkin">Check-in:</label>
                     <input class="form-control" type="date" id="checkin" name="checkin" required>
@@ -174,7 +174,7 @@
                 </div>
             </div>
             <h2 class="text-center mt-2">Dados para Depósito</h2>
-            <div class="row mt-2 ml-4">
+            <div class="row mt-2 ">
                 <div class="form-group col-md-4">
                     <label class="form-control-label" for="bank">Banco</label>
                     <select name="bank" id="bank" class="form-control">
@@ -197,7 +197,7 @@
                         onkeypress="return onlyNumberKey(event)">
                 </div>
             </div>
-            <div class="row mt-2 ml-4">
+            <div class="row mt-2">
                 <div class="form-group col-md-3">
                     <label for="responsible">Responsável:</label>
                     <input type="text" class="form-control" id="responsible" name="responsible">
@@ -208,7 +208,7 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-md-12 ml-4">
+                <div class="col-md-12">
                     <button type="submit" class="save-button">GERAR CONTRATO</button>
                 </div>
             </div>

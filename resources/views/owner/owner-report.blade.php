@@ -78,8 +78,8 @@
         </nav>
     </header>
     <main>
-        <section class="row mt-2">
-            <div class="form-group col-md-4 ml-4">
+        <section class="mt-2">
+            <div class="form-group col-md-4">
                 <label for="filtro-propriedade">Propriedade:</label>
                 <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
                     <option value="0">Todas</option>
@@ -89,21 +89,23 @@
                 </select>
             </div>
         </section>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Reservas</th>
-                    <th scope="col">Diárias</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Taxa de Anfitrião</th>
-                    <th id="comission" scope="col">Ganhos sob Indicação</th>
-                </tr>
-            </thead>
-            <tbody id="report-content">
-                {!! $report !!}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Reservas</th>
+                        <th scope="col">Diárias</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Taxa de Anfitrião</th>
+                        <th id="comission" scope="col">Ganhos sob Indicação</th>
+                    </tr>
+                </thead>
+                <tbody id="report-content">
+                    {!! $report !!}
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

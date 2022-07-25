@@ -54,3 +54,29 @@ aside a {
 aside a:hover {
     color: #fff;
 }
+
+@media (max-width: 1000px) {
+    main {
+        flex-direction: column;
+    }
+
+    article {
+        width: 100vw;
+    }
+
+    .details .table tbody td {
+        width: 100%;
+    }
+
+    .payment {
+        height: 100%;
+    }
+
+    .payment .table {
+        margin: 0;
+    }
+
+    aside {
+        height: 100%;
+    }
+}
