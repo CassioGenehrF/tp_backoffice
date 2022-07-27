@@ -78,33 +78,34 @@ class OwnerController extends Controller
 
     public function sendDocuments(Request $request)
     {
-        $fileNameDocument = '';
-        $fileNameConfirmation = '';
-
         if ($request->hasFile('document') && $request->hasFile('confirmation')) {
-            $document = $request->file('document');
-            $confirmation = $request->file('confirmation');
-
-            if (
-                !in_array($document->getClientOriginalExtension(), $this->extensions) ||
-                !in_array($confirmation->getClientOriginalExtension(), $this->extensions)
-            )
-                return back()->withErrors([
-                    'document' => 'O Documento informado não é de um tipo válido.',
-                ]);
-
-            $documentWithExt = $document->getClientOriginalName();
-            $confirmationWithExt = $confirmation->getClientOriginalName();
-
-            $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
-            $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
-
-            $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
-            $fileNameConfirmation = $fileConfirmation . '_' . time() . '.' . $confirmation->getClientOriginalExtension();
-
-            $document->storeAs('public/documents', $fileNameDocument);
-            $confirmation->storeAs('public/documents', $fileNameConfirmation);
+            return back()->withErrors([
+                'document' => 'O documento e a confirmação são obrigatórios, verifique os anexos e tente novamente.'
+            ]);
         }
+
+        $document = $request->file('document');
+        $confirmation = $request->file('confirmation');
+
+        if (
+            !in_array($document->getClientOriginalExtension(), $this->extensions) ||
+            !in_array($confirmation->getClientOriginalExtension(), $this->extensions)
+        )
+            return back()->withErrors([
+                'document' => 'O Documento informado não é de um tipo válido.',
+            ]);
+
+        $documentWithExt = $document->getClientOriginalName();
+        $confirmationWithExt = $confirmation->getClientOriginalName();
+
+        $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
+        $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
+
+        $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
+        $fileNameConfirmation = $fileConfirmation . '_' . time() . '.' . $confirmation->getClientOriginalExtension();
+
+        $document->storeAs('public/documents', $fileNameDocument);
+        $confirmation->storeAs('public/documents', $fileNameConfirmation);
 
         $verified = VerifiedUser::where('user_id', Auth::id())->first();
 
