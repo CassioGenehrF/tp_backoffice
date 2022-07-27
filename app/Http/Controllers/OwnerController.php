@@ -78,7 +78,7 @@ class OwnerController extends Controller
 
     public function sendDocuments(Request $request)
     {
-        if ($request->hasFile('document') && $request->hasFile('confirmation')) {
+        if (!($request->hasFile('document') && $request->hasFile('confirmation'))) {
             return back()->withErrors([
                 'document' => 'O documento e a confirmação são obrigatórios, verifique os anexos e tente novamente.'
             ]);
@@ -133,6 +133,12 @@ class OwnerController extends Controller
 
     public function sendPropertyDocuments(Request $request)
     {
+        if (!$request->hasFile('document')) {
+            return back()->withErrors([
+                'document' => 'O comprovante de residência é obrigatório, verifique o anexo e tente novamente.'
+            ]);
+        }
+
         $fileNameDocument = '';
         $fileNameRelation = '';
 
