@@ -69,7 +69,7 @@ class OwnerController extends Controller
         $verified->setPropertyRelation($request);
         $verified->save();
 
-        return redirect('/');
+        return redirect(route('owner.properties'));
     }
 
     public function index()
