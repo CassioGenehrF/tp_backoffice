@@ -11,10 +11,6 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('auth', [LoginController::class, 'auth'])->name('auth.user');
 
 Route::middleware(['auth'])->group(function () {
-    // Route::get('documents', [OwnerController::class, 'documents'])->name('owner.documents');
-    // Route::get('documents/refuse', [OwnerController::class, 'documentsRefuse'])->name('owner.refuse_documents');
-    // Route::get('notverified', [OwnerController::class, 'notVerified'])->name('owner.not_verified');
-    // Route::post('documents', [OwnerController::class, 'sendDocuments'])->name('owner.send_documents');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.user');
 
     Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
