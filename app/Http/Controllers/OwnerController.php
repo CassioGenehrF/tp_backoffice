@@ -14,7 +14,6 @@ use App\Models\Property;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
 use App\Models\VerifiedProperty;
-use App\Models\VerifiedUser;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,8 +23,6 @@ use Illuminate\Support\Str;
 
 class OwnerController extends Controller
 {
-    private $extensions = ['png', 'jpg', 'jpeg', 'jfif'];
-
     private function calendarPage($viewName)
     {
         $properties = Auth::user()->properties->reject(function ($property) {
@@ -48,139 +45,28 @@ class OwnerController extends Controller
             ->with('yearId', "$year");
     }
 
-    public function notVerified()
-    {
-        $verified = VerifiedUser::where('user_id', Auth::id())
-            ->where('verified', 1)
-            ->first();
-
-        if ($verified)
-            return redirect('/');
-
-        return view('owner.not-verified');
-    }
-
-    public function documents()
+    public function propertyDocuments($propertyId)
     {
         $confirmation_code = Str::upper(Str::random(6));
 
-        return view('owner.send-documents')
-            ->with('name', Auth::user()->display_name)
-            ->with('confirmation_code', $confirmation_code);
-    }
-
-    public function documentsRefuse()
-    {
-        return view('owner.refuse-documents')
-            ->with('name', Auth::user()->display_name)
-            ->with('reason', Auth::user()->verified->reason);
-    }
-
-    public function sendDocuments(Request $request)
-    {
-        if (!($request->hasFile('document') && $request->hasFile('confirmation'))) {
-            return back()->withErrors([
-                'document' => 'O documento e a confirmação são obrigatórios, verifique os anexos e tente novamente.'
-            ]);
-        }
-
-        $document = $request->file('document');
-        $confirmation = $request->file('confirmation');
-
-        if (
-            !in_array($document->getClientOriginalExtension(), $this->extensions) ||
-            !in_array($confirmation->getClientOriginalExtension(), $this->extensions)
-        )
-            return back()->withErrors([
-                'document' => 'O Documento informado não é de um tipo válido.',
-            ]);
-
-        $documentWithExt = $document->getClientOriginalName();
-        $confirmationWithExt = $confirmation->getClientOriginalName();
-
-        $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
-        $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
-
-        $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
-        $fileNameConfirmation = $fileConfirmation . '_' . time() . '.' . $confirmation->getClientOriginalExtension();
-
-        $document->storeAs('public/documents', $fileNameDocument);
-        $confirmation->storeAs('public/documents', $fileNameConfirmation);
-
-        $verified = VerifiedUser::where('user_id', Auth::id())->first();
-
-        if ($verified)
-            $verified->delete();
-
-        $verified = new VerifiedUser([
-            'user_id' => Auth::id(),
-            'document' => $fileNameDocument,
-            'confirmation' => $fileNameConfirmation,
-            'code' => $request->code
-        ]);
-
-        $verified->save();
-
-        return redirect('/');
-    }
-
-    public function propertyDocuments($propertyId)
-    {
         return view('owner.property-documents')
             ->with('name', Auth::user()->display_name)
-            ->with('property', Property::find($propertyId));
+            ->with('property', Property::find($propertyId))
+            ->with('confirmation_code', $confirmation_code);
     }
 
     public function sendPropertyDocuments(Request $request)
     {
-        if (!$request->hasFile('document')) {
-            return back()->withErrors([
-                'document' => 'O comprovante de residência é obrigatório, verifique o anexo e tente novamente.'
-            ]);
-        }
-
-        $fileNameDocument = '';
-        $fileNameRelation = '';
-
-        $document = $request->file('document');
-
-        if (!in_array($document->getClientOriginalExtension(), $this->extensions))
-            return back()->withErrors([
-                'document' => 'O Documento informado não é de um tipo válido.',
-            ]);
-
-        $documentWithExt = $document->getClientOriginalName();
-        $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
-        $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
-
-        $document->storeAs('public/property/documents', $fileNameDocument);
-
-        if ($request->hasFile('relation')) {
-            $relation = $request->file('relation');
-
-            if (!in_array($relation->getClientOriginalExtension(), $this->extensions))
-                return back()->withErrors([
-                    'relation' => 'O Comprovante de Vínculo informado não é de um tipo válido.',
-                ]);
-
-            $confirmationWithExt = $relation->getClientOriginalName();
-            $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
-            $fileNameRelation = $fileConfirmation . '_' . time() . '.' . $relation->getClientOriginalExtension();
-
-            $relation->storeAs('public/property/documents', $fileNameRelation);
-        }
-
         $verified = VerifiedProperty::where('property_id', $request->property_id)->first();
 
         if ($verified)
             $verified->delete();
 
-        $verified = new VerifiedProperty([
-            'property_id' => $request->property_id,
-            'document' => $fileNameDocument,
-            'relation' => $fileNameRelation
-        ]);
-
+        $verified = new VerifiedProperty();
+        $verified->setUserDocument($request);
+        $verified->setUserConfirmation($request);
+        $verified->setPropertyDocument($request);
+        $verified->setPropertyRelation($request);
         $verified->save();
 
         return redirect('/');

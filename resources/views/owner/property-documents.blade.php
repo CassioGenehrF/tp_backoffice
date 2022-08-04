@@ -86,8 +86,31 @@
             <input type="hidden" name="property_id" id="property_id" value={{ $property->ID }}>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="document">Comprovante de Residência</label>
+                    <label for="document">Foto do Documento Frente e Verso</label>
                     <input type="file" name="document" id="document" class="form-control" accept="image/*" required>
+                    <small class="form-text text-muted">CNH, RG ou Passaporte</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="code">Código de Confirmação</label>
+                    <input type="text" class="form-control" name="code" id="code" readonly required
+                        value="{{ $confirmation_code }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="confirmation">Selfie de Confirmação*</label>
+                    <input type="file" name="confirmation" id="confirmation" accept="image/*" class="form-control"
+                        required>
+                    <small class="form-text text-muted">Na selfie de confirmação você deve enviar uma
+                        foto sua segurando o documento junto de um papel com o código informado acima.</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="residence">Comprovante de Residência</label>
+                    <input type="file" name="residence" id="residence" class="form-control" accept="image/*" required>
                     <small class="form-text text-muted">Água, Luz, IPTU, Mátricula do imóvel</small>
                 </div>
             </div>
