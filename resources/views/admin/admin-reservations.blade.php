@@ -114,13 +114,11 @@
                         <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
                         </td>
                         <td>
-                            <a href="{{ route('admin.reservations_details', ['id' => $reservation->id]) }}""
-                                class="btn
-                                btn-light">
+                            <a href="{{ route('admin.reservations_details', ['id' => $reservation->id]) }}"
+                                class="btn btn-light">
                                 Visualizar</a>
-                            <a href="{{ route('admin.reservation', ['id' => $reservation->id]) }}""
-                                class="btn
-                                btn-light">
+                            <a href="{{ route('admin.reservation', ['id' => $reservation->id]) }}"
+                                class="btn btn-light">
                                 Editar</a>
                             <form action="{{ route('admin.reservation_destroy', ['id' => $reservation->id]) }}"
                                 method="post">
