@@ -62,7 +62,7 @@ class OwnerController extends Controller
         if ($verified)
             $verified->delete();
 
-        $verified = new VerifiedProperty();
+        $verified = new VerifiedProperty(['property_id' => $request->property_id]);
         $verified->setUserDocument($request);
         $verified->setUserConfirmation($request);
         $verified->setPropertyDocument($request);
