@@ -11,10 +11,10 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('auth', [LoginController::class, 'auth'])->name('auth.user');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('documents', [OwnerController::class, 'documents'])->name('owner.documents');
-    Route::get('documents/refuse', [OwnerController::class, 'documentsRefuse'])->name('owner.refuse_documents');
-    Route::get('notverified', [OwnerController::class, 'notVerified'])->name('owner.not_verified');
-    Route::post('documents', [OwnerController::class, 'sendDocuments'])->name('owner.send_documents');
+    // Route::get('documents', [OwnerController::class, 'documents'])->name('owner.documents');
+    // Route::get('documents/refuse', [OwnerController::class, 'documentsRefuse'])->name('owner.refuse_documents');
+    // Route::get('notverified', [OwnerController::class, 'notVerified'])->name('owner.not_verified');
+    // Route::post('documents', [OwnerController::class, 'sendDocuments'])->name('owner.send_documents');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.user');
 
     Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
@@ -65,7 +65,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('reservation/destroy', [BrokerController::class, 'reservationDestroy'])->name('broker.reservation_destroy');
     });
 
-    Route::group(['prefix' => 'owner', 'middleware' => ['owner', 'verified']], function () {
+    Route::group(['prefix' => 'owner', 'middleware' => ['owner']], function () {
         Route::get('', [OwnerController::class, 'index'])->name('owner.page');
         Route::get('unblock', [OwnerController::class, 'unblockPage'])->name('owner.unblock_page');
         Route::get('report', [OwnerController::class, 'report'])->name('owner.report');
