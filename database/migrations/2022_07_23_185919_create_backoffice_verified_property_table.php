@@ -16,10 +16,10 @@ class CreateBackofficeVerifiedPropertyTable extends Migration
         Schema::create('backoffice_verified_property', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('property_id');
-            $table->string('user_document');
-            $table->string('user_confirmation');
+            $table->string('user_document')->default(null);
+            $table->string('user_confirmation')->default(null);
             $table->string('document');
-            $table->string('relation');
+            $table->string('relation')->default(null);
             $table->boolean('verified')->default(false);
             $table->string('reason')->nullable();
             $table->timestamps();

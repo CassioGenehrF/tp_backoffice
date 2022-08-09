@@ -73,6 +73,10 @@ class Commitment extends Model
 
     public static function block($propertyId, $checkin, $checkout, $user_id, $callback)
     {
+        if ($propertyId == '') {
+            return back()->withErrors('Você não possui uma propriedade selecionada.');
+        }
+
         if (
             Carbon::createFromFormat('Y-m-d', $checkin) >
             Carbon::createFromFormat('Y-m-d', $checkout)
@@ -105,6 +109,10 @@ class Commitment extends Model
 
     public static function unblock($propertyId, $checkin, $checkout, $user_id, $callback)
     {
+        if ($propertyId == '') {
+            return back()->withErrors('Você não possui uma propriedade selecionada.');
+        }
+        
         if (
             Carbon::createFromFormat('Y-m-d', $checkin) >
             Carbon::createFromFormat('Y-m-d', $checkout)
