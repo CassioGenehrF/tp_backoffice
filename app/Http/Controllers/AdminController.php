@@ -50,7 +50,6 @@ class AdminController extends Controller
 
     public function index()
     {
-
         return $this->calendarPage('admin.admin')
             ->with('unverified', $this->unverified);
     }
@@ -85,6 +84,13 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
             ->with('pending', $pending);
+    }
+
+    public function searchProperties()
+    {
+        return view('admin.admin-search-property')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified);
     }
 
     public function verified(Request $request)

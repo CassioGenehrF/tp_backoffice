@@ -52,6 +52,7 @@
                             Indicações</a>
                         <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
                         <a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a>
+                        <a class="dropdown-item" href="{{ route('admin.search_properties') }}">Propriedades</a>
                     </div>
                 </div>
                 <li class="menu-item username">

@@ -38,10 +38,27 @@ class Commitment extends Model
             ->get();
     }
 
-    public static function hasCommitmentBetween($propertyId, $checkin, $checkout)
+    public static function propertiesWithCommitment($checkin, $checkout)
     {
-        return self::query()
-            ->where('property_id', $propertyId)
+        $commitments = self::hasCommitmentBetween(null, $checkin, $checkout, false)
+            ->select('property_id')
+            ->get();
+
+        $propertiesWithCommitment = $commitments->map(function ($value, $key) {
+            return $value->property_id;
+        })->all();
+
+        return $propertiesWithCommitment;
+    }
+
+    public static function hasCommitmentBetween($propertyId = null, $checkin, $checkout, $first = true)
+    {
+        $query = self::query()
+            ->where(function ($query) use ($propertyId) {
+                if ($propertyId) {
+                    $query->where('property_id', $propertyId);
+                }
+            })
             ->where(function ($query) use ($checkin, $checkout) {
                 $query->where(function ($query) use ($checkin) {
                     $query->whereDate('checkin', '<=', $checkin);
@@ -52,8 +69,9 @@ class Commitment extends Model
                     $query->whereDate('checkin', '<=', $checkout);
                     $query->whereDate('checkout', '>=', $checkout);
                 });
-            })
-            ->first();
+            });
+
+        return $first ? $query->first() : $query;
     }
 
     public static function hasCommitmentEquals($propertyId, $checkin, $checkout, $user_id = null)
@@ -112,7 +130,7 @@ class Commitment extends Model
         if ($propertyId == '') {
             return back()->withErrors('Você não possui uma propriedade selecionada.');
         }
-        
+
         if (
             Carbon::createFromFormat('Y-m-d', $checkin) >
             Carbon::createFromFormat('Y-m-d', $checkout)

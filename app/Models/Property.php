@@ -39,6 +39,7 @@ class Property extends Model
     ];
 
     protected $appends = [
+        'notes',
         'city',
         'state',
         'street',
@@ -52,6 +53,20 @@ class Property extends Model
         'room',
         'sustainable'
     ];
+
+    protected function getNotesAttribute(): string
+    {
+        $notes = DB::query()
+            ->select('wp_postmeta.meta_value')
+            ->from('wp_posts')
+            ->join('wp_postmeta', 'wp_postmeta.post_id', '=', 'wp_posts.ID')
+            ->where('wp_postmeta.meta_key', 'owner_notes')
+            ->where('wp_posts.ID', $this->ID)
+            ->first();
+
+        $notes = $notes ? $notes->meta_value : '';
+        return $notes;
+    }
 
     protected function getCityAttribute(): string
     {

@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
         Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
+        Route::get('search-properties', [AdminController::class, 'searchProperties'])->name('admin.search_properties');
 
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
