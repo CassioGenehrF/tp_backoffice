@@ -22,14 +22,6 @@ class Search extends Component
         'terms'
     ];
 
-    private function loadFilters()
-    {
-        $externalArea = PropertyFeature::externalAreaChildren();
-        $filters[array_keys($externalArea)[0]] = array_values($externalArea)[0];
-
-        return $filters;
-    }
-
     public function render()
     {
         $fromDate = empty($this->start) ? Carbon::createFromTimeStamp(0)->toDateString() : $this->start;
@@ -46,7 +38,7 @@ class Search extends Component
 
         return view('livewire.search', [
             'properties' => $properties,
-            'filters' => $this->loadFilters()
+            'filters' => PropertyFeature::loadFilters()
         ]);
     }
 }
