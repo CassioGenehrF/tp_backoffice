@@ -40,7 +40,7 @@
                                 <details>
                                     <summary>Detalhes</summary>
                                     <p>
-                                        {{ $property->notes }}
+                                        {!! nl2br($property->notes) !!}
                                     </p>
                                 </details>
                             </td>
