@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 class PropertyFeature extends Model
 {
@@ -27,25 +27,58 @@ class PropertyFeature extends Model
         return $this->registerGlobalScopes($this->newQueryWithoutScopes())->propertyFeature();
     }
 
+    public function scopeFilteredProperties(Builder $query, $terms): array
+    {
+        $filteredProperties = DB::table('wp_term_relationships')
+            ->select(
+                'object_id',
+                DB::raw('group_concat(term_taxonomy_id) as terms')
+            )
+            ->groupBy('object_id');
+
+        foreach ($terms as $filter) {
+            $filteredProperties->having('terms', 'like', "%$filter%");
+        }
+
+        $filteredProperties = $filteredProperties->get()->map(function ($value) {
+            return $value->object_id;
+        })->all();
+
+        return $filteredProperties;
+    }
+
     public function scopePropertyFeature(Builder $query): Builder
     {
         return $query->where('taxonomy', 'property_features');
     }
 
-    public function scopeExternalArea(Builder $query): Builder
+    public function scopeExternalArea(Builder $query): self
     {
         return $query->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
-            ->where('wp_terms.slug', 'area-externa');
+            ->where('wp_terms.slug', 'area-externa')
+            ->first();
     }
 
-    public function scopeExternalAreaChildren(Builder $query): Collection
+    public function scopeExternalAreaChildren(Builder $query): array
     {
-        $externalAreaId = $this->externalArea()->first()->term_id;
+        $externalAreaParent = $this->externalArea();
 
-        return $query->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
-            ->where('wp_term_taxonomy.parent', $externalAreaId)
+        $externalArea = $query->join('wp_terms', 'wp_terms.term_id', '=', 'wp_term_taxonomy.term_id')
+            ->where('wp_term_taxonomy.parent', $externalAreaParent->term_id)
             ->orderBy('wp_terms.name')
             ->get();
+
+        $data = $externalArea->map(function ($value) {
+            return [
+                'term_id' => $value->term_id,
+                'name' => $value->name,
+                'slug' => str_replace('-', '_', $value->slug)
+            ];
+        })->all();
+
+        $response[$externalAreaParent->name] = $data;
+
+        return $response;
     }
 
     public function property(): HasOne

@@ -55,9 +55,9 @@
                 <li class="menu-item notification">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-bell"></i>
-                        <span class="badge notification-count">1</span>
+                        <span class="badge notification-count">0</span>
                     </button>
-                    <div class="dropdown-menu">
+                    {{-- <div class="dropdown-menu">
                         <p>
                             Você possui valores disponíveis para saque, clique
                             <a class="notification-menu"
@@ -66,7 +66,7 @@
                                 aqui</a>
                             e saiba mais.
                         </p>
-                    </div>
+                    </div> --}}
                 </li>
                 <li class="menu-item">
                     <form action="{{ route('logout.user') }}" method="post">
