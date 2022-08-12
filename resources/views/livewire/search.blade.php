@@ -10,6 +10,14 @@
                     <label for="end">Até</label>
                     <input type="date" class="form-control" name="end" id="end" wire:model="end">
                 </div>
+                <div class="form-group col-md-3">
+                    <label for="city">Cidade</label>
+                    <input type="text" class="form-control" name="city" id="city" wire:model="city">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="standard">Padrão</label>
+                    <input type="text" class="form-control" name="standard" id="standard" wire:model="standard">
+                </div>
             </div>
             <div class="accordion mt-2" id="filters">
                 @foreach ($filters as $title => $filter)

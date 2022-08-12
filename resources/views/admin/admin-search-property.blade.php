@@ -35,24 +35,23 @@
         <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
         <nav class="cabecalho-menu">
             <ul class="list-itens">
-                <div class="btn-group menu-item">
-                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                <div class="btn-group menu-item dropdown">
+                    <button type="button" class="btn dropdown-toggle" id="dropdownMenu" type="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Opções
                     </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Agenda</a>
-                        <a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a>
-                        <a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
-                        <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
-                        <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
-                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a>
-                        <a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
-                            Indicações</a>
-                        <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
-                        <a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a>
-                        <a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
-                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                        <li><a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Agenda</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de Indicações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a></li>
+                    </ul>
                 </div>
                 <li class="menu-item username">
                     <p>{{ Auth::user()->display_name }}</p>
