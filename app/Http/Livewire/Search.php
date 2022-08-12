@@ -19,8 +19,34 @@ class Search extends Component
         'search',
         'start',
         'end',
-        'terms'
+        'terms' => ['as' => 't']
     ];
+
+    private function loadFilters()
+    {
+        $filters = PropertyFeature::loadFilters();
+        $hasFilter = false;
+
+        foreach ($filters as $key => $parentValue) {
+            foreach ($parentValue as $value) {
+                foreach ($this->terms as $term) {
+                    if ($term == $value['term_id']) {
+                        $hasFilter = true;
+                        break;
+                    }
+                }
+
+                if ($hasFilter) {
+                    break;
+                }
+            }
+
+            $filters[$key]['status'] = $hasFilter;
+            $hasFilter = false;
+        }
+
+        return $filters;
+    }
 
     public function render()
     {
@@ -38,7 +64,7 @@ class Search extends Component
 
         return view('livewire.search', [
             'properties' => $properties,
-            'filters' => PropertyFeature::loadFilters()
+            'filters' => $this->loadFilters()
         ]);
     }
 }
