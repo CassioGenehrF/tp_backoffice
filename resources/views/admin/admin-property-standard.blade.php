@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/reservation.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 </head>
@@ -80,58 +80,30 @@
             </ul>
         </nav>
     </header>
-    <section class="flex mt-2">
-        <div class="form-group col-md-4 ml-4">
-            <label for="filtro-propriedade">Propriedade:</label>
-            <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
-                <option value="0">Todas</option>
-                @foreach ($properties as $property)
-                    <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col-md-2 ml-4">
-            <label for="month">Mês</label>
-            <input type="month" name="month" id="month" class="form-control">
-        </div>
-    </section>
-    <main>
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Propriedade</th>
-                    <th scope="col">Hóspede</th>
-                    <th scope="col">Valor</th>
-                    <th scope="col">Checkin/Checkout</th>
-                    <th class="action" scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="reservations">
-                @foreach ($reservations as $reservation)
-                    <tr>
-                        <td> {{ $reservation->post_title }} </td>
-                        <td> {{ $reservation->guest_name }} </td>
-                        <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
-                        <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
-                        </td>
-                        <td>
-                            <a href="{{ route('admin.reservations_details', ['id' => $reservation->id]) }}"
-                                class="btn btn-light">
-                                Visualizar</a>
-                            <a href="{{ route('admin.reservation', ['id' => $reservation->id]) }}"
-                                class="btn btn-light">
-                                Editar</a>
-                            <form action="{{ route('admin.reservation_destroy', ['id' => $reservation->id]) }}"
-                                method="post">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <main class="container">
+        <a href="{{ route('admin.properties') }}" class="btn btn-light ml-4 mb-2">
+            Voltar
+        </a>
+        <form action="{{ route('admin.property_info') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="propriedade" id="propriedade" value="{{ $property->ID }}">
+            <div class="row mt-2">
+                <div class="form-group col-md-12 ml-4">
+                    <label for="standard">Padrão do Imóvel:</label>
+                    <select class="form-control" name="standard" id="standard">
+                        <option value="" disabled selected hidden>Selecione uma opção</option>
+                        <option value="1">Simples</option>
+                        <option value="2">Médio</option>
+                        <option value="3">Alto</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 ml-4">
+                    <button type="submit" class="save-button">SALVAR</button>
+                </div>
+            </div>
+        </form>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -144,28 +116,33 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
-        $('#filtro-propriedade').on('change', function() {
-            propriedade = $('#filtro-propriedade').val() ?? 0;
-            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
-            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
-
-            $.ajax({
-                url: "/admin/getReservations/" + propriedade + "/" + month + "/" + year,
-                success: function(result) {
-                    $("#reservations").html(result['data']);
-                }
-            });
+        $('#contrato').change(function() {
+            var file = $('#contrato')[0].files[0].name;
+            $(this).prev('label').text(file);
         });
 
-        $('#month').on('change', function() {
-            propriedade = $('#filtro-propriedade').val() ?? 0;
-            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
-            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
-
+        $(function() {
             $.ajax({
-                url: "/admin/getReservations/" + propriedade + "/" + month + "/" + year,
+                url: "/admin/getProperty/" + $('#propriedade').val(),
                 success: function(result) {
-                    $("#reservations").html(result['data']);
+                    if (result['user_indication_id']) {
+                        $('#indicacao option[value="' + result['user_indication_id'] + '"]').prop(
+                            'selected', 'selected');
+                    } else {
+                        $('#indicacao').prop(
+                            'selectedIndex', 0);
+                    }
+
+                    if (result['contract']) {
+                        id = $('#propriedade').val()
+                        $('#contract_download').prop('href',
+                            `${window.location.origin}/admin/property/${id}/contract`)
+                        $('#contract_download').removeClass('hidden')
+                        $('.custom-file-label').text(result['contract'])
+                    } else {
+                        $('#contract_download').addClass('hidden')
+                        $('.custom-file-label').text('Escolher Arquivo')
+                    }
                 }
             });
         });

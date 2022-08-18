@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report/indication', [AdminController::class, 'reportIndication'])->name('admin.report_indication');
         Route::get('report/regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
+        Route::get('property/{propertyId}/indication', [AdminController::class, 'propertyIndication'])->name('admin.property_indication');
+        Route::get('property/{propertyId}/standard', [AdminController::class, 'propertyStandard'])->name('admin.property_standard');
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
         Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
         Route::get('search-properties', [AdminController::class, 'searchProperties'])->name('admin.search_properties');

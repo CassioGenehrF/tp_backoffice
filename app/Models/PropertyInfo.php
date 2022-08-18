@@ -13,10 +13,9 @@ class PropertyInfo extends Model
         'id',
         'property_id',
         'user_indication_id',
-        'contract'
+        'contract',
+        'standard'
     ];
-
-    public $timestamps = false;
 
     public function property(): HasOne
     {

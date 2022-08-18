@@ -262,6 +262,17 @@ class Property extends Model
         return $query->where('post_status', 'publish');
     }
 
+    public function scopeStandard(Builder $query, $standard): Builder
+    {
+        if ($standard == 0) {
+            return $query;
+        }
+        
+        return $query->whereHas('propertyInfo', function ($query) use ($standard) {
+            $query->where('standard', $standard);
+        });
+    }
+
     public function scopeProperty(Builder $query): Builder
     {
         return $query->where('post_type', 'estate_property');

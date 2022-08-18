@@ -349,7 +349,23 @@ class AdminController extends Controller
         return view('admin.admin-properties')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::all())
+            ->with('unverified', $this->unverified);
+    }
+
+    public function propertyIndication($propertyId)
+    {
+        return view('admin.admin-property-indication')
+            ->with('name', Auth::user()->display_name)
+            ->with('property', Property::find($propertyId))
             ->with('users', User::all())
+            ->with('unverified', $this->unverified);
+    }
+
+    public function propertyStandard($propertyId)
+    {
+        return view('admin.admin-property-standard')
+            ->with('name', Auth::user()->display_name)
+            ->with('property', Property::find($propertyId))
             ->with('unverified', $this->unverified);
     }
 
@@ -383,17 +399,19 @@ class AdminController extends Controller
             $propertyInfo = new PropertyInfo([
                 'property_id' => $request->propriedade,
                 'user_indication_id' => $request->indicacao ?? null,
-                'contract' => $fileNameToStore
+                'contract' => $fileNameToStore,
+                'standard' => $request->standard
             ]);
 
             $propertyInfo->save();
         } else {
             $hasPropertyInfo->update([
                 'property_id' => $request->propriedade,
-                'user_indication_id' =>  $request->indicacao && $request->indicacao != 0 ?
+                'user_indication_id' => $request->indicacao && $request->indicacao != 0 ?
                     $request->indicacao : null,
                 'contract' => empty($fileNameToStore) && $hasPropertyInfo->contract ?
-                    $hasPropertyInfo->contract : $fileNameToStore
+                    $hasPropertyInfo->contract : $fileNameToStore,
+                'standard' => empty($request->standard) ? $hasPropertyInfo->standard : $request->standard
             ]);
         }
 

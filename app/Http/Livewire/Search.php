@@ -14,12 +14,16 @@ class Search extends Component
     public $start;
     public $end;
     public $terms = [];
+    public $city;
+    public $standard;
 
     protected $queryString = [
         'search',
         'start',
         'end',
-        'terms' => ['as' => 't']
+        'terms' => ['as' => 't'],
+        'city',
+        'standard'
     ];
 
     private function loadFilters()
@@ -60,6 +64,7 @@ class Search extends Component
             ->where('post_title', 'like', "%$this->search%")
             ->whereNotIn('wp_posts.ID', $propertiesWithCommitment)
             ->whereIn('wp_posts.ID', $filteredProperties)
+            ->standard($this->standard)
             ->get();
 
         return view('livewire.search', [

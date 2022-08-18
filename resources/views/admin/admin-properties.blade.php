@@ -23,6 +23,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/broker/reservation.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 </head>
@@ -43,7 +44,7 @@
                         <a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
-                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Painel de Indicações</a>
+                        <a class="dropdown-item" href="{{ route('admin.properties') }}">Propriedades</a>
                         <a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
                             Indicações</a>
                         <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
@@ -80,49 +81,34 @@
             </ul>
         </nav>
     </header>
-    <main class="container">
-        <form action="{{ route('admin.property_info') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="row mt-2">
-                <div class="form-group col-md-12 ml-4">
-                    <label for="propriedade">Propriedade:</label>
-                    <select class="form-control" name="propriedade" id="propriedade" required>
-                        <option value="" disabeld selected hidden>Selecione uma opção</option>
-                        @foreach ($properties as $property)
-                            <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="form-group col-md-12 ml-4">
-                    <label for="indicacao">Indicado Por:</label>
-                    <select class="form-control" name="indicacao" id="indicacao">
-                        <option value="" disabled selected hidden>Selecione uma opção</option>
-                        <option value="0">REMOVER INDICAÇÃO</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->ID }}">{{ $user->display_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="row custom-file mt-2">
-                <div class="form-group col-md-12 ml-4">
-                    <label class="custom-file-label" for="contrato" id="labelContrato">Escolher arquivo</label>
-                    <input type="file" class="custom-file-input" name="contrato" id="contrato">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <a class="col-md-12 ml-4 btn btn-lg hidden" id="contract_download" target="_blank">
-                    BAIXAR CONTRATO
-                </a>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-12 ml-4">
-                    <button type="submit" class="save-button">SALVAR</button>
-                </div>
-            </div>
-        </form>
+    <main>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Propriedade</th>
+                        <th class="action" scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($properties as $property)
+                        <tr>
+                            <td>{{ $property->post_title }}</td>
+                            <td>
+                                <a href="{{ route('admin.property_indication', ['propertyId' => $property->ID]) }}"
+                                    class="btn btn-light">
+                                    Indicação
+                                </a>
+                                <a href="{{ route('admin.property_standard', ['propertyId' => $property->ID]) }}"
+                                    class="btn btn-light">
+                                    Padrão do Imóvel
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
