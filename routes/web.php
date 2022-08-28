@@ -32,12 +32,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
         Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
         Route::get('search-properties', [AdminController::class, 'searchProperties'])->name('admin.search_properties');
+        Route::get('demand', [AdminController::class, 'demand'])->name('admin.demand');
+        Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
+        Route::get('social', [AdminController::class, 'social'])->name('admin.social_media');
 
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
 
+        Route::post('demand', [AdminController::class, 'createDemand'])->name('admin.save_demand');
         Route::post('receipts', [AdminController::class, 'createReceipt'])->name('admin.create_receipt');
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');
@@ -75,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('property/{propertyId}/documents', [OwnerController::class, 'propertyDocuments'])->name('owner.property_documents');
         Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
         Route::get('receipts/{id}', [OwnerController::class, 'downloadReceipt'])->name('owner.download_receipt');
+        Route::get('demands', [OwnerController::class, 'demands'])->name('owner.demands');
 
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [OwnerController::class, 'getCalendarAsJson']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [OwnerController::class, 'getReservations']);

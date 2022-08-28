@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -267,15 +268,72 @@ class Property extends Model
         if ($standard == 0) {
             return $query;
         }
-        
+
         return $query->whereHas('propertyInfo', function ($query) use ($standard) {
             $query->where('standard', $standard);
         });
     }
 
+    public function scopeHighStandard(Builder $query): Builder
+    {
+        return $query->inRandomOrder()
+            ->published()
+            ->standard(3)
+            ->select('ID')
+            ->limit(9);
+    }
+
+    public function scopeMediumStandard(Builder $query): Builder
+    {
+        return $query->inRandomOrder()
+            ->published()
+            ->standard(2)
+            ->select('ID')
+            ->limit(5);
+    }
+
+    public function scopeLowStandard(Builder $query): Builder
+    {
+        return $query->inRandomOrder()
+            ->published()
+            ->standard(1)
+            ->select('ID')
+            ->limit(1);
+    }
+
     public function scopeProperty(Builder $query): Builder
     {
         return $query->where('post_type', 'estate_property');
+    }
+
+    public static function export(): array
+    {
+        $highStandard = self::highStandard()->get();
+        $mediumStandard = self::mediumStandard()->get();
+        $lowStandard = self::lowStandard()->get();
+
+        $properties = new Collection();
+        $properties = $properties->concat($lowStandard);
+        $properties = $properties->concat($mediumStandard);
+        $properties = $properties->concat($highStandard);
+
+        $totalRows = count($lowStandard) + count($mediumStandard) + count($highStandard);
+
+        if ($totalRows < 15) {
+            $allProperties = self::inRandomOrder()
+                ->published()
+                ->select('ID')
+                ->limit(15 - $totalRows)
+                ->get();
+
+            $properties = $properties->concat($allProperties);
+        }
+
+        $properties = $properties->map(function ($property) {
+            return $property->ID;
+        })->all();
+
+        return $properties;
     }
 
     public function user(): BelongsTo

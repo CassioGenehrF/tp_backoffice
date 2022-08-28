@@ -22,11 +22,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -83,37 +81,89 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <section class="flex mt-2">
-            <div class="form-group col-md-4 ml-4">
-                <label for="filtro-propriedade">Propriedade:</label>
-                <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
-                    <option value="0">Todas</option>
-                    @foreach ($properties as $property)
-                        <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                    @endforeach
-                </select>
+    <main class="container">
+        <a href="{{ route('admin.properties') }}" class="btn btn-light ml-4 mb-2">
+            Voltar
+        </a>
+        <form action="{{ route('admin.save_demand') }}" method="POST">
+            @csrf
+            <div class="row mt-2 ml-4">
+                <div class="form-group col-md-6">
+                    <label for="checkin">Check-in:</label>
+                    @if ($demand)
+                        <input class="form-control" type="date" id="checkin" name="checkin"
+                            value="{{ $demand->checkin }}" required>
+                    @else
+                        <input class="form-control" type="date" id="checkin" name="checkin" required>
+                    @endif
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="checkout">Check-out:</label>
+                    @if ($demand)
+                        <input class="form-control" type="date" id="checkout" name="checkout"
+                            value="{{ $demand->checkout }}" required>
+                    @else
+                        <input class="form-control" type="date" id="checkout" name="checkout" required>
+                    @endif
+                </div>
             </div>
-        </section>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Data</th>
-                        <th scope="col">Reservas</th>
-                        <th scope="col">Diárias</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Taxa de Anfitrião</th>
-                        <th id="comission" scope="col">Locações Diretas</th>
-                        <th id="comission" scope="col">Comissões Gerais</th>
-                        <th id="regional_comission" scope="col">Comissão Regional</th>
-                    </tr>
-                </thead>
-                <tbody id="report-content">
-                    {!! $report !!}
-                </tbody>
-            </table>
-        </div>
+            <div class="row mt-2 ml-4">
+                <div class="form-group col-md-6">
+                    <label for="hospede">Nome do Cliente:</label>
+                    @if ($demand)
+                        <input class="form-control" type="text" id="client" name="client"
+                            value="{{ $demand->client }}"" required>
+                    @else
+                        <input class="form-control" type="text" id="client" name="client" required>
+                    @endif
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="telefone">Telefone:</label>
+                    @if ($demand)
+                        <input class="form-control" type="tel" id="phone" name="phone" required
+                            onkeypress="return onlyNumberKey(event)" value="{{ $demand->phone }}">
+                    @else
+                        <input class="form-control" type="tel" id="phone" name="phone" required
+                            onkeypress="return onlyNumberKey(event)">
+                    @endif
+                </div>
+            </div>
+            <div class="row mt-2 ml-4">
+                <div class="form-group col-md-4">
+                    <label for="price">Preço:</label>
+                    @if ($demand)
+                        <input class="form-control" type="number" id="price" name="price"
+                            value="{{ $demand->price }}" required>
+                    @else
+                        <input class="form-control" type="number" id="price" name="price" required>
+                    @endif
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="people_number">Quantidade de Pessoas:</label>
+                    @if ($demand)
+                        <input class="form-control" type="number" id="people_number" name="people_number" required
+                            onkeypress="return onlyNumberKey(event)" value="{{ $demand->people_number }}">
+                    @else
+                        <input class="form-control" type="number" id="people_number" name="people_number" required
+                            onkeypress="return onlyNumberKey(event)">
+                    @endif
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="type">Perfil:</label>
+                    @if ($demand)
+                        <input class="form-control" type="text" id="type" name="type" required
+                            value="{{ $demand->type }}">
+                    @else
+                        <input class="form-control" type="text" id="type" name="type" required>
+                    @endif
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12 ml-4">
+                    <button type="submit" class="save-button">SALVAR</button>
+                </div>
+            </div>
+        </form>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -126,14 +176,15 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
-        $('#filtro-propriedade').on('change', function() {
-            $.ajax({
-                url: "/admin/getReport/" + this.value,
-                success: function(result) {
-                    $("#report-content").html(result['data']);
-                }
-            });
+        $('#checkin').on('change', function() {
+            $('#checkout').val($('#checkin').val())
+            $('#checkout').prop('min', $('#checkin').val())
         });
+
+        function onlyNumberKey(evt) {
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            return !(ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        }
     </script>
 </body>
 

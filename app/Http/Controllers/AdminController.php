@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SocialMediaExport;
 use App\Helpers\CalendarBuilder;
 use App\Helpers\ReportBuilder;
 use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Commitment;
+use App\Models\Demand;
 use App\Models\Property;
 use App\Models\PropertyInfo;
 use App\Models\Receipt;
@@ -19,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -91,6 +94,36 @@ class AdminController extends Controller
         return view('admin.admin-search-property')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified);
+    }
+
+    public function profile()
+    {
+        return view('admin.admin-profile')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified);
+    }
+
+    public function social()
+    {
+        return Excel::download(new SocialMediaExport, 'socialmedia.xlsx');
+    }
+
+    public function demand()
+    {
+        $demand = null;
+
+        return view('admin.admin-demand')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('demand', $demand);
+    }
+
+    public function createDemand(Request $request)
+    {
+        return Demand::new(
+            $request->all(),
+            redirect(route('admin.demand'))
+        );
     }
 
     public function verified(Request $request)

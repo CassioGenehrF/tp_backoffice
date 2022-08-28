@@ -10,6 +10,7 @@ use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Http\Requests\Owner\ContractRequest;
 use App\Models\Commitment;
+use App\Models\Demand;
 use App\Models\Property;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
@@ -202,6 +203,25 @@ class OwnerController extends Controller
             ->with('property', Property::find($propertyId))
             ->with('banks', BankEnum::bankList)
             ->with('states', StateEnum::stateList);
+    }
+
+    public function demands()
+    {
+        $now = now();
+
+        $demands = Demand::whereRaw('DATE_SUB(created_at, INTERVAL 2 HOUR) < "' . $now . '"')
+            ->whereRaw('DATE_SUB(created_at, INTERVAL 2 HOUR) <= DATE_ADD(DATE_SUB(created_at, INTERVAL 2 HOUR), INTERVAL 3 DAY)')
+            ->selectRaw('*, DATE_ADD(DATE_SUB(created_at, INTERVAL 2 HOUR), INTERVAL 3 DAY) as expired_at')
+            ->get();
+
+        $demands->map(function ($demand, $key) use ($now, $demands) {
+            $demands[$key]->checkin = Carbon::createFromFormat('Y-m-d', $demand->checkin)->format('d/m/Y');
+            $demands[$key]->checkout = Carbon::createFromFormat('Y-m-d', $demand->checkout)->format('d/m/Y');
+        });
+
+        return view('owner.owner-demands')
+            ->with('name', Auth::user()->display_name)
+            ->with('demands', $demands);
     }
 
     public function createContract(ContractRequest $request)

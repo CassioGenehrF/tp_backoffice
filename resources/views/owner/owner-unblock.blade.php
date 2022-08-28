@@ -48,6 +48,7 @@
                         <a class="dropdown-item" href="{{ route('owner.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a>
                         <a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
+                        <a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a>
                     </div>
                 </div>
                 <li class="menu-item username">
