@@ -31,7 +31,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('admin.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">
@@ -131,7 +133,8 @@
                             </td>
                             <td>
                                 @if ($item->relation)
-                                    <a href="{{ url("/storage/property/documents/$item->relation") }}" target="_blank">
+                                    <a href="{{ url("/storage/property/documents/$item->relation") }}"
+                                        target="_blank">
                                         Visualizar
                                     </a>
                                 @endif

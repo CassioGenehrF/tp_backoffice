@@ -30,7 +30,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('admin.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">
@@ -94,16 +96,37 @@
                 <tbody>
                     @foreach ($properties as $property)
                         <tr>
-                            <td>{{ $property->post_title }}</td>
+                            <td>
+                                <a href="https://temporadapaulista.com.br/propriedade/{{ $property->ID }}"
+                                    target="_blank">
+                                    {{ $property->post_title }}
+                                </a>
+                            </td>
                             <td>
                                 <a href="{{ route('admin.property_indication', ['propertyId' => $property->ID]) }}"
                                     class="btn btn-light">
                                     Indicação
                                 </a>
-                                <a href="{{ route('admin.property_standard', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-light">
-                                    Padrão do Imóvel
-                                </a>
+                                @php
+                                    $standard = $property->propertyInfo->standard ?? 0;
+                                @endphp
+                                <form name="standardForm" action="{{ route('admin.property_info') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="propriedade" id="propriedade"
+                                        value="{{ $property->ID }}">
+                                    <div class="form-group col-md-6 pl-0 mt-2">
+                                        <select class="form-control" name="standard" id="standard">
+                                            <option value="" disabled {{ $standard == 0 ? 'selected' : '' }}
+                                                hidden>Padrão</option>
+                                            <option value="1" {{ $standard == 1 ? 'selected' : '' }}>Simples
+                                            </option>
+                                            <option value="2" {{ $standard == 2 ? 'selected' : '' }}>Médio
+                                            </option>
+                                            <option value="3" {{ $standard == 3 ? 'selected' : '' }}>Alto
+                                            </option>
+                                        </select>
+                                    </div>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -122,35 +145,8 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
-        $('#contrato').change(function() {
-            var file = $('#contrato')[0].files[0].name;
-            $(this).prev('label').text(file);
-        });
-
-        $('#propriedade').on('change', function() {
-            $.ajax({
-                url: "/admin/getProperty/" + this.value,
-                success: function(result) {
-                    if (result['user_indication_id']) {
-                        $('#indicacao option[value="' + result['user_indication_id'] + '"]').prop(
-                            'selected', 'selected');
-                    } else {
-                        $('#indicacao').prop(
-                            'selectedIndex', 0);
-                    }
-
-                    if (result['contract']) {
-                        id = $('#propriedade').val()
-                        $('#contract_download').prop('href',
-                            `${window.location.origin}/admin/property/${id}/contract`)
-                        $('#contract_download').removeClass('hidden')
-                        $('.custom-file-label').text(result['contract'])
-                    } else {
-                        $('#contract_download').addClass('hidden')
-                        $('.custom-file-label').text('Escolher Arquivo')
-                    }
-                }
-            });
+        $('select[name="standard"]').on('change', function() {
+            $(this).parent().parent()[0].submit();
         });
     </script>
 </body>

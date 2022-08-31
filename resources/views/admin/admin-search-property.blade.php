@@ -32,7 +32,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('admin.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item dropdown">
@@ -42,15 +44,19 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
                         <li><a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Agenda</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.properties') }}">Propriedades</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de Indicações</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
+                                Indicações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a></li>
                     </ul>
                 </div>

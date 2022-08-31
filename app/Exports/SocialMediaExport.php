@@ -26,12 +26,48 @@ class SocialMediaExport implements FromView
 
         $properties = Property::export();
 
+        $low = 15;
+        $medium = 60;
+
+        while ($medium > 0 || $low > 0) {
+            $hour = rand(0, 4);
+            $day = rand(0, 29);
+
+            if (!isset($data[$hour][$day])) {
+                if ($low > 0) {
+                    $data[$hour][$day] = $properties['low'][rand(0, count($properties['low']) - 1)];
+                    $low--;
+                    continue;
+                }
+
+                if ($medium > 0) {
+                    $data[$hour][$day] = $properties['medium'][rand(0, count($properties['medium']) - 1)];
+                    $medium--;
+                    continue;
+                }
+            }
+        }
+
         foreach ($days as $key => $day) {
-            $data[0][$key] = $properties[rand(0, count($properties) - 1)];
-            $data[1][$key] = $properties[rand(0, count($properties) - 1)];
-            $data[2][$key] = $properties[rand(0, count($properties) - 1)];
-            $data[3][$key] = $properties[rand(0, count($properties) - 1)];
-            $data[4][$key] = $properties[rand(0, count($properties) - 1)];
+            if (!isset($data[0][$day - 1])) {
+                $data[0][$day - 1] = $properties['high'][rand(0, count($properties['high']) - 1)];
+            }
+
+            if (!isset($data[1][$day - 1])) {
+                $data[1][$day - 1] = $properties['high'][rand(0, count($properties['high']) - 1)];
+            }
+
+            if (!isset($data[2][$day - 1])) {
+                $data[2][$day - 1] = $properties['high'][rand(0, count($properties['high']) - 1)];
+            }
+
+            if (!isset($data[3][$day - 1])) {
+                $data[3][$day - 1] = $properties['high'][rand(0, count($properties['high']) - 1)];
+            }
+
+            if (!isset($data[4][$day - 1])) {
+                $data[4][$day - 1] = $properties['high'][rand(0, count($properties['high']) - 1)];
+            }
         }
 
         return view('admin.social_media.table', [

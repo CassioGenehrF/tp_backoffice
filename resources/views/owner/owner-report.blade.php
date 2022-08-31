@@ -33,7 +33,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('owner.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">

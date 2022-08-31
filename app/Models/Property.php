@@ -279,8 +279,7 @@ class Property extends Model
         return $query->inRandomOrder()
             ->published()
             ->standard(3)
-            ->select('ID')
-            ->limit(9);
+            ->select('ID');
     }
 
     public function scopeMediumStandard(Builder $query): Builder
@@ -288,8 +287,7 @@ class Property extends Model
         return $query->inRandomOrder()
             ->published()
             ->standard(2)
-            ->select('ID')
-            ->limit(5);
+            ->select('ID');
     }
 
     public function scopeLowStandard(Builder $query): Builder
@@ -297,8 +295,7 @@ class Property extends Model
         return $query->inRandomOrder()
             ->published()
             ->standard(1)
-            ->select('ID')
-            ->limit(1);
+            ->select('ID');
     }
 
     public function scopeProperty(Builder $query): Builder
@@ -306,30 +303,23 @@ class Property extends Model
         return $query->where('post_type', 'estate_property');
     }
 
-    public static function export(): array
+    public static function export(): Collection
     {
-        $highStandard = self::highStandard()->get();
-        $mediumStandard = self::mediumStandard()->get();
-        $lowStandard = self::lowStandard()->get();
+        $properties = new Collection([
+            'low' => self::lowStandard()->get(),
+            'medium' => self::mediumStandard()->get(),
+            'high' => self::highStandard()->get()
+        ]);
 
-        $properties = new Collection();
-        $properties = $properties->concat($lowStandard);
-        $properties = $properties->concat($mediumStandard);
-        $properties = $properties->concat($highStandard);
+        $properties['low'] = $properties['low']->map(function ($property) {
+            return $property->ID;
+        })->all();
+        
+        $properties['medium'] = $properties['medium']->map(function ($property) {
+            return $property->ID;
+        })->all();
 
-        $totalRows = count($lowStandard) + count($mediumStandard) + count($highStandard);
-
-        if ($totalRows < 15) {
-            $allProperties = self::inRandomOrder()
-                ->published()
-                ->select('ID')
-                ->limit(15 - $totalRows)
-                ->get();
-
-            $properties = $properties->concat($allProperties);
-        }
-
-        $properties = $properties->map(function ($property) {
+        $properties['high'] = $properties['high']->map(function ($property) {
             return $property->ID;
         })->all();
 

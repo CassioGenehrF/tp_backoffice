@@ -29,7 +29,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('admin.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">
@@ -53,7 +55,7 @@
                     </div>
                 </div>
                 <li class="menu-item username">
-                    <p>{{ Auth::user()->display_name }}</p>
+                    <a href="{{ route('admin.profile') }}">{{ Auth::user()->display_name }}</a>
                 </li>
                 <li class="menu-item notification">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

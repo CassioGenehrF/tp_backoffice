@@ -31,7 +31,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('owner.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">
@@ -45,7 +47,8 @@
                         </li>
                         <li><a class="dropdown-item" href="{{ route('owner.reservations') }}">Minhas Reservas</a></li>
                         <li><a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a></li>
-                        <li><a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
+                        </li>
                         <li><a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a></li>
                     </ul>
                 </div>
@@ -70,7 +73,7 @@
     <main class="container">
         <div class="accordion mt-2" id="demands">
             @foreach ($demands as $key => $demand)
-                <div class="accordion-item" id="demand-{{$key}}">
+                <div class="accordion-item" id="demand-{{ $key }}">
                     <h2 class="accordion-header" id="heading{{ Str::slug("$demand->client-$key") }}">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#{{ Str::slug("$demand->client-$key") }}" aria-expanded="fallse"
@@ -141,7 +144,7 @@
                 var s = Math.trunc((start - now) / 1000 - ((m * 60) + (h * 60 * 60)));
 
                 if ((start - now) <= 0) {
-                    $("#demand-"+key).remove();
+                    $("#demand-" + key).remove();
                 }
 
                 if (s < 10) {

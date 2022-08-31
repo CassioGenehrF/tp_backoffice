@@ -32,7 +32,9 @@
 
 <body>
     <header class="menu-content">
-        <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        <a href="{{ route('admin.page') }}">
+            <img class="menu-logo" src="{{ asset('images/Logopaulista.png') }}" alt="">
+        </a>
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">
@@ -102,7 +104,8 @@
                     <input type="hidden" name="year_id" id="year_id" value="{{ $yearId }}">
                     <div class="d-flex flex-lg-row justify-content-center align-items-center">
                         <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
-                            <button onclick="prevMonth()" data-mdb-ripple-color="dark" class="btn btn-link text-dark">
+                            <button onclick="prevMonth()" data-mdb-ripple-color="dark"
+                                class="btn btn-link text-dark">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
                         </div>
