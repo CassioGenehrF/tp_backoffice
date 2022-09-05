@@ -127,13 +127,13 @@
                         <tr>
                             <td>{{ $item->property->post_title }}</td>
                             <td>
-                                <a href="{{ url("/storage/property/documents/$item->document") }}" target="_blank">
+                                <a href="{{ url("/storage/documents/$item->document") }}" target="_blank">
                                     Visualizar
                                 </a>
                             </td>
                             <td>
                                 @if ($item->relation)
-                                    <a href="{{ url("/storage/property/documents/$item->relation") }}"
+                                    <a href="{{ url("/storage/documents/$item->relation") }}"
                                         target="_blank">
                                         Visualizar
                                     </a>
