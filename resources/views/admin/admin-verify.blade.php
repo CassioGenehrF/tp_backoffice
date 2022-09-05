@@ -123,7 +123,7 @@
                             </td>
                         </tr>
                     @endif
-                    @if ($item instanceof \App\Models\VerifiedProperty)
+                    @if ($item instanceof \App\Models\VerifiedProperty && $item->property)
                         <tr>
                             <td>{{ $item->property->post_title }}</td>
                             <td>
