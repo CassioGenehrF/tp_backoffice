@@ -46,7 +46,7 @@ class VerifiedProperty extends Model
         $documentWithExt = $document->getClientOriginalName();
         $fileDocument = pathinfo($documentWithExt, PATHINFO_FILENAME);
         $fileNameDocument = $fileDocument . '_' . time() . '.' . $document->getClientOriginalExtension();
-        $document->storeAs('public/documents', $fileNameDocument);
+        $document->storeAs('documents', $fileNameDocument);
         $this->setAttribute($fieldName, $fileNameDocument);
     }
 
@@ -78,7 +78,7 @@ class VerifiedProperty extends Model
             $confirmationWithExt = $relation->getClientOriginalName();
             $fileConfirmation = pathinfo($confirmationWithExt, PATHINFO_FILENAME);
             $fileNameRelation = $fileConfirmation . '_' . time() . '.' . $relation->getClientOriginalExtension();
-            $relation->storeAs('public/documents', $fileNameRelation);
+            $relation->storeAs('documents', $fileNameRelation);
             $this->setAttribute('relation', $fileNameRelation);
         }
     }

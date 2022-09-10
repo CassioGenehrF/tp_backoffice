@@ -180,7 +180,7 @@ class Commitment extends Model
             $extension = $contrato->getClientOriginalExtension();
 
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-            $contrato->storeAs('public/contracts', $fileNameToStore);
+            $contrato->storeAs('contracts', $fileNameToStore);
         }
 
         $property = Property::find($propertyId);
@@ -277,7 +277,7 @@ class Commitment extends Model
             $extension = $contrato->getClientOriginalExtension();
 
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-            $contrato->storeAs('public/contracts', $fileNameToStore);
+            $contrato->storeAs('contracts', $fileNameToStore);
         }
 
         $property = Property::find($propertyId);

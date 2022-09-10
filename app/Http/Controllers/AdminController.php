@@ -177,7 +177,7 @@ class AdminController extends Controller
             $extension = $request->file('receipt')->getClientOriginalExtension();
 
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-            $request->file('receipt')->storeAs('public/receipts', $fileNameToStore);
+            $request->file('receipt')->storeAs('receipts', $fileNameToStore);
         }
 
         $receipt = new Receipt([
@@ -425,7 +425,7 @@ class AdminController extends Controller
             $extension = $request->file('contrato')->getClientOriginalExtension();
 
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-            $request->file('contrato')->storeAs('public/contracts', $fileNameToStore);
+            $request->file('contrato')->storeAs('contracts', $fileNameToStore);
         }
 
         if (!$hasPropertyInfo) {
