@@ -89,40 +89,17 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Proprietário/Imóvel</th>
+                    <th scope="col">Imóvel</th>
+                    <th scope="col">Residência</th>
+                    <th scope="col">Vínculo</th>
                     <th scope="col">Documento</th>
-                    <th scope="col">Confirmação</th>
+                    <th scope="col">Selfie</th>
                     <th scope="col">Código</th>
                     <th scope="col" class="action">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pending as $item)
-                    @if ($item instanceof \App\Models\VerifiedUser)
-                        <tr>
-                            <td>{{ $item->user->display_name }}</td>
-                            <td>
-                                <a href="{{ url("/storage/documents/$item->document") }}" target="_blank">
-                                    Visualizar
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{{ url("/storage/documents/$item->confirmation") }}" target="_blank">
-                                    Visualizar
-                                </a>
-                            </td>
-                            <td>{{ $item->code }}</td>
-                            <td>
-                                <form action="{{ route('admin.verified', ['id' => $item->id]) }}" method="post">
-                                    <button type="submit" class="btn btn-success">Verificado</button>
-                                </form>
-                                <button type="button" class="reason btn btn-danger" data-toggle="modal"
-                                    data-target="#reason" data-type="user" data-id="{{ $item->id }}">
-                                    Recusar
-                                </button>
-                            </td>
-                        </tr>
-                    @endif
                     @if ($item instanceof \App\Models\VerifiedProperty && $item->property)
                         <tr>
                             <td>{{ $item->property->post_title }}</td>
@@ -138,7 +115,17 @@
                                     </a>
                                 @endif
                             </td>
-                            <td></td>
+                            <td>
+                                <a href="{{ url("/storage/documents/$item->user_document") }}" target="_blank">
+                                    Visualizar
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url("/storage/documents/$item->user_confirmation") }}" target="_blank">
+                                    Visualizar
+                                </a>
+                            </td>
+                            <td>{{ $item->code }}</td>
                             <td>
                                 <form action="{{ route('admin.verified_property', ['id' => $item->id]) }}"
                                     method="post">
