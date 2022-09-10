@@ -20,7 +20,8 @@ class VerifiedProperty extends Model
         'document',
         'relation',
         'verified',
-        'reason'
+        'reason',
+        'code'
     ];
 
     public function property(): HasOne
