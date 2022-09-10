@@ -89,7 +89,7 @@
             <input type="hidden" name="property_id" id="property_id" value={{ $property->ID }}>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="document">Foto do Documento Frente e Verso</label>
+                    <label for="document">Foto do Documento Frente e Verso*</label>
                     <input type="file" name="document" id="document" class="form-control" accept="image/*" required>
                     <small class="form-text text-muted">CNH, RG ou Passaporte</small>
                 </div>
@@ -112,7 +112,7 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="residence">Comprovante de Residência</label>
+                    <label for="residence">Comprovante de Residência*</label>
                     <input type="file" name="residence" id="residence" class="form-control" accept="image/*"
                         required>
                     <small class="form-text text-muted">Água, Luz, IPTU, Mátricula do imóvel</small>
@@ -120,9 +120,9 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label for="relation">Comprovação de Vínculo*</label>
+                    <label for="relation">Comprovação de Vínculo</label>
                     <input type="file" name="relation" id="relation" class="form-control" accept="image/*">
-                    <small class="form-text text-muted">*Caso o documento esteja em nome de terceiro, deve ser enviado
+                    <small class="form-text text-muted">Caso o documento esteja em nome de terceiro, deve ser enviado
                         documento que explique qual o vínculo do anunciante com o títular do comprovante de
                         endereço. Como uma Certidão de Casamento, Certidão de Nascimento, Contrato de União Estável,
                         entre outros.</small>

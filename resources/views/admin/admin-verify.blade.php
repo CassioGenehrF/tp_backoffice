@@ -133,8 +133,7 @@
                             </td>
                             <td>
                                 @if ($item->relation)
-                                    <a href="{{ url("/storage/documents/$item->relation") }}"
-                                        target="_blank">
+                                    <a href="{{ url("/storage/documents/$item->relation") }}" target="_blank">
                                         Visualizar
                                     </a>
                                 @endif
