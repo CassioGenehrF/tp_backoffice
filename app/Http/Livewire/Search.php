@@ -10,6 +10,7 @@ use Livewire\Component;
 
 class Search extends Component
 {
+    public $propertyId;
     public $search;
     public $start;
     public $end;
@@ -18,6 +19,7 @@ class Search extends Component
     public $standard;
 
     protected $queryString = [
+        'propertyId',
         'search',
         'start',
         'end',
@@ -61,6 +63,7 @@ class Search extends Component
         $filteredProperties = PropertyFeature::filteredProperties($this->terms);
 
         $properties = Property::published()
+            ->where('wp_posts.ID', 'like', "%$this->propertyId%")
             ->where('post_title', 'like', "%$this->search%")
             ->whereNotIn('wp_posts.ID', $propertiesWithCommitment)
             ->whereIn('wp_posts.ID', $filteredProperties)

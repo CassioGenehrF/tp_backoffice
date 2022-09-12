@@ -48,7 +48,7 @@ class SocialMediaExport implements FromView
             }
         }
 
-        foreach ($days as $key => $day) {
+        foreach ($days as $day) {
             if (!isset($data[0][$day - 1])) {
                 $data[0][$day - 1] = $properties['high'][rand(0, count($properties['high']) - 1)];
             }

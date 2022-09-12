@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <li class="menu-item username">
-                    <p>{{ Auth::user()->display_name }}</p>
+                    <a href="{{ route('admin.profile') }}">{{ Auth::user()->display_name }}</a>
                 </li>
                 <li class="menu-item notification">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,8 +97,8 @@
                 <tbody>
                     @foreach ($properties as $property)
                         <tr>
-                            <td>{{ $property->property->post_title }}</td>
-                            <td>{{ $property->user->display_name }}</td>
+                            <td>{{ isset($property->property) ? $property->property->post_title : '' }}</td>
+                            <td>{{ isset($property->user) ? $property->user->display_name : '' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
