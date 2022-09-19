@@ -2,10 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Helpers\CoordinateCalculator;
+use App\Helpers\Enums\StateEnum;
 use App\Models\Commitment;
 use App\Models\Property;
 use App\Models\PropertyFeature;
+use App\Models\PropertyInfo;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Livewire\Component;
 
 class Search extends Component
@@ -17,6 +21,7 @@ class Search extends Component
     public $terms = [];
     public $city;
     public $standard;
+    private $client;
 
     protected $queryString = [
         'propertyId',
@@ -27,6 +32,14 @@ class Search extends Component
         'city',
         'standard'
     ];
+
+    public function __construct()
+    {
+        $this->client = new Client([
+            'base_uri' => 'https://maps.googleapis.com/maps/api/geocode/json',
+            'timeout'  => 2.0,
+        ]);
+    }
 
     private function loadFilters()
     {
@@ -69,6 +82,70 @@ class Search extends Component
             ->whereIn('wp_posts.ID', $filteredProperties)
             ->standard($this->standard)
             ->get();
+
+        foreach ($properties as $property) {
+            $propertyInfo = PropertyInfo::where('property_id', $property->ID)->first();
+            if (!$propertyInfo) {
+                $propertyInfo = new PropertyInfo([
+                    'property_id' => $property->ID
+                ]);
+                $propertyInfo->save();
+            }
+
+            if (!($propertyInfo->location_lat || $propertyInfo->location_lng)) {
+                $abbreviation = isset(StateEnum::abbreviationList[$property->state]) ? StateEnum::abbreviationList[$property->state] : $property->state;
+                $address = "{$property->city}/" . $abbreviation;
+
+                $response = $this->client->request('GET', '', [
+                    'query' => [
+                        'address' => $address,
+                        'key' => env('APP_KEY_GOOGLE_MAPS_API')
+                    ]
+                ]);
+
+                $res = json_decode($response->getBody());
+
+                $location_lat = $res->results[0]->geometry->location->lat;
+                $location_lng = $res->results[0]->geometry->location->lng;
+
+                $propertyInfo->update([
+                    'location_lat' => $location_lat,
+                    'location_lng' => $location_lng
+                ]);
+            }
+
+            $property->refresh();
+            $property->distance = 0;
+        }
+
+        if ($this->city) {
+            $response = $this->client->request('GET', '', [
+                'query' => [
+                    'address' => $this->city,
+                    'key' => env('APP_KEY_GOOGLE_MAPS_API')
+                ]
+            ]);
+
+            $res = json_decode($response->getBody());
+
+            if (isset($res->results[0])) {
+                $location_lat = $res->results[0]->geometry->location->lat;
+                $location_lng = $res->results[0]->geometry->location->lng;
+
+                foreach ($properties as $property) {
+                    $distance = CoordinateCalculator::distanceBetween(
+                        $location_lat,
+                        $location_lng,
+                        $property->propertyInfo->location_lat,
+                        $property->propertyInfo->location_lng
+                    );
+
+                    $property->distance = floatval($distance);
+                }
+            }
+        }
+
+        $properties = $properties->sortBy('distance');
 
         return view('livewire.search', [
             'properties' => $properties,

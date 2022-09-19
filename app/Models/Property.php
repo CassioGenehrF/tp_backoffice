@@ -13,6 +13,8 @@ class Property extends Model
 {
     protected $table = 'wp_posts';
 
+    protected $primaryKey = 'ID';
+
     protected $fillable = [
         'ID',
         'post_author',

@@ -14,7 +14,9 @@ class PropertyInfo extends Model
         'property_id',
         'user_indication_id',
         'contract',
-        'standard'
+        'standard',
+        'location_lat',
+        'location_lng'
     ];
 
     public function property(): HasOne

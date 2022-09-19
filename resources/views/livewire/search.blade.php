@@ -16,7 +16,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="city">Cidade Origem</label>
-                    <input type="text" class="form-control" name="city" id="city" wire:model="city">
+                    <input type="text" class="form-control" name="city" id="city" wire:model.debounce.1s="city">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="standard">Padrão</label>
@@ -84,6 +84,9 @@
                 <thead>
                     <tr>
                         <th scope="col">Imóvel</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Distância (em KM)</th>
                         <th scope="col">Valores</th>
                     </tr>
                 </thead>
@@ -91,6 +94,9 @@
                     @foreach ($properties as $property)
                         <tr>
                             <td>{{ $property->post_title }}</td>
+                            <td>{{ $property->city }}</td>
+                            <td>{{ $property->state }}</td>
+                            <td>{{ $property->distance }}</td>
                             <td>
                                 <details>
                                     <summary>Detalhes</summary>
