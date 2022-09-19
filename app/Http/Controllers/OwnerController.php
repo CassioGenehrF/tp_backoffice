@@ -10,6 +10,8 @@ use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Http\Requests\Owner\ContractRequest;
 use App\Models\Commitment;
+use App\Models\ContractClient;
+use App\Models\ContractDeposit;
 use App\Models\Demand;
 use App\Models\Property;
 use App\Models\Receipt;
@@ -142,7 +144,7 @@ class OwnerController extends Controller
         return view('owner.owner-reservations')
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations)
-            ->with('properties', Property::published()->get());
+            ->with('properties', Auth::user()->properties);
     }
 
     public function reservationDestroy(RentRequest $request)
@@ -231,10 +233,9 @@ class OwnerController extends Controller
     public function createContract(ContractRequest $request)
     {
         $property = Property::find($request->property_id);
-
         $data = [
             'propriedade' => $property,
-            'nome_proprietario' => $property->user->display_name,
+            'nome_proprietario' => "{$property->user->firstName} {$property->user->lastName}",
             'cpf_proprietario' => $property->user->cpf,
             'endereco_proprietario' => $property->user->street . ", " . $property->user->streetNumber,
             'cep_proprietario' => $property->user->cep,
@@ -271,6 +272,56 @@ class OwnerController extends Controller
             'cpf_banco' => $request->cpf_bank ?? '',
             'pix' => $request->pix ?? ''
         ];
+
+        $checkin_hour = substr($request->checkin_hour, 0, strpos($request->checkin_hour, ':'));
+        $checkin_minute = substr($request->checkin_hour, strpos($request->checkin_hour, ':') + 1);
+        $checkin_limit_hour = substr($request->entry, 0, strpos($request->entry, ':'));
+        $checkin_limit_minute = substr($request->entry, strpos($request->entry, ':') + 1);
+        $checkout_hour = substr($request->checkout_hour, 0, strpos($request->checkout_hour, ':'));
+        $checkout_minute = substr($request->checkout_hour, strpos($request->checkout_hour, ':') + 1);
+
+        ContractClient::create([
+            'property_id' => $property->ID,
+            'owner_name' => "{$property->user->firstName} {$property->user->lastName}",
+            'owner_cpf' => $property->user->cpf,
+            'owner_address' => $property->user->street . ", " . $property->user->streetNumber,
+            'owner_cep' => $property->user->cep,
+            'owner_city' => $property->user->city,
+            'owner_uf' => $property->user->state,
+            'owner_phone_number' => $property->user->phone,
+            'client_name' => $request->client ?? null,
+            'client_cpf' => $request->cpf ?? null,
+            'client_address' => $request->street ?? null,
+            'client_cep' => $request->cep ?? null,
+            'client_city' => $request->city ?? null,
+            'client_uf' => $request->state ? StateEnum::stateList[$request->state] : null,
+            'client_phone_number' => $request->phone ?? null,
+            'property_address' => $property->street,
+            'property_city' => $property->city,
+            'property_uf' => $property->state,
+            'rented_days' => Carbon::createFromFormat('Y-m-d', $request->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $request->checkin)),
+            'checkin_date' => Carbon::createFromFormat('Y-m-d', $request->checkin),
+            'checkin_hour' => Carbon::createFromFormat('Y-m-d', $request->checkin)->setHour($checkin_hour)->setMinute($checkin_minute),
+            'checkin_limit_hour' => Carbon::createFromFormat('Y-m-d', $request->checkin)->setHour($checkin_limit_hour)->setMinute($checkin_limit_minute),
+            'checkout_date' => Carbon::createFromFormat('Y-m-d', $request->checkout),
+            'checkout_hour' => Carbon::createFromFormat('Y-m-d', $request->checkout)->setHour($checkout_hour)->setMinute($checkout_minute),
+            'guests_number' => $request->guests ?? 0,
+            'excess_value' => $request->excess ?? 0,
+            'rent_value' => $request->rent ?? 0,
+            'signal_value' => $request->sinal ?? 0,
+            'clean_tax' => $request->clean ?? 0,
+            'bail_tax' => $request->bail ?? 0,
+            'allow_pet' => $request->pet,
+        ]);
+
+        ContractDeposit::create([
+            'bank' => $request->bank ? BankEnum::bankList[$request->bank] : null,
+            'agency' => $request->agency ?? null,
+            'account' => $request->account ?? null,
+            'responsible' => $request->responsible ?? null,
+            'responsible_cpf' => $request->cpf_bank ?? null,
+            'pix' => $request->pix ?? null
+        ]);
 
         $pdf = PDF::loadView('template.contract', $data);
         $fileName = "contrato_" . str_replace(' ', '_', strtolower($property->post_title)) . ".pdf";

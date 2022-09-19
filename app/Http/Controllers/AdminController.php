@@ -108,6 +108,11 @@ class AdminController extends Controller
         return Excel::download(new SocialMediaExport, 'socialmedia.xlsx');
     }
 
+    public function contracts()
+    {
+        return view('errors.maintence');
+    }
+
     public function demand()
     {
         $demand = null;

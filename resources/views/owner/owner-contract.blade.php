@@ -88,13 +88,11 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cpf">CPF:</label>
-                    <input type="number" class="form-control" id="cpf" name="cpf"
-                        onkeypress="return onlyNumberKey(event)">
+                    <input type="text" class="form-control" id="cpf" name="cpf">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="cpf">CEP:</label>
-                    <input type="number" class="form-control" id="cpf" name="cpf"
-                        onkeypress="return onlyNumberKey(event)">
+                    <label for="cep">CEP:</label>
+                    <input type="text" class="form-control" id="cep" name="cep">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="street">Rua:</label>
@@ -116,7 +114,7 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="phone">Telefone:</label>
-                    <input type="number" class="form-control" id="phone" name="phone"
+                    <input type="text" class="form-control" id="phone" name="phone"
                         onkeypress="return onlyNumberKey(event)">
                 </div>
                 <div class="form-group col-md-2">

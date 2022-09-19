@@ -30,7 +30,18 @@ class User extends Authenticatable
         'display_name'
     ];
 
-    protected $appends = ['role', 'phone', 'cpf', 'street', 'streetNumber', 'city', 'state', 'cep'];
+    protected $appends = [
+        'firstName',
+        'lastName',
+        'role',
+        'phone',
+        'cpf',
+        'street',
+        'streetNumber',
+        'city',
+        'state',
+        'cep'
+    ];
 
     public function getAuthIdentifier()
     {
@@ -40,6 +51,34 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return Hash::make($this->user_pass);
+    }
+
+    protected function getFirstNameAttribute(): string
+    {
+        $first_name = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'first_name')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $first_name = $first_name ? $first_name->meta_value : '';
+
+        return $first_name;
+    }
+
+    protected function getLastNameAttribute(): string
+    {
+        $last_name = DB::query()
+            ->select('meta_value')
+            ->from('wp_usermeta')
+            ->where('meta_key', 'last_name')
+            ->where('user_id', $this->ID)
+            ->first();
+
+        $last_name = $last_name ? $last_name->meta_value : '';
+
+        return $last_name;
     }
 
     protected function getRoleAttribute(): string

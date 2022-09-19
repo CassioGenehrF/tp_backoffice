@@ -54,6 +54,7 @@
                         <a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a>
                         <a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
                         <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
+                        <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                     </div>
                 </div>
                 <li class="menu-item username">

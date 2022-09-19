@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('demand', [AdminController::class, 'demand'])->name('admin.demand');
         Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
         Route::get('social', [AdminController::class, 'social'])->name('admin.social_media');
+        Route::get('contracts', [AdminController::class, 'contracts'])->name('admin.contracts');
 
         Route::get('getProperty/{propertyId}', [AdminController::class, 'getProperty'])->name('admin.property');
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);

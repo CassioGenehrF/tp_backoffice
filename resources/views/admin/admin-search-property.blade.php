@@ -58,6 +58,7 @@
                         <li><a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a></li>
                     </ul>
                 </div>
                 <li class="menu-item username">
