@@ -76,7 +76,7 @@
                 <div class="form-group col-md-4">
                     <label for="billing_type">Tipo de Cobrança:</label>
                     <select type="text" class="form-control" id="billing_type" name="billing_type" required>
-                        <option value="" disabled hidden {{ $value->billing_type ? '' : 'selected' }}>Selecione
+                        <option value="" disabled hidden {{ isset($value->billing_type) ? '' : 'selected' }}>Selecione
                             um Tipo de Cobrança</option>
                         <option value="people" {{ $value->billing_type == 'people' ? 'selected' : '' }}>Por Pessoa
                         </option>
