@@ -78,9 +78,9 @@
                     <select type="text" class="form-control" id="billing_type" name="billing_type" required>
                         <option value="" disabled hidden {{ isset($value->billing_type) ? '' : 'selected' }}>Selecione
                             um Tipo de Cobrança</option>
-                        <option value="people" {{ $value->billing_type == 'people' ? 'selected' : '' }}>Por Pessoa
+                        <option value="people" {{ isset($value->billing_type) && $value->billing_type == 'people' ? 'selected' : '' }}>Por Pessoa
                         </option>
-                        <option value="package" {{ $value->billing_type == 'package' ? 'selected' : '' }}>Por Pacote
+                        <option value="package" {{ isset($value->billing_type) && $value->billing_type == 'package' ? 'selected' : '' }}>Por Pacote
                         </option>
                     </select>
                 </div>
