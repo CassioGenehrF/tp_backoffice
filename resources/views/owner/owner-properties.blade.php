@@ -98,6 +98,8 @@
                                     class="btn btn-success">Enviar Documentos</a>
                             @endif
                             @if ($property->verified && $property->verified->verified)
+                                <a href="{{ route('owner.value', ['propertyId' => $property->ID]) }}"
+                                    class="btn btn-warning">Definir Valores</a>
                                 <a href="{{ route('owner.contract', ['propertyId' => $property->ID]) }}"
                                     class="btn btn-danger">Gerar Contrato</a>
                             @endif

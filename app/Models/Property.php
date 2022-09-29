@@ -276,6 +276,17 @@ class Property extends Model
         });
     }
 
+    public function scopeBilling(Builder $query, $billing_type): Builder
+    {
+        if ($billing_type == 0) {
+            return $query;
+        }
+
+        return $query->whereHas('propertyValue', function ($query) use ($billing_type) {
+            $query->where('billing_type', $billing_type);
+        });
+    }
+
     public function scopeHighStandard(Builder $query): Builder
     {
         return $query->inRandomOrder()
@@ -316,7 +327,7 @@ class Property extends Model
         $properties['low'] = $properties['low']->map(function ($property) {
             return $property->ID;
         })->all();
-        
+
         $properties['medium'] = $properties['medium']->map(function ($property) {
             return $property->ID;
         })->all();
@@ -336,6 +347,11 @@ class Property extends Model
     public function propertyInfo(): HasOne
     {
         return $this->hasOne(PropertyInfo::class, 'property_id', 'ID');
+    }
+
+    public function propertyValue(): hasOne
+    {
+        return $this->hasOne(PropertyValue::class, 'property_id', 'ID');
     }
 
     public function verified(): HasOne

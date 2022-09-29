@@ -21,6 +21,7 @@ class Search extends Component
     public $terms = [];
     public $city;
     public $standard;
+    public $billing_type;
     private $client;
 
     protected $queryString = [
@@ -30,7 +31,8 @@ class Search extends Component
         'end',
         'terms' => ['as' => 't'],
         'city',
-        'standard'
+        'standard',
+        'billing_type'
     ];
 
     public function __construct()
@@ -81,6 +83,7 @@ class Search extends Component
             ->whereNotIn('wp_posts.ID', $propertiesWithCommitment)
             ->whereIn('wp_posts.ID', $filteredProperties)
             ->standard($this->standard)
+            ->billing($this->billing_type)
             ->get();
 
         foreach ($properties as $property) {

@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('properties', [OwnerController::class, 'properties'])->name('owner.properties');
         Route::get('property/{propertyId}/documents', [OwnerController::class, 'propertyDocuments'])->name('owner.property_documents');
         Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
+        Route::get('value/{propertyId}', [OwnerController::class, 'value'])->name('owner.value');
         Route::get('receipts/{id}', [OwnerController::class, 'downloadReceipt'])->name('owner.download_receipt');
         Route::get('demands', [OwnerController::class, 'demands'])->name('owner.demands');
 
@@ -88,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('property/documents', [OwnerController::class, 'sendPropertyDocuments'])->name('owner.send_property_documents');
         Route::post('contract', [OwnerController::class, 'createContract'])->name('owner.create_contract');
+        Route::post('value', [OwnerController::class, 'saveValue'])->name('owner.save_value');
         Route::post('block', [OwnerController::class, 'block'])->name('owner.block');
         Route::post('unblock', [OwnerController::class, 'unblock'])->name('owner.unblock');
         Route::delete('reservation/destroy', [OwnerController::class, 'reservationDestroy'])->name('owner.reservation_destroy');

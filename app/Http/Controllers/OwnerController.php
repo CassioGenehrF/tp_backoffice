@@ -14,6 +14,7 @@ use App\Models\ContractClient;
 use App\Models\ContractDeposit;
 use App\Models\Demand;
 use App\Models\Property;
+use App\Models\PropertyValue;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
 use App\Models\VerifiedProperty;
@@ -211,6 +212,14 @@ class OwnerController extends Controller
             ->with('states', StateEnum::stateList);
     }
 
+    public function value($propertyId)
+    {
+        return view('owner.owner-value')
+            ->with('name', Auth::user()->display_name)
+            ->with('property', Property::find($propertyId))
+            ->with('value', PropertyValue::where('property_id', $propertyId)->first());
+    }
+
     public function demands()
     {
         $now = now();
@@ -228,6 +237,24 @@ class OwnerController extends Controller
         return view('owner.owner-demands')
             ->with('name', Auth::user()->display_name)
             ->with('demands', $demands);
+    }
+
+    public function saveValue(Request $request)
+    {
+        $data = $request->all();
+        $data['monday'] = $data['monday'] ?? 0;
+        $data['tuesday'] = $data['tuesday'] ?? 0;
+        $data['wednesday'] = $data['wednesday'] ?? 0;
+        $data['thursday'] = $data['thursday'] ?? 0;
+        $data['friday'] = $data['friday'] ?? 0;
+
+        PropertyValue::updateOrCreate([
+            'property_id' => $data['property_id']
+        ], $data);
+
+        return view('owner.owner-properties')
+            ->with('name', Auth::user()->display_name)
+            ->with('properties', Auth::user()->properties);
     }
 
     public function createContract(ContractRequest $request)
