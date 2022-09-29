@@ -194,14 +194,14 @@
                         <div class="form-group col-md-2 mt-2">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->monday ?? '' }}"
-                                    id="monday" name="monday" {{ $value->monday == '1' ? 'checked' : '' }}>
+                                    id="monday" name="monday" {{ isset($value->monday) && $value->monday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="monday">
                                     Segunda-feira
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->tuesday ?? '' }}"
-                                    id="tuesday" name="tuesday" {{ $value->tuesday == '1' ? 'checked' : '' }}>
+                                    id="tuesday" name="tuesday" {{ isset($value->tuesday) && $value->tuesday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tuesday">
                                     Terça-feira
                                 </label>
@@ -209,21 +209,21 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox"
                                     value="{{ $value->wednesday ?? '' }}" id="wednesday" name="wednesday"
-                                    {{ $value->wednesday == '1' ? 'checked' : '' }}>
+                                    {{ isset($value->wednesday) && $value->wednesday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="wednesday">
                                     Quarta-feira
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->thursday ?? '' }}"
-                                    id="thursday" name="thursday" {{ $value->thursday == '1' ? 'checked' : '' }}>
+                                    id="thursday" name="thursday" {{ isset($value->thursday) && $value->thursday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="thursday">
                                     Quinta-feira
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->friday ?? '' }}"
-                                    id="friday" name="friday" {{ $value->friday == '1' ? 'checked' : '' }}>
+                                    id="friday" name="friday" {{ isset($value->friday) && $value->friday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="friday">
                                     Sexta-feira
                                 </label>
