@@ -76,11 +76,16 @@
                 <div class="form-group col-md-4">
                     <label for="billing_type">Tipo de Cobrança:</label>
                     <select type="text" class="form-control" id="billing_type" name="billing_type" required>
-                        <option value="" disabled hidden {{ isset($value->billing_type) ? '' : 'selected' }}>Selecione
+                        <option value="" disabled hidden {{ isset($value->billing_type) ? '' : 'selected' }}>
+                            Selecione
                             um Tipo de Cobrança</option>
-                        <option value="people" {{ isset($value->billing_type) && $value->billing_type == 'people' ? 'selected' : '' }}>Por Pessoa
+                        <option value="people"
+                            {{ isset($value->billing_type) && $value->billing_type == 'people' ? 'selected' : '' }}>Por
+                            Pessoa
                         </option>
-                        <option value="package" {{ isset($value->billing_type) && $value->billing_type == 'package' ? 'selected' : '' }}>Por Pacote
+                        <option value="package"
+                            {{ isset($value->billing_type) && $value->billing_type == 'package' ? 'selected' : '' }}>
+                            Por Pacote
                         </option>
                     </select>
                 </div>
@@ -194,14 +199,16 @@
                         <div class="form-group col-md-2 mt-2">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->monday ?? '' }}"
-                                    id="monday" name="monday" {{ isset($value->monday) && $value->monday == '1' ? 'checked' : '' }}>
+                                    id="monday" name="monday"
+                                    {{ isset($value->monday) && $value->monday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="monday">
                                     Segunda-feira
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->tuesday ?? '' }}"
-                                    id="tuesday" name="tuesday" {{ isset($value->tuesday) && $value->tuesday == '1' ? 'checked' : '' }}>
+                                    id="tuesday" name="tuesday"
+                                    {{ isset($value->tuesday) && $value->tuesday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="tuesday">
                                     Terça-feira
                                 </label>
@@ -216,14 +223,16 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->thursday ?? '' }}"
-                                    id="thursday" name="thursday" {{ isset($value->thursday) && $value->thursday == '1' ? 'checked' : '' }}>
+                                    id="thursday" name="thursday"
+                                    {{ isset($value->thursday) && $value->thursday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="thursday">
                                     Quinta-feira
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $value->friday ?? '' }}"
-                                    id="friday" name="friday" {{ isset($value->friday) && $value->friday == '1' ? 'checked' : '' }}>
+                                    id="friday" name="friday"
+                                    {{ isset($value->friday) && $value->friday == '1' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="friday">
                                     Sexta-feira
                                 </label>
@@ -475,7 +484,9 @@
                 $('#people :input').prop('disabled', false);
                 $('#package').hide();
                 $('#package :input').prop('disabled', true);
-            } else {
+            }
+
+            if ($('#billing_type').val() == 'package') {
                 $('#people').hide();
                 $('#people :input').prop('disabled', true);
                 $('#package').show();
