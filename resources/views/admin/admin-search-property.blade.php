@@ -49,7 +49,7 @@
                         <li><a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.properties') }}">Propriedades</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.properties') }}">Imóveis</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
                                 Indicações</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
