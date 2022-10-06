@@ -299,7 +299,7 @@
                                 name="min_daily_christmas" required value="{{ $value->min_daily_christmas ?? '' }}">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="price_per_people_christmas">Valor por pessoa</label>
+                            <label for="price_per_people_christmas">Valor fixo</label>
                             <input type="number" class="form-control" id="price_per_people_christmas"
                                 name="price_per_people_christmas" required
                                 value="{{ $value->price_per_people_christmas ?? '' }}">
@@ -337,7 +337,7 @@
                                 name="min_daily_new_year" required value="{{ $value->min_daily_new_year ?? '' }}">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="price_per_people_new_year">Valor por pessoa</label>
+                            <label for="price_per_people_new_year">Valor fixo</label>
                             <input type="number" class="form-control" id="price_per_people_new_year"
                                 name="price_per_people_new_year" required
                                 value="{{ $value->price_per_people_new_year ?? '' }}">
@@ -375,7 +375,7 @@
                                 name="min_daily_carnival" required value="{{ $value->min_daily_carnival ?? '' }}">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="price_per_people_carnival">Valor por pessoa</label>
+                            <label for="price_per_people_carnival">Valor fixo</label>
                             <input type="number" class="form-control" id="price_per_people_carnival"
                                 name="price_per_people_carnival" required
                                 value="{{ $value->price_per_people_carnival ?? '' }}">

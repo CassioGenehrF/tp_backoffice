@@ -301,7 +301,7 @@
                                                                 {{ $property->propertyValue->people()->first()['min_daily_christmas'] }}
                                                             </p>
                                                             <p>
-                                                                Valor por pessoa:
+                                                                Valor fixo:
                                                                 R$
                                                                 {{ number_format($property->propertyValue->people()->first()['price_per_people_christmas'], 2, ',', '') }}
                                                             </p>
@@ -330,7 +330,7 @@
                                                                 {{ $property->propertyValue->people()->first()['min_daily_new_year'] }}
                                                             </p>
                                                             <p>
-                                                                Valor por pessoa:
+                                                                Valor fixo:
                                                                 R$
                                                                 {{ number_format($property->propertyValue->people()->first()['price_per_people_new_year'], 2, ',', '') }}
                                                             </p>
@@ -359,7 +359,7 @@
                                                                 {{ $property->propertyValue->people()->first()['min_daily_carnival'] }}
                                                             </p>
                                                             <p>
-                                                                Valor por pessoa:
+                                                                Valor fixo:
                                                                 R$
                                                                 {{ number_format($property->propertyValue->people()->first()['price_per_people_carnival'], 2, ',', '') }}
                                                             </p>

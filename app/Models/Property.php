@@ -296,11 +296,19 @@ class Property extends Model
                     $query->where("max_people_$period", ">=", $people);
 
                     if ($minValue > 0) {
-                        $query->where("price_per_people_$period", ">=", $minValue / $people);
+                        $value = $minValue / $people;
+                        if ($period == 'carnival' || $period == 'christmas' || $period == 'new_year') {
+                            $value = $minValue;
+                        }
+                        $query->where("price_per_people_$period", ">=", $value);
                     }
 
                     if ($maxValue > 0) {
-                        $query->where("price_per_people_$period", "<=", $maxValue / $people);
+                        $value = $maxValue / $people;
+                        if ($period == 'carnival' || $period == 'christmas' || $period == 'new_year') {
+                            $value = $maxValue;
+                        }
+                        $query->where("price_per_people_$period", "<=", $value);
                     }
                 }
 
@@ -373,11 +381,11 @@ class Property extends Model
                             $query->where("max_people_christmas", ">=", $people);
 
                             if ($minValue > 0) {
-                                $query->where("price_per_people_christmas", ">=", $minValue / $people);
+                                $query->where("price_per_people_christmas", ">=", $minValue);
                             }
 
                             if ($maxValue > 0) {
-                                $query->where("price_per_people_christmas", "<=", $maxValue / $people);
+                                $query->where("price_per_people_christmas", "<=", $maxValue);
                             }
                         }
 
@@ -392,11 +400,11 @@ class Property extends Model
                             $query->where("max_people_new_year", ">=", $people);
 
                             if ($minValue > 0) {
-                                $query->where("price_per_people_new_year", ">=", $minValue / $people);
+                                $query->where("price_per_people_new_year", ">=", $minValue);
                             }
 
                             if ($maxValue > 0) {
-                                $query->where("price_per_people_new_year", "<=", $maxValue / $people);
+                                $query->where("price_per_people_new_year", "<=", $maxValue);
                             }
                         }
 
@@ -411,11 +419,11 @@ class Property extends Model
                             $query->where("max_people_carnival", ">=", $people);
 
                             if ($minValue > 0) {
-                                $query->where("price_per_people_carnival", ">=", $minValue / $people);
+                                $query->where("price_per_people_carnival", ">=", $minValue);
                             }
 
                             if ($maxValue > 0) {
-                                $query->where("price_per_people_carnival", "<=", $maxValue / $people);
+                                $query->where("price_per_people_carnival", "<=", $maxValue);
                             }
                         }
 
