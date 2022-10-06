@@ -400,10 +400,15 @@
                     <div class="mt-2 col-md-2">
                         <h3>Pacote Inicial</h3>
                         <div class="form-group">
-                            <label for="max_people_package_start">Máximo de pessoas</label>
+                            <label for="max_people_package_start">Número de pessoas</label>
                             <input type="number" class="form-control" id="max_people_package_start"
                                 name="max_people_package_start" required
                                 value="{{ $value->max_people_package_start ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="price_package_start">Valor pacote</label>
+                            <input type="number" class="form-control" id="price_package_start" name="price_package_start"
+                                required value="{{ $value->price_package_start ?? '' }}">
                         </div>
                     </div>
                     <div class="mt-2 col-md-2">
@@ -418,6 +423,11 @@
                             <input type="number" class="form-control" id="max_people_package_2"
                                 name="max_people_package_2" value="{{ $value->max_people_package_2 ?? '' }}">
                         </div>
+                        <div class="form-group">
+                            <label for="price_package_2">Valor pacote</label>
+                            <input type="number" class="form-control" id="price_package_2" name="price_package_2"
+                                required value="{{ $value->price_package_2 ?? '' }}">
+                        </div>
                     </div>
                     <div class="mt-2 col-md-2">
                         <h3>Pacote 3</h3>
@@ -430,6 +440,11 @@
                             <label for="max_people_package_3">Máximo de pessoas</label>
                             <input type="number" class="form-control" id="max_people_package_3"
                                 name="max_people_package_3" value="{{ $value->max_people_package_3 ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="price_package_3">Valor pacote</label>
+                            <input type="number" class="form-control" id="price_package_3" name="price_package_3"
+                                required value="{{ $value->price_package_3 ?? '' }}">
                         </div>
                     </div>
                     <div class="mt-2 col-md-2">
@@ -444,6 +459,11 @@
                             <input type="number" class="form-control" id="max_people_package_4"
                                 name="max_people_package_4" value="{{ $value->max_people_package_4 ?? '' }}">
                         </div>
+                        <div class="form-group">
+                            <label for="price_package_4">Valor pacote</label>
+                            <input type="number" class="form-control" id="price_package_4" name="price_package_4"
+                                required value="{{ $value->price_package_4 ?? '' }}">
+                        </div>
                     </div>
                     <div class="mt-2 col-md-2">
                         <h3>Pacote 5</h3>
@@ -456,6 +476,11 @@
                             <label for="max_people_package_5">Máximo de pessoas</label>
                             <input type="number" class="form-control" id="max_people_package_5"
                                 name="max_people_package_5" value="{{ $value->max_people_package_5 ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="price_package_5">Valor pacote</label>
+                            <input type="number" class="form-control" id="price_package_5" name="price_package_5"
+                                required value="{{ $value->price_package_5 ?? '' }}">
                         </div>
                     </div>
                 </div>

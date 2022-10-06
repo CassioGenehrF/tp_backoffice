@@ -4,11 +4,11 @@
             <div class="row col-md-12 mt-2">
                 <div class="form-group col-md-2">
                     <label for="propertyId">ID</label>
-                    <input type="text" class="form-control" name="propertyId" id="propertyId" wire:model="propertyId">
+                    <input type="text" class="form-control" name="propertyId" id="propertyId" wire:model.debounce.1s="propertyId">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="start">De</label>
-                    <input type="date" class="form-control" name="start" id="start" wire:model="start">
+                    <input type="date" class="form-control" name="start" id="start" wire:model.debounce.1s="start">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="end">Até</label>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="standard">Padrão</label>
-                    <select class="form-select" name="standard" id="standard" wire:model="standard">
+                    <select class="form-select" name="standard" id="standard" wire:model.debounce.1s="standard">
                         <option value="0" selected>Selecione um padrão</option>
                         <option value="1">Simples</option>
                         <option value="2">Médio</option>
@@ -31,12 +31,33 @@
             </div>
             <div class="row col-md-12 mt-2">
                 <div class="form-group col-md-3">
-                    <label for="billing_type">Tipo de Cobrança</label>
-                    <select class="form-select" name="billing_type" id="billing_type" wire:model="billing_type">
-                        <option value="0" selected>Selecione um padrão</option>
-                        <option value="people">Por Pessoa</option>
-                        <option value="package">Por Pacote</option>
+                    <label for="period">Período</label>
+                    <select class="form-select" name="period" id="period" wire:model.debounce.1s="period">
+                        <option value="0" selected>Selecione uma opção</option>
+                        <option value="weekend">Final de Semana</option>
+                        <option value="day_use">Day Use</option>
+                        <option value="week">Dia de Semana</option>
+                        <option value="holiday">Feriado Prolongado</option>
+                        <option value="christmas">Natal</option>
+                        <option value="new_year">Ano Novo</option>
+                        <option value="carnival">Carnaval</option>
                     </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="minValue">Valor Mínimo</label>
+                    <input type="number" class="form-control" name="minValue" id="minValue" wire:model.debounce.1s="minValue">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="maxValue">Valor Máximo</label>
+                    <input type="number" class="form-control" name="maxValue" id="maxValue" wire:model.debounce.1s="maxValue">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="people">Número de Pessoas</label>
+                    <input type="number" class="form-control" name="people" id="people" wire:model.debounce.1s="people">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="daily">Número de Diárias</label>
+                    <input type="number" class="form-control" name="daily" id="daily" wire:model.debounce.1s="daily">
                 </div>
             </div>
             <div class="accordion mt-2" id="mainFilter" style="margin-right: 1.5rem">
@@ -64,7 +85,8 @@
                                         </h2>
                                         <div id="{{ Str::slug($title) }}"
                                             class="accordion-collapse {{ $filter['status'] ? '' : 'collapse' }}"
-                                            aria-labelledby="heading{{ Str::slug($title) }}" data-bs-parent="#filters">
+                                            aria-labelledby="heading{{ Str::slug($title) }}"
+                                            data-bs-parent="#filters">
                                             <div class="accordion-body">
                                                 <div class="row col-md-12">
                                                     @foreach ($filter as $key => $input)
@@ -73,7 +95,8 @@
                                                                 <input type="checkbox" class="form-check-input"
                                                                     id="{{ $input['slug'] }}"
                                                                     name="{{ $input['slug'] }}"
-                                                                    value="{{ $input['term_id'] }}" wire:model="terms">
+                                                                    value="{{ $input['term_id'] }}"
+                                                                    wire:model="terms">
                                                                 <label for="{{ $input['slug'] }}"
                                                                     class="form-check-label">{{ $input['name'] }}</label>
                                                             </div>
@@ -356,6 +379,11 @@
                                                                 Máximo de pessoas:
                                                                 {{ $property->propertyValue->package()->first()['max_people_package_start'] }}
                                                             </p>
+                                                            <p>
+                                                                Valor Pacote:
+                                                                R$
+                                                                {{ number_format($property->propertyValue->package()->first()['price_package_start'], 2, ',', '') }}
+                                                            </p>
                                                             <hr>
                                                         </div>
                                                         <div>
@@ -367,6 +395,11 @@
                                                             <p>
                                                                 Máximo de pessoas:
                                                                 {{ $property->propertyValue->package()->first()['max_people_package_2'] }}
+                                                            </p>
+                                                            <p>
+                                                                Valor Pacote:
+                                                                R$
+                                                                {{ number_format($property->propertyValue->package()->first()['price_package_2'], 2, ',', '') }}
                                                             </p>
                                                             <hr>
                                                         </div>
@@ -380,6 +413,11 @@
                                                                 Máximo de pessoas:
                                                                 {{ $property->propertyValue->package()->first()['max_people_package_3'] }}
                                                             </p>
+                                                            <p>
+                                                                Valor Pacote:
+                                                                R$
+                                                                {{ number_format($property->propertyValue->package()->first()['price_package_3'], 2, ',', '') }}
+                                                            </p>
                                                             <hr>
                                                         </div>
                                                         <div>
@@ -392,6 +430,11 @@
                                                                 Máximo de pessoas:
                                                                 {{ $property->propertyValue->package()->first()['max_people_package_4'] }}
                                                             </p>
+                                                            <p>
+                                                                Valor Pacote:
+                                                                R$
+                                                                {{ number_format($property->propertyValue->package()->first()['price_package_4'], 2, ',', '') }}
+                                                            </p>
                                                             <hr>
                                                         </div>
                                                         <div>
@@ -403,6 +446,11 @@
                                                             <p>
                                                                 Máximo de pessoas:
                                                                 {{ $property->propertyValue->package()->first()['max_people_package_5'] }}
+                                                            </p>
+                                                            <p>
+                                                                Valor Pacote:
+                                                                R$
+                                                                {{ number_format($property->propertyValue->package()->first()['price_package_5'], 2, ',', '') }}
                                                             </p>
                                                             <hr>
                                                         </div>

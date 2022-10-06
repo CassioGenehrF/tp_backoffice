@@ -60,14 +60,19 @@ class PropertyValue extends Model
         'checkin_hour_carnival',
         'checkout_hour_carnival',
         'max_people_package_start',
+        'price_package_start',
         'min_people_package_2',
         'max_people_package_2',
+        'price_package_2',
         'min_people_package_3',
         'max_people_package_3',
+        'price_package_3',
         'min_people_package_4',
         'max_people_package_4',
+        'price_package_4',
         'min_people_package_5',
-        'max_people_package_5'
+        'max_people_package_5',
+        'price_package_5'
     ];
 
     public function property(): HasOne
@@ -84,14 +89,19 @@ class PropertyValue extends Model
                 'property_id',
                 'billing_type',
                 'max_people_package_start',
+                'price_package_start',
                 'min_people_package_2',
                 'max_people_package_2',
+                'price_package_2',
                 'min_people_package_3',
                 'max_people_package_3',
+                'price_package_3',
                 'min_people_package_4',
                 'max_people_package_4',
+                'price_package_4',
                 'min_people_package_5',
-                'max_people_package_5'
+                'max_people_package_5',
+                'price_package_5'
             );
     }
 
@@ -111,7 +121,6 @@ class PropertyValue extends Model
                 'checkout_hour_weekend',
                 'min_people_day_use',
                 'max_people_day_use',
-                'min_daily_day_use',
                 'price_per_people_day_use',
                 'checkin_hour_day_use',
                 'checkout_hour_day_use',
