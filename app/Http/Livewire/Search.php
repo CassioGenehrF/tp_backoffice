@@ -94,6 +94,14 @@ class Search extends Component
             ->peopleOrPackage($this->minValue, $this->maxValue, $this->people, $this->daily, $this->period)
             ->get();
 
+        if (
+            !($this->propertyId || $this->search || $this->standard || $this->minValue ||
+                $this->maxValue || $this->people || $this->daily || $this->period ||
+                $this->start || $this->end || $this->terms || $this->city)
+        ) {
+            $properties = Property::where('ID', -999)->get();
+        }
+
         foreach ($properties as $property) {
             $propertyInfo = PropertyInfo::where('property_id', $property->ID)->first();
             if (!$propertyInfo) {

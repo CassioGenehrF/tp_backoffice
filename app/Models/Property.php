@@ -288,9 +288,9 @@ class Property extends Model
         }
 
         $query->whereHas('propertyValue', function ($query) use ($minValue, $maxValue, $daily, $people, $period) {
-            if ($period != 0) {
-                $query->where('billing_type', 'people');
+            $query->where('billing_type', 'people');
 
+            if ($period != 0) {
                 if ($people > 0) {
                     $query->where("min_people_$period", "<=", $people);
                     $query->where("max_people_$period", ">=", $people);
@@ -316,7 +316,6 @@ class Property extends Model
                     $query->where("min_daily_$period", "<=", $daily);
                 }
             } else {
-                $query->where('billing_type', 'people');
                 $query->where(function ($query) use ($minValue, $maxValue, $people, $daily) {
                     $query->orWhere(function ($query) use ($minValue, $maxValue, $people, $daily) {
                         if ($people > 0) {
@@ -435,84 +434,618 @@ class Property extends Model
             }
         });
 
-        return $query->orWhereHas('propertyValue', function ($query) use ($minValue, $maxValue, $people) {
+        return $query->orWhereHas('propertyValue', function ($query) use ($minValue, $maxValue, $people, $period) {
             $query->where('billing_type', 'package');
 
-            $query->where(function ($query) use ($minValue, $maxValue, $people) {
-                $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
-                    if ($minValue != 0) {
-                        $query->where("price_package_start", ">=", $minValue);
-                    }
+            if ($period != 0) {
+                $query->where(function ($query) use ($minValue, $maxValue, $people, $period) {
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people, $period) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_$period", ">=", $minValue);
+                        }
 
-                    if ($maxValue != 0) {
-                        $query->where("price_package_start", "<=", $maxValue);
-                    }
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_$period", "<=", $maxValue);
+                        }
 
-                    if ($people != 0) {
-                        $query->where('max_people_package_start', ">=", $people);
-                    }
+                        if ($people != 0) {
+                            $query->where('max_people_package_start_$period', ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people, $period) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_$period", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_$period", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_$period", "<=", $people);
+                            $query->where("max_people_package_2_$period", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people, $period) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_$period", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_$period", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_$period", "<=", $people);
+                            $query->where("max_people_package_3_$period", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people, $period) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_$period", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_$period", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_$period", "<=", $people);
+                            $query->where("max_people_package_4_$period", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people, $period) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_$period", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_$period", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_$period", "<=", $people);
+                            $query->where("max_people_package_5_$period", ">=", $people);
+                        }
+                    });
+                });
+            } else {
+                $query->where(function ($query) use ($minValue, $maxValue, $people) {
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_weekend", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_weekend", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_weekend", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_weekend", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_weekend", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_weekend", "<=", $people);
+                            $query->where("max_people_package_2_weekend", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_weekend", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_weekend", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_weekend", "<=", $people);
+                            $query->where("max_people_package_3_weekend", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_weekend", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_weekend", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_weekend", "<=", $people);
+                            $query->where("max_people_package_4_weekend", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_weekend", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_weekend", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_weekend", "<=", $people);
+                            $query->where("max_people_package_5_weekend", ">=", $people);
+                        }
+                    });
                 });
 
                 $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
-                    if ($minValue != 0) {
-                        $query->where("price_package_2", ">=", $minValue);
-                    }
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_day_use", ">=", $minValue);
+                        }
 
-                    if ($maxValue != 0) {
-                        $query->where("price_package_2", "<=", $maxValue);
-                    }
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_day_use", "<=", $maxValue);
+                        }
 
-                    if ($people != 0) {
-                        $query->where('min_people_package_2', "<=", $people);
-                        $query->where('max_people_package_2', ">=", $people);
-                    }
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_day_use", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_day_use", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_day_use", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_day_use", "<=", $people);
+                            $query->where("max_people_package_2_day_use", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_day_use", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_day_use", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_day_use", "<=", $people);
+                            $query->where("max_people_package_3_day_use", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_day_use", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_day_use", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_day_use", "<=", $people);
+                            $query->where("max_people_package_4_day_use", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_day_use", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_day_use", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_day_use", "<=", $people);
+                            $query->where("max_people_package_5_day_use", ">=", $people);
+                        }
+                    });
                 });
 
                 $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
-                    if ($minValue != 0) {
-                        $query->where("price_package_3", ">=", $minValue);
-                    }
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_week", ">=", $minValue);
+                        }
 
-                    if ($maxValue != 0) {
-                        $query->where("price_package_3", "<=", $maxValue);
-                    }
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_week", "<=", $maxValue);
+                        }
 
-                    if ($people != 0) {
-                        $query->where('min_people_package_3', "<=", $people);
-                        $query->where('max_people_package_3', ">=", $people);
-                    }
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_week", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_week", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_week", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_week", "<=", $people);
+                            $query->where("max_people_package_2_week", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_week", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_week", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_week", "<=", $people);
+                            $query->where("max_people_package_3_week", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_week", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_week", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_week", "<=", $people);
+                            $query->where("max_people_package_4_week", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_week", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_week", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_week", "<=", $people);
+                            $query->where("max_people_package_5_week", ">=", $people);
+                        }
+                    });
                 });
 
                 $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
-                    if ($minValue != 0) {
-                        $query->where("price_package_4", ">=", $minValue);
-                    }
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_holiday", ">=", $minValue);
+                        }
 
-                    if ($maxValue != 0) {
-                        $query->where("price_package_4", "<=", $maxValue);
-                    }
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_holiday", "<=", $maxValue);
+                        }
 
-                    if ($people != 0) {
-                        $query->where('min_people_package_4', "<=", $people);
-                        $query->where('max_people_package_4', ">=", $people);
-                    }
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_holiday", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_holiday", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_holiday", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_holiday", "<=", $people);
+                            $query->where("max_people_package_2_holiday", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_holiday", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_holiday", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_holiday", "<=", $people);
+                            $query->where("max_people_package_3_holiday", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_holiday", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_holiday", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_holiday", "<=", $people);
+                            $query->where("max_people_package_4_holiday", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_holiday", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_holiday", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_holiday", "<=", $people);
+                            $query->where("max_people_package_5_holiday", ">=", $people);
+                        }
+                    });
                 });
 
                 $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
-                    if ($minValue != 0) {
-                        $query->where("price_package_5", ">=", $minValue);
-                    }
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_christmas", ">=", $minValue);
+                        }
 
-                    if ($maxValue != 0) {
-                        $query->where("price_package_5", "<=", $maxValue);
-                    }
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_christmas", "<=", $maxValue);
+                        }
 
-                    if ($people != 0) {
-                        $query->where('min_people_package_5', "<=", $people);
-                        $query->where('max_people_package_5', ">=", $people);
-                    }
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_christmas", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_christmas", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_christmas", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_christmas", "<=", $people);
+                            $query->where("max_people_package_2_christmas", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_christmas", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_christmas", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_christmas", "<=", $people);
+                            $query->where("max_people_package_3_christmas", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_christmas", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_christmas", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_christmas", "<=", $people);
+                            $query->where("max_people_package_4_christmas", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_christmas", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_christmas", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_christmas", "<=", $people);
+                            $query->where("max_people_package_5_christmas", ">=", $people);
+                        }
+                    });
                 });
-            });
+
+                $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_new_year", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_new_year", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_new_year", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_new_year", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_new_year", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_new_year", "<=", $people);
+                            $query->where("max_people_package_2_new_year", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_new_year", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_new_year", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_new_year", "<=", $people);
+                            $query->where("max_people_package_3_new_year", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_new_year", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_new_year", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_new_year", "<=", $people);
+                            $query->where("max_people_package_4_new_year", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_new_year", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_new_year", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_new_year", "<=", $people);
+                            $query->where("max_people_package_5_new_year", ">=", $people);
+                        }
+                    });
+                });
+
+                $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_start_carnival", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_start_carnival", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("max_people_package_start_carnival", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_2_carnival", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_2_carnival", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_2_carnival", "<=", $people);
+                            $query->where("max_people_package_2_carnival", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_3_carnival", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_3_carnival", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_3_carnival", "<=", $people);
+                            $query->where("max_people_package_3_carnival", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_4_carnival", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_4_carnival", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_4_carnival", "<=", $people);
+                            $query->where("max_people_package_4_carnival", ">=", $people);
+                        }
+                    });
+
+                    $query->orWhere(function ($query) use ($minValue, $maxValue, $people) {
+                        if ($minValue != 0) {
+                            $query->where("price_package_5_carnival", ">=", $minValue);
+                        }
+
+                        if ($maxValue != 0) {
+                            $query->where("price_package_5_carnival", "<=", $maxValue);
+                        }
+
+                        if ($people != 0) {
+                            $query->where("min_people_package_5_carnival", "<=", $people);
+                            $query->where("max_people_package_5_carnival", ">=", $people);
+                        }
+                    });
+                });
+            }
         });
     }
 

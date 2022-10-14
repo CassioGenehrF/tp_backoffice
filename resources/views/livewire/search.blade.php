@@ -4,11 +4,13 @@
             <div class="row col-md-12 mt-2">
                 <div class="form-group col-md-2">
                     <label for="propertyId">ID</label>
-                    <input type="text" class="form-control" name="propertyId" id="propertyId" wire:model.debounce.1s="propertyId">
+                    <input type="text" class="form-control" name="propertyId" id="propertyId"
+                        wire:model.debounce.1s="propertyId">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="start">De</label>
-                    <input type="date" class="form-control" name="start" id="start" wire:model.debounce.1s="start">
+                    <input type="date" class="form-control" name="start" id="start"
+                        wire:model.debounce.1s="start">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="end">Até</label>
@@ -45,19 +47,23 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="minValue">Valor Mínimo</label>
-                    <input type="number" class="form-control" name="minValue" id="minValue" wire:model.debounce.1s="minValue">
+                    <input type="number" class="form-control" name="minValue" id="minValue"
+                        wire:model.debounce.1s="minValue">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="maxValue">Valor Máximo</label>
-                    <input type="number" class="form-control" name="maxValue" id="maxValue" wire:model.debounce.1s="maxValue">
+                    <input type="number" class="form-control" name="maxValue" id="maxValue"
+                        wire:model.debounce.1s="maxValue">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="people">Número de Pessoas</label>
-                    <input type="number" class="form-control" name="people" id="people" wire:model.debounce.1s="people">
+                    <input type="number" class="form-control" name="people" id="people"
+                        wire:model.debounce.1s="people">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="daily">Número de Diárias</label>
-                    <input type="number" class="form-control" name="daily" id="daily" wire:model.debounce.1s="daily">
+                    <input type="number" class="form-control" name="daily" id="daily"
+                        wire:model.debounce.1s="daily">
                 </div>
             </div>
             <div class="accordion mt-2" id="mainFilter" style="margin-right: 1.5rem">
@@ -146,8 +152,8 @@
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="propertyValueLabel">Valores
-                                                        {{ $property->ID }}</h5>
+                                                    <h2 class="modal-title" id="propertyValueLabel">Valores
+                                                        {{ $property->ID }}</h2>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
@@ -374,85 +380,563 @@
                                                         </div>
                                                     @else
                                                         <div>
-                                                            <h4>Pacote Inicial</h4>
-                                                            <p>
-                                                                Máximo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['max_people_package_start'] }}
-                                                            </p>
-                                                            <p>
-                                                                Valor Pacote:
-                                                                R$
-                                                                {{ number_format($property->propertyValue->package()->first()['price_package_start'], 2, ',', '') }}
-                                                            </p>
-                                                            <hr>
+                                                            <h3>Final de semana</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_weekend'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_weekend'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_weekend'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_weekend'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_weekend'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_weekend'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
                                                         </div>
+                                                        <hr>
                                                         <div>
-                                                            <h4>Pacote 2</h4>
-                                                            <p>
-                                                                Mínimo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['min_people_package_2'] }}
-                                                            </p>
-                                                            <p>
-                                                                Máximo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['max_people_package_2'] }}
-                                                            </p>
-                                                            <p>
-                                                                Valor Pacote:
-                                                                R$
-                                                                {{ number_format($property->propertyValue->package()->first()['price_package_2'], 2, ',', '') }}
-                                                            </p>
-                                                            <hr>
+                                                            <h3>Day Use</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_day_use'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_day_use'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_day_use'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_day_use'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_day_use'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_day_use'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
                                                         </div>
+                                                        <hr>
                                                         <div>
-                                                            <h4>Pacote 3</h4>
-                                                            <p>
-                                                                Mínimo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['min_people_package_3'] }}
-                                                            </p>
-                                                            <p>
-                                                                Máximo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['max_people_package_3'] }}
-                                                            </p>
-                                                            <p>
-                                                                Valor Pacote:
-                                                                R$
-                                                                {{ number_format($property->propertyValue->package()->first()['price_package_3'], 2, ',', '') }}
-                                                            </p>
-                                                            <hr>
+                                                            <h3>Dia de Semana</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_week'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_week'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_week'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_week'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_week'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_week'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
                                                         </div>
+                                                        <hr>
                                                         <div>
-                                                            <h4>Pacote 4</h4>
-                                                            <p>
-                                                                Mínimo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['min_people_package_4'] }}
-                                                            </p>
-                                                            <p>
-                                                                Máximo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['max_people_package_4'] }}
-                                                            </p>
-                                                            <p>
-                                                                Valor Pacote:
-                                                                R$
-                                                                {{ number_format($property->propertyValue->package()->first()['price_package_4'], 2, ',', '') }}
-                                                            </p>
-                                                            <hr>
+                                                            <h3>Feriado Prolongado</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_holiday'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
                                                         </div>
+                                                        <hr>
                                                         <div>
-                                                            <h4>Pacote 5</h4>
-                                                            <p>
-                                                                Mínimo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['min_people_package_5'] }}
-                                                            </p>
-                                                            <p>
-                                                                Máximo de pessoas:
-                                                                {{ $property->propertyValue->package()->first()['max_people_package_5'] }}
-                                                            </p>
-                                                            <p>
-                                                                Valor Pacote:
-                                                                R$
-                                                                {{ number_format($property->propertyValue->package()->first()['price_package_5'], 2, ',', '') }}
-                                                            </p>
-                                                            <hr>
+                                                            <h3>Natal</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_christmas'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_christmas'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_christmas'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_christmas'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_christmas'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div>
+                                                            <h3>Ano Novo</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_new_year'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_new_year'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_new_year'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_new_year'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_new_year'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div>
+                                                            <h3>Carnaval</h3>
+                                                            <div>
+                                                                <h4>Pacote Inicial</h4>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_start_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_start_carnival'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 2</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_2_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_2_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_2_carnival'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 3</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_3_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_3_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_3_carnival'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 4</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_4_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_4_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_4_carnival'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
+                                                            <div>
+                                                                <h4>Pacote 5</h4>
+                                                                <p>
+                                                                    Mínimo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['min_people_package_5_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Máximo de pessoas:
+                                                                    {{ $property->propertyValue->package()->first()['max_people_package_5_carnival'] }}
+                                                                </p>
+                                                                <p>
+                                                                    Valor Pacote:
+                                                                    R$
+                                                                    {{ number_format($property->propertyValue->package()->first()['price_package_5_holiday'], 2, ',', '') }}
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     @endif
                                                 </div>

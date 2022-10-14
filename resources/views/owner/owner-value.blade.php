@@ -396,91 +396,731 @@
                 </div>
             </div>
             <div id="package" style="display: none;">
-                <div class="row mt-2">
-                    <div class="mt-2 col-md-2">
-                        <h3>Pacote Inicial</h3>
-                        <div class="form-group">
-                            <label for="max_people_package_start">Número de pessoas</label>
-                            <input type="number" class="form-control" id="max_people_package_start"
-                                name="max_people_package_start" required
-                                value="{{ $value->max_people_package_start ?? '' }}">
+                <div class="mt-2">
+                    <h3>Final de Semana</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_weekend">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_weekend"
+                                    name="max_people_package_start_weekend" required
+                                    value="{{ $value->max_people_package_start_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_weekend">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_weekend"
+                                    name="price_package_start_weekend" required
+                                    value="{{ $value->price_package_start_weekend ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="price_package_start">Valor pacote</label>
-                            <input type="number" class="form-control" id="price_package_start" name="price_package_start"
-                                required value="{{ $value->price_package_start ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_weekend">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_weekend"
+                                    name="min_people_package_2_weekend"
+                                    value="{{ $value->min_people_package_2_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_weekend">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_weekend"
+                                    name="max_people_package_2_weekend"
+                                    value="{{ $value->max_people_package_2_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_weekend">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_weekend"
+                                    name="price_package_2_weekend" required
+                                    value="{{ $value->price_package_2_weekend ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_weekend">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_weekend"
+                                    name="min_people_package_3_weekend"
+                                    value="{{ $value->min_people_package_3_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_weekend">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_weekend"
+                                    name="max_people_package_3_weekend"
+                                    value="{{ $value->max_people_package_3_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_weekend">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_weekend"
+                                    name="price_package_3_weekend" required
+                                    value="{{ $value->price_package_3_weekend ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_weekend">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_weekend"
+                                    name="min_people_package_4_weekend"
+                                    value="{{ $value->min_people_package_4_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_weekend">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_weekend"
+                                    name="max_people_package_4_weekend"
+                                    value="{{ $value->max_people_package_4_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_weekend">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_weekend"
+                                    name="price_package_4_weekend" required
+                                    value="{{ $value->price_package_4_weekend ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_weekend">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_weekend"
+                                    name="min_people_package_5_weekend"
+                                    value="{{ $value->min_people_package_5_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_weekend">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_weekend"
+                                    name="max_people_package_5_weekend"
+                                    value="{{ $value->max_people_package_5_weekend ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5_weekend">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_weekend"
+                                    name="price_package_5_weekend" required
+                                    value="{{ $value->price_package_5_weekend ?? '' }}">
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-2 col-md-2">
-                        <h3>Pacote 2</h3>
-                        <div class="form-group">
-                            <label for="min_people_package_2">Mínimo de pessoas</label>
-                            <input type="number" class="form-control" id="min_people_package_2"
-                                name="min_people_package_2" value="{{ $value->min_people_package_2 ?? '' }}">
+                </div>
+                <div class="mt-2">
+                    <h3>Day Use</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_day_use">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_day_use"
+                                    name="max_people_package_start_day_use" required
+                                    value="{{ $value->max_people_package_start_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_day_use">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_day_use"
+                                    name="price_package_start_day_use" required
+                                    value="{{ $value->price_package_start_day_use ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="max_people_package_2">Máximo de pessoas</label>
-                            <input type="number" class="form-control" id="max_people_package_2"
-                                name="max_people_package_2" value="{{ $value->max_people_package_2 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_day_use">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_day_use"
+                                    name="min_people_package_2_day_use"
+                                    value="{{ $value->min_people_package_2_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_day_use">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_day_use"
+                                    name="max_people_package_2_day_use"
+                                    value="{{ $value->max_people_package_2_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_day_use">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_day_use"
+                                    name="price_package_2_day_use" required
+                                    value="{{ $value->price_package_2_day_use ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="price_package_2">Valor pacote</label>
-                            <input type="number" class="form-control" id="price_package_2" name="price_package_2"
-                                required value="{{ $value->price_package_2 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_day_use">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_day_use"
+                                    name="min_people_package_3_day_use"
+                                    value="{{ $value->min_people_package_3_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_day_use">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_day_use"
+                                    name="max_people_package_3_day_use"
+                                    value="{{ $value->max_people_package_3_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_day_use">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_day_use"
+                                    name="price_package_3_day_use" required
+                                    value="{{ $value->price_package_3_day_use ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_day_use">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_day_use"
+                                    name="min_people_package_4_day_use"
+                                    value="{{ $value->min_people_package_4_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_day_use">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_day_use"
+                                    name="max_people_package_4_day_use"
+                                    value="{{ $value->max_people_package_4_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_day_use">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_day_use"
+                                    name="price_package_4_day_use" required
+                                    value="{{ $value->price_package_4_day_use ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_day_use">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_day_use"
+                                    name="min_people_package_5_day_use"
+                                    value="{{ $value->min_people_package_5_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_day_use">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_day_use"
+                                    name="max_people_package_5_day_use"
+                                    value="{{ $value->max_people_package_5_day_use ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5_day_use">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_day_use"
+                                    name="price_package_5_day_use" required
+                                    value="{{ $value->price_package_5_day_use ?? '' }}">
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-2 col-md-2">
-                        <h3>Pacote 3</h3>
-                        <div class="form-group">
-                            <label for="min_people_package_3">Mínimo de pessoas</label>
-                            <input type="number" class="form-control" id="min_people_package_3"
-                                name="min_people_package_3" value="{{ $value->min_people_package_3 ?? '' }}">
+                </div>
+                <div class="mt-2">
+                    <h3>Dia de Semana</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_week">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_week"
+                                    name="max_people_package_start_week" required
+                                    value="{{ $value->max_people_package_start_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_week">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_week"
+                                    name="price_package_start_week" required
+                                    value="{{ $value->price_package_start_week ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="max_people_package_3">Máximo de pessoas</label>
-                            <input type="number" class="form-control" id="max_people_package_3"
-                                name="max_people_package_3" value="{{ $value->max_people_package_3 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_week">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_week"
+                                    name="min_people_package_2_week"
+                                    value="{{ $value->min_people_package_2_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_week">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_week"
+                                    name="max_people_package_2_week"
+                                    value="{{ $value->max_people_package_2_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_week">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_week"
+                                    name="price_package_2_week" required
+                                    value="{{ $value->price_package_2_week ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="price_package_3">Valor pacote</label>
-                            <input type="number" class="form-control" id="price_package_3" name="price_package_3"
-                                required value="{{ $value->price_package_3 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_week">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_week"
+                                    name="min_people_package_3_week"
+                                    value="{{ $value->min_people_package_3_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_week">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_week"
+                                    name="max_people_package_3_week"
+                                    value="{{ $value->max_people_package_3_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_week">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_week"
+                                    name="price_package_3_week" required
+                                    value="{{ $value->price_package_3_week ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_week">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_week"
+                                    name="min_people_package_4_week"
+                                    value="{{ $value->min_people_package_4_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_week">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_week"
+                                    name="max_people_package_4_week"
+                                    value="{{ $value->max_people_package_4_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_week">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_week"
+                                    name="price_package_4_week" required
+                                    value="{{ $value->price_package_4_week ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_week">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_week"
+                                    name="min_people_package_5_week"
+                                    value="{{ $value->min_people_package_5_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_week">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_week"
+                                    name="max_people_package_5_week"
+                                    value="{{ $value->max_people_package_5_week ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5_week">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_week"
+                                    name="price_package_5_week" required
+                                    value="{{ $value->price_package_5_week ?? '' }}">
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-2 col-md-2">
-                        <h3>Pacote 4</h3>
-                        <div class="form-group">
-                            <label for="min_people_package_4">Mínimo de pessoas</label>
-                            <input type="number" class="form-control" id="min_people_package_4"
-                                name="min_people_package_4" value="{{ $value->min_people_package_4 ?? '' }}">
+                </div>
+                <div class="mt-2">
+                    <h3>Feriado Prolongado</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_holiday">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_holiday"
+                                    name="max_people_package_start_holiday" required
+                                    value="{{ $value->max_people_package_start_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_holiday">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_holiday"
+                                    name="price_package_start_holiday" required
+                                    value="{{ $value->price_package_start_holiday ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="max_people_package_4">Máximo de pessoas</label>
-                            <input type="number" class="form-control" id="max_people_package_4"
-                                name="max_people_package_4" value="{{ $value->max_people_package_4 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_holiday">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_holiday"
+                                    name="min_people_package_2_holiday"
+                                    value="{{ $value->min_people_package_2_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_holiday">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_holiday"
+                                    name="max_people_package_2_holiday"
+                                    value="{{ $value->max_people_package_2_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_holiday">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_holiday"
+                                    name="price_package_2_holiday" required
+                                    value="{{ $value->price_package_2_holiday ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="price_package_4">Valor pacote</label>
-                            <input type="number" class="form-control" id="price_package_4" name="price_package_4"
-                                required value="{{ $value->price_package_4 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_holiday">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_holiday"
+                                    name="min_people_package_3_holiday"
+                                    value="{{ $value->min_people_package_3_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_holiday">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_holiday"
+                                    name="max_people_package_3_holiday"
+                                    value="{{ $value->max_people_package_3_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_holiday">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_holiday"
+                                    name="price_package_3_holiday" required
+                                    value="{{ $value->price_package_3_holiday ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_holiday">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_holiday"
+                                    name="min_people_package_4_holiday"
+                                    value="{{ $value->min_people_package_4_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_holiday">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_holiday"
+                                    name="max_people_package_4_holiday"
+                                    value="{{ $value->max_people_package_4_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_holiday">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_holiday"
+                                    name="price_package_4_holiday" required
+                                    value="{{ $value->price_package_4_holiday ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_holiday">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_holiday"
+                                    name="min_people_package_5_holiday"
+                                    value="{{ $value->min_people_package_5_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_holiday">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_holiday"
+                                    name="max_people_package_5_holiday"
+                                    value="{{ $value->max_people_package_5_holiday ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5_holiday">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_holiday"
+                                    name="price_package_5_holiday" required
+                                    value="{{ $value->price_package_5_holiday ?? '' }}">
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-2 col-md-2">
-                        <h3>Pacote 5</h3>
-                        <div class="form-group">
-                            <label for="min_people_package_5">Mínimo de pessoas</label>
-                            <input type="number" class="form-control" id="min_people_package_5"
-                                name="min_people_package_5" value="{{ $value->min_people_package_5 ?? '' }}">
+                </div>
+                <div class="mt-2">
+                    <h3>Natal</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_christmas">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_christmas"
+                                    name="max_people_package_start_christmas" required
+                                    value="{{ $value->max_people_package_start_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_christmas">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_christmas"
+                                    name="price_package_start_christmas" required
+                                    value="{{ $value->price_package_start_christmas ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="max_people_package_5">Máximo de pessoas</label>
-                            <input type="number" class="form-control" id="max_people_package_5"
-                                name="max_people_package_5" value="{{ $value->max_people_package_5 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_christmas">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_christmas"
+                                    name="min_people_package_2_christmas"
+                                    value="{{ $value->min_people_package_2_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_christmas">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_christmas"
+                                    name="max_people_package_2_christmas"
+                                    value="{{ $value->max_people_package_2_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_christmas">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_christmas"
+                                    name="price_package_2_christmas" required
+                                    value="{{ $value->price_package_2_christmas ?? '' }}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="price_package_5">Valor pacote</label>
-                            <input type="number" class="form-control" id="price_package_5" name="price_package_5"
-                                required value="{{ $value->price_package_5 ?? '' }}">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_christmas">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_christmas"
+                                    name="min_people_package_3_christmas"
+                                    value="{{ $value->min_people_package_3_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_christmas">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_christmas"
+                                    name="max_people_package_3_christmas"
+                                    value="{{ $value->max_people_package_3_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_christmas">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_christmas"
+                                    name="price_package_3_christmas" required
+                                    value="{{ $value->price_package_3_christmas ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_christmas">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_christmas"
+                                    name="min_people_package_4_christmas"
+                                    value="{{ $value->min_people_package_4_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_christmas">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_christmas"
+                                    name="max_people_package_4_christmas"
+                                    value="{{ $value->max_people_package_4_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_christmas">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_christmas"
+                                    name="price_package_4_christmas" required
+                                    value="{{ $value->price_package_4_christmas ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_christmas">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_christmas"
+                                    name="min_people_package_5_christmas"
+                                    value="{{ $value->min_people_package_5_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_christmas">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_christmas"
+                                    name="max_people_package_5_christmas"
+                                    value="{{ $value->max_people_package_5_christmas ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_christmas"
+                                    name="price_package_5_christmas" required
+                                    value="{{ $value->price_package_5_christmas ?? '' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <h3>Ano Novo</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_new_year">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_new_year"
+                                    name="max_people_package_start_new_year" required
+                                    value="{{ $value->max_people_package_start_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_new_year">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_new_year"
+                                    name="price_package_start_new_year" required
+                                    value="{{ $value->price_package_start_new_year ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_new_year">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_new_year"
+                                    name="min_people_package_2_new_year"
+                                    value="{{ $value->min_people_package_2_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_new_year">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_new_year"
+                                    name="max_people_package_2_new_year"
+                                    value="{{ $value->max_people_package_2_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_new_year">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_new_year"
+                                    name="price_package_2_new_year" required
+                                    value="{{ $value->price_package_2_new_year ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_new_year">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_new_year"
+                                    name="min_people_package_3_new_year"
+                                    value="{{ $value->min_people_package_3_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_new_year">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_new_year"
+                                    name="max_people_package_3_new_year"
+                                    value="{{ $value->max_people_package_3_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_new_year">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_new_year"
+                                    name="price_package_3_new_year" required
+                                    value="{{ $value->price_package_3_new_year ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_new_year">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_new_year"
+                                    name="min_people_package_4_new_year"
+                                    value="{{ $value->min_people_package_4_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_new_year">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_new_year"
+                                    name="max_people_package_4_new_year"
+                                    value="{{ $value->max_people_package_4_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_new_year">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_new_year"
+                                    name="price_package_4_new_year" required
+                                    value="{{ $value->price_package_4_new_year ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_new_year">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_new_year"
+                                    name="min_people_package_5_new_year"
+                                    value="{{ $value->min_people_package_5_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_new_year">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_new_year"
+                                    name="max_people_package_5_new_year"
+                                    value="{{ $value->max_people_package_5_new_year ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5_new_year">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_new_year"
+                                    name="price_package_5_new_year" required
+                                    value="{{ $value->price_package_5_new_year ?? '' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <h3>Carnaval</h3>
+                    <div class="row justify-content-center mt-2">
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote Inicial</h4>
+                            <div class="form-group">
+                                <label for="max_people_package_start_carnival">Número de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_start_carnival"
+                                    name="max_people_package_start_carnival" required
+                                    value="{{ $value->max_people_package_start_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_start_carnival">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_start_carnival"
+                                    name="price_package_start_carnival" required
+                                    value="{{ $value->price_package_start_carnival ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 2</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_2_carnival">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_2_carnival"
+                                    name="min_people_package_2_carnival"
+                                    value="{{ $value->min_people_package_2_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_2_carnival">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_2_carnival"
+                                    name="max_people_package_2_carnival"
+                                    value="{{ $value->max_people_package_2_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_2_carnival">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_2_carnival"
+                                    name="price_package_2_carnival" required
+                                    value="{{ $value->price_package_2_carnival ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 3</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_3_carnival">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_3_carnival"
+                                    name="min_people_package_3_carnival"
+                                    value="{{ $value->min_people_package_3_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_3_carnival">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_3_carnival"
+                                    name="max_people_package_3_carnival"
+                                    value="{{ $value->max_people_package_3_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_3_carnival">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_3_carnival"
+                                    name="price_package_3_carnival" required
+                                    value="{{ $value->price_package_3_carnival ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 4</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_4_carnival">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_4_carnival"
+                                    name="min_people_package_4_carnival"
+                                    value="{{ $value->min_people_package_4_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_4_carnival">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_4_carnival"
+                                    name="max_people_package_4_carnival"
+                                    value="{{ $value->max_people_package_4_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_4_carnival">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_4_carnival"
+                                    name="price_package_4_carnival" required
+                                    value="{{ $value->price_package_4_carnival ?? '' }}">
+                            </div>
+                        </div>
+                        <div class="mt-2 col-md-2">
+                            <h4>Pacote 5</h4>
+                            <div class="form-group">
+                                <label for="min_people_package_5_carnival">Mínimo de pessoas</label>
+                                <input type="number" class="form-control" id="min_people_package_5_carnival"
+                                    name="min_people_package_5_carnival"
+                                    value="{{ $value->min_people_package_5_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="max_people_package_5_carnival">Máximo de pessoas</label>
+                                <input type="number" class="form-control" id="max_people_package_5_carnival"
+                                    name="max_people_package_5_carnival"
+                                    value="{{ $value->max_people_package_5_carnival ?? '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_package_5_carnival">Valor pacote</label>
+                                <input type="number" class="form-control" id="price_package_5_carnival"
+                                    name="price_package_5_carnival" required
+                                    value="{{ $value->price_package_5_carnival ?? '' }}">
+                            </div>
                         </div>
                     </div>
                 </div>
