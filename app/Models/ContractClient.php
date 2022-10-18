@@ -41,11 +41,25 @@ class ContractClient extends Model
         'signal_value',
         'clean_tax',
         'bail_tax',
-        'allow_pet'
+        'allow_pet',
+        'contract_deposit_id',
+        'client_signature',
+        'client_signature_at',
+        'owner_signature',
+        'owner_signature_at'
+    ];
+
+    protected $with = [
+        'contractDeposit'
     ];
 
     public function property(): HasOne
     {
         return $this->hasOne(Property::class, 'ID', 'property_id');
+    }
+
+    public function contractDeposit(): HasOne
+    {
+        return $this->hasOne(ContractDeposit::class, 'id', 'contract_deposit_id');
     }
 }

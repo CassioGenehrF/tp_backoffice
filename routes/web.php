@@ -17,18 +17,33 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [AdminController::class, 'index'])->name('admin.page');
         Route::get('unblock', [AdminController::class, 'unblockPage'])->name('admin.unblock_page');
         Route::get('report', [AdminController::class, 'report'])->name('admin.report');
-        Route::get('reservation', [AdminController::class, 'reservation'])->name('admin.reservation');
-        Route::get('reservation/{id}', [AdminController::class, 'reservation'])->name('admin.reservation_edit_page');
-        Route::get('reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
-        Route::get('reservations/{id}', [AdminController::class, 'reservationDetails'])->name('admin.reservations_details');
-        Route::get('reservations/{id}/contract', [AdminController::class, 'downloadContract'])->name('admin.download_contract');
-        Route::get('property/{id}/contract', [AdminController::class, 'downloadContractProperty'])->name('admin.download_contract_property');
-        Route::get('report', [AdminController::class, 'report'])->name('admin.report');
-        Route::get('report/indication', [AdminController::class, 'reportIndication'])->name('admin.report_indication');
-        Route::get('report/regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
+
+        Route::group(['prefix' => 'reservation'], function () {
+            Route::get('', [AdminController::class, 'reservation'])->name('admin.reservation');
+            Route::get('{id}', [AdminController::class, 'reservation'])->name('admin.reservation_edit_page');
+        });
+
+        Route::group(['prefix' => 'reservations'], function () {
+            Route::get('', [AdminController::class, 'reservations'])->name('admin.reservations');
+            Route::get('{id}', [AdminController::class, 'reservationDetails'])->name('admin.reservations_details');
+            Route::get('{id}/contract', [AdminController::class, 'downloadContract'])->name('admin.download_contract');
+        });
+
+
+        Route::group(['prefix' => 'report'], function () {
+            Route::get('', [AdminController::class, 'report'])->name('admin.report');
+            Route::get('indication', [AdminController::class, 'reportIndication'])->name('admin.report_indication');
+            Route::get('regional', [AdminController::class, 'reportRegional'])->name('admin.report_regional');
+        });
+
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
-        Route::get('property/{propertyId}/indication', [AdminController::class, 'propertyIndication'])->name('admin.property_indication');
-        Route::get('property/{propertyId}/standard', [AdminController::class, 'propertyStandard'])->name('admin.property_standard');
+
+        Route::group(['prefix' => 'property'], function () {
+            Route::get('{id}/contract', [AdminController::class, 'downloadContractProperty'])->name('admin.download_contract_property');
+            Route::get('{propertyId}/indication', [AdminController::class, 'propertyIndication'])->name('admin.property_indication');
+            Route::get('{propertyId}/standard', [AdminController::class, 'propertyStandard'])->name('admin.property_standard');
+        });
+
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
         Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
         Route::get('search-properties', [AdminController::class, 'searchProperties'])->name('admin.search_properties');
@@ -56,11 +71,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['prefix' => 'broker', 'middleware' => ['broker']], function () {
         Route::get('', [BrokerController::class, 'index'])->name('broker.page');
-        Route::get('reservations', [BrokerController::class, 'reservations'])->name('broker.reservations');
-        Route::get('reservations/{id}', [BrokerController::class, 'reservationDetails'])->name('broker.reservations_details');
-        Route::get('reservations/{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');
+        Route::get('{id}', [BrokerController::class, 'index'])->name('broker.reservation_edit');
+
+        Route::group(['prefix' => 'reservations'], function () {
+            Route::get('', [BrokerController::class, 'reservations'])->name('broker.reservations');
+            Route::get('{id}', [BrokerController::class, 'reservationDetails'])->name('broker.reservations_details');
+            Route::get('{id}/contract', [BrokerController::class, 'downloadContract'])->name('broker.download_contract');
+        });
+
         Route::get('report', [BrokerController::class, 'report'])->name('broker.report');
-        Route::get('/{id}', [BrokerController::class, 'index'])->name('broker.reservation_edit');
 
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [BrokerController::class, 'getCalendarAsJson']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [BrokerController::class, 'getReservations']);
@@ -73,12 +92,32 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [OwnerController::class, 'index'])->name('owner.page');
         Route::get('unblock', [OwnerController::class, 'unblockPage'])->name('owner.unblock_page');
         Route::get('report', [OwnerController::class, 'report'])->name('owner.report');
-        Route::get('reservations', [OwnerController::class, 'reservations'])->name('owner.reservations');
-        Route::get('reservations/{id}', [OwnerController::class, 'reservationDetails'])->name('owner.reservations_details');
-        Route::get('reservations/{id}/contract', [OwnerController::class, 'downloadContract'])->name('owner.download_contract');
-        Route::get('properties', [OwnerController::class, 'properties'])->name('owner.properties');
-        Route::get('property/{propertyId}/documents', [OwnerController::class, 'propertyDocuments'])->name('owner.property_documents');
-        Route::get('contract/{propertyId}', [OwnerController::class, 'contract'])->name('owner.contract');
+
+        Route::group(['prefix' => 'reservations'], function () {
+            Route::get('', [OwnerController::class, 'reservations'])->name('owner.reservations');
+            Route::get('{id}', [OwnerController::class, 'reservationDetails'])->name('owner.reservations_details');
+            Route::get('{id}/contract', [OwnerController::class, 'downloadContract'])->name('owner.download_contract');
+        });
+
+        Route::group(['prefix' => 'properties'], function () {
+            Route::get('', [OwnerController::class, 'properties'])->name('owner.properties');
+            Route::get('contracts', [OwnerController::class, 'propertiesContracts'])->name('owner.properties_contracts');
+        });
+
+        Route::group(['prefix' => 'property'], function () {
+            Route::get('{propertyId}/documents', [OwnerController::class, 'propertyDocuments'])->name('owner.property_documents');
+            Route::get('{propertyId}/contract', [OwnerController::class, 'contract'])->name('owner.contract');
+        });
+
+        Route::group(['prefix' => 'contract'], function () {
+            Route::get('{contractId}/download', [OwnerController::class, 'downloadPropertyContract'])->name('owner.download_property_contract');
+            Route::get('{contractId}/owner', [OwnerController::class, 'contractOwner'])->name('owner.property_contract');
+            Route::post('{contractId}/owner', [OwnerController::class, 'saveContractOwner'])->name('owner.owner_signature');
+            Route::get('{contractId}/client', [OwnerController::class, 'contractClient'])->name('owner.property_contract_client');
+            Route::post('{contractId}/client', [OwnerController::class, 'saveContractClient'])->name('owner.client_signature');
+            Route::delete('{contractId}', [OwnerController::class, 'destroyContract'])->name('owner.destroy_contract');
+        });
+
         Route::get('value/{propertyId}', [OwnerController::class, 'value'])->name('owner.value');
         Route::get('receipts/{id}', [OwnerController::class, 'downloadReceipt'])->name('owner.download_receipt');
         Route::get('demands', [OwnerController::class, 'demands'])->name('owner.demands');

@@ -49,6 +49,7 @@
                         <a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a>
                         <a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
                         <a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a>
+                        <a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus Contratos</a>
                     </div>
                 </div>
                 <li class="menu-item username">

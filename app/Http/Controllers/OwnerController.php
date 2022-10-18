@@ -203,6 +203,13 @@ class OwnerController extends Controller
             ->with('properties', Auth::user()->properties);
     }
 
+    public function propertiesContracts()
+    {
+        return view('owner.owner-properties-contracts')
+            ->with('name', Auth::user()->display_name)
+            ->with('contracts', ContractClient::all());
+    }
+
     public function contract($propertyId)
     {
         return view('owner.owner-contract')
@@ -260,45 +267,6 @@ class OwnerController extends Controller
     public function createContract(ContractRequest $request)
     {
         $property = Property::find($request->property_id);
-        $data = [
-            'propriedade' => $property,
-            'nome_proprietario' => "{$property->user->firstName} {$property->user->lastName}",
-            'cpf_proprietario' => $property->user->cpf,
-            'endereco_proprietario' => $property->user->street . ", " . $property->user->streetNumber,
-            'cep_proprietario' => $property->user->cep,
-            'cidade_proprietario' => $property->user->city,
-            'estado_proprietario' => $property->user->state,
-            'telefone_proprietario' => $property->user->phone,
-            'nome_cliente' => $request->client ?? '',
-            'cpf_cliente' => $request->cpf ?? '',
-            'endereco_cliente' => $request->street ?? '',
-            'cep_cliente' => $request->cep ?? '',
-            'cidade_cliente' => $request->city ?? '',
-            'estado_cliente' => $request->state ? StateEnum::stateList[$request->state] : '',
-            'telefone_cliente' => $request->phone ?? '',
-            'endereco_imovel' => $property->street,
-            'cidade_imovel' => $property->city,
-            'estado_imovel' => $property->state,
-            'dias_locados' => Carbon::createFromFormat('Y-m-d', $request->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $request->checkin)),
-            'data_checkin' => Carbon::createFromFormat('Y-m-d', $request->checkin),
-            'hora_checkin' => $request->checkin_hour,
-            'data_checkout' => Carbon::createFromFormat('Y-m-d', $request->checkout),
-            'hora_checkout' => $request->checkout_hour,
-            'hora_limite_entrada' => $request->entry ?? '',
-            'numero_hospedes' => $request->guests ?? 0,
-            'valor_pessoa_excedente' => $request->excess ?? 0,
-            'valor_locacao' => $request->rent ?? 0,
-            'valor_sinal' => $request->sinal ?? 0,
-            'taxa_de_limpeza' => $request->clean ?? 0,
-            'taxa_caucao' => $request->bail ?? 0,
-            'pet' => $request->pet,
-            'banco' => $request->bank ? BankEnum::bankList[$request->bank] : '',
-            'agencia' => $request->agency ?? '',
-            'conta' => $request->account ?? '',
-            'responsavel_banco' => $request->responsible ?? '',
-            'cpf_banco' => $request->cpf_bank ?? '',
-            'pix' => $request->pix ?? ''
-        ];
 
         $checkin_hour = substr($request->checkin_hour, 0, strpos($request->checkin_hour, ':'));
         $checkin_minute = substr($request->checkin_hour, strpos($request->checkin_hour, ':') + 1);
@@ -306,6 +274,15 @@ class OwnerController extends Controller
         $checkin_limit_minute = substr($request->entry, strpos($request->entry, ':') + 1);
         $checkout_hour = substr($request->checkout_hour, 0, strpos($request->checkout_hour, ':'));
         $checkout_minute = substr($request->checkout_hour, strpos($request->checkout_hour, ':') + 1);
+
+        $contractDeposit = ContractDeposit::create([
+            'bank' => $request->bank ? BankEnum::bankList[$request->bank] : null,
+            'agency' => $request->agency ?? null,
+            'account' => $request->account ?? null,
+            'responsible' => $request->responsible ?? null,
+            'responsible_cpf' => $request->cpf_bank ?? null,
+            'pix' => $request->pix ?? null
+        ]);
 
         ContractClient::create([
             'property_id' => $property->ID,
@@ -339,20 +316,120 @@ class OwnerController extends Controller
             'clean_tax' => $request->clean ?? 0,
             'bail_tax' => $request->bail ?? 0,
             'allow_pet' => $request->pet,
+            'contract_deposit_id' => $contractDeposit->id
         ]);
 
-        ContractDeposit::create([
-            'bank' => $request->bank ? BankEnum::bankList[$request->bank] : null,
-            'agency' => $request->agency ?? null,
-            'account' => $request->account ?? null,
-            'responsible' => $request->responsible ?? null,
-            'responsible_cpf' => $request->cpf_bank ?? null,
-            'pix' => $request->pix ?? null
-        ]);
+        return $this->propertiesContracts();
+    }
+
+    public function downloadPropertyContract($contractId)
+    {
+        $contract = ContractClient::find($contractId);
+
+        $property = Property::find($contract->property_id);
+
+        $data = [
+            'propriedade' => $property,
+            'nome_proprietario' => $contract->owner_name,
+            'cpf_proprietario' => $contract->owner_cpf,
+            'endereco_proprietario' => $contract->owner_address,
+            'cep_proprietario' => $contract->owner_cep,
+            'cidade_proprietario' => $contract->owner_city,
+            'estado_proprietario' => $contract->owner_uf,
+            'telefone_proprietario' => $contract->phone_number,
+            'nome_cliente' => $contract->client_name,
+            'cpf_cliente' => $contract->client_cpf,
+            'endereco_cliente' => $contract->client_address,
+            'cep_cliente' => $contract->client_cep,
+            'cidade_cliente' => $contract->client_city,
+            'estado_cliente' => $contract->client_uf,
+            'telefone_cliente' => $contract->phone_number,
+            'endereco_imovel' => $contract->property_address,
+            'cidade_imovel' => $contract->property_city,
+            'estado_imovel' => $contract->property_uf,
+            'dias_locados' => $contract->rented_days,
+            'data_checkin' => Carbon::createFromFormat('Y-m-d', $contract->checkin_date),
+            'hora_checkin' => $contract->checkin_hour,
+            'hora_limite_entrada' => $contract->checkin_limit_hour,
+            'data_checkout' => Carbon::createFromFormat('Y-m-d', $contract->checkout_date),
+            'hora_checkout' => $contract->checkout_hour,
+            'numero_hospedes' => $contract->guests_number,
+            'valor_pessoa_excedente' => $contract->excess_value,
+            'valor_locacao' => $contract->rent,
+            'valor_sinal' => $contract->sinal,
+            'taxa_de_limpeza' => $contract->clean,
+            'taxa_caucao' => $contract->bail,
+            'pet' => $contract->pet,
+            'banco' => $contract->contractDeposit->bank,
+            'agencia' => $contract->contractDeposit->agency,
+            'conta' => $contract->contractDeposit->account,
+            'responsavel_banco' => $contract->contractDeposit->responsible,
+            'cpf_banco' => $contract->contractDeposit->cpf_bank,
+            'pix' => $contract->contractDeposit->pix
+        ];
 
         $pdf = PDF::loadView('template.contract', $data);
         $fileName = "contrato_" . str_replace(' ', '_', strtolower($property->post_title)) . ".pdf";
         return $pdf->download($fileName);
+    }
+
+    public function contractOwner($contractId)
+    {
+        $contract = ContractClient::find($contractId);
+
+        if ($contract->owner_signature) {
+            return $this->downloadPropertyContract($contractId);
+        }
+
+        return view('owner.owner-property-contract')
+            ->with('name', Auth::user()->display_name)
+            ->with('contractId', $contractId);
+    }
+
+    public function saveContractOwner(ContractRequest $request, $contractId)
+    {
+        $contract = ContractClient::find($contractId);
+
+        $contract->owner_signature = $request->owner;
+        $contract->owner_signature_at = now();
+        $contract->save();
+
+        return $this->propertiesContracts();
+    }
+
+    public function contractClient($contractId)
+    {
+        $contract = ContractClient::find($contractId);
+
+        if ($contract->client_signature) {
+            return $this->downloadPropertyContract($contractId);
+        }
+
+        return view('owner.owner-property-contract-client')
+            ->with('name', Auth::user()->display_name)
+            ->with('contractId', $contractId);
+    }
+
+    public function saveContractClient(ContractRequest $request, $contractId)
+    {
+        $contract = ContractClient::find($contractId);
+
+        $contract->client_signature = $request->client;
+        $contract->client_signature_at = now();
+        $contract->save();
+
+        return $this->propertiesContracts();
+    }
+
+    public function destroyContract($contractId)
+    {
+        $contract = ContractClient::find($contractId);
+        $contract->delete();
+
+        $contractDeposit = ContractDeposit::find($contract->contract_deposit_id);
+        $contractDeposit->delete();
+
+        return $this->propertiesContracts();
     }
 
     public function getCalendarAsJson($propertyId, $monthId, $yearId)

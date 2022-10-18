@@ -16,15 +16,19 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/broker/reservation.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owner/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -77,64 +81,47 @@
             </ul>
         </nav>
     </header>
-    <section class="flex mt-2">
-        <div class="form-group col-md-4 ml-4">
-            <label for="filtro-propriedade">Propriedade:</label>
-            <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
-                <option value="0">Todas</option>
-                @foreach ($properties as $property)
-                    <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="form-group col-md-2 ml-4">
-            <label for="month">Mês</label>
-            <input type="month" name="month" id="month" class="form-control">
-        </div>
-    </section>
-    <main>
-        <div class="table-responsive">
-            <table class="table">
-                <thead class="thead-light">
+    <main class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Propriedade</th>
+                    <th scope="col">Proprietário</th>
+                    <th scope="col">Proprietário Assinatura</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Cliente Assinatura</th>
+                    <th class="action" scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="report-content">
+                @foreach ($contracts as $contract)
                     <tr>
-                        <th scope="col">Propriedade</th>
-                        <th scope="col">Hóspede</th>
-                        <th scope="col">Valor</th>
-                        <th scope="col">Checkin/Checkout</th>
-                        <th class="action" scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="reservations">
-                    @foreach ($reservations as $reservation)
-                        @if (Auth::id() == $reservation->post_author)
-                            <tr>
-                            @else
-                            <tr style="background-color: #ff9900;">
-                        @endif
-                        <td> {{ $reservation->post_title }} </td>
-                        <td> {{ $reservation->guest_name }} </td>
-                        <td> {{ "R$ " . str_replace('.', ',', $reservation->price) }} </td>
-                        <td> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkin)->format('d/m/Y') . ' - ' . \Carbon\Carbon::createFromFormat('Y-m-d', $reservation->checkout)->format('d/m/Y') }}
+                        <td>{{ $contract->property_id }}</td>
+                        <td>{{ $contract->owner_name ?? $contract->owner_signature }}</td>
+                        <td>
+                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $contract->owner_signature_at)->format('m/d/Y H:i:s') }}
+                        </td>
+                        <td>{{ $contract->client_name ?? $contract->client_signature }}</td>
+                        <td>
+                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $contract->client_signature_at)->format('m/d/Y H:i:s') }}
                         </td>
                         <td>
-                            <form action="/owner/reservations/{{ $reservation->id }}" method="get">
-                                @csrf
-                                <button type="submit" class="btn btn-light">Visualizar</button>
+                            <a href="{{ route('owner.download_property_contract', ['contractId' => $contract->id]) }}"
+                                class="btn btn-light">Baixar Contrato</a>
+                            <a href="{{ route('owner.property_contract', ['contractId' => $contract->id]) }}"
+                                class="btn btn-light">Assinar Contrato</a>
+                            <a href="{{ route('owner.property_contract_client', ['contractId' => $contract->id]) }}"
+                                class="btn btn-light">Contrato do Cliente</a>
+                            <form action="{{ route('owner.destroy_contract', ['contractId' => $contract->id]) }}"
+                                method="post">
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger">Excluir Contrato</button>
                             </form>
-                            @if (Auth::id() == $reservation->user_id)
-                                <form action="{{ route('owner.reservation_destroy', ['id' => $reservation->id]) }}"
-                                    method="post">
-                                    @method('delete')
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger">Excluir</button>
-                                </form>
-                            @endif
                         </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -148,27 +135,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
         $('#filtro-propriedade').on('change', function() {
-            propriedade = $('#filtro-propriedade').val() ?? 0;
-            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
-            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
-
             $.ajax({
-                url: "/owner/getReservations/" + propriedade + "/" + month + "/" + year,
+                url: "/owner/getReport/" + this.value,
                 success: function(result) {
-                    $("#reservations").html(result['data']);
-                }
-            });
-        });
+                    value = $('#filtro-propriedade').val();
 
-        $('#month').on('change', function() {
-            propriedade = $('#filtro-propriedade').val() ?? 0;
-            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
-            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
+                    if (value == '0') {
+                        $('#comission').show();
+                    } else {
+                        $('#comission').hide();
+                    }
 
-            $.ajax({
-                url: "/owner/getReservations/" + propriedade + "/" + month + "/" + year,
-                success: function(result) {
-                    $("#reservations").html(result['data']);
+                    $("#report-content").html(result['data']);
                 }
             });
         });
