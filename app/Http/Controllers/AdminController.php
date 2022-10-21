@@ -13,6 +13,7 @@ use App\Models\Property;
 use App\Models\PropertyInfo;
 use App\Models\Receipt;
 use App\Models\RegionalTax;
+use App\Models\Reminder;
 use App\Models\RentalInformation;
 use App\Models\User;
 use App\Models\VerifiedProperty;
@@ -26,11 +27,15 @@ use Maatwebsite\Excel\Facades\Excel;
 class AdminController extends Controller
 {
     private $unverified;
+    private $reminders;
 
     public function __construct()
     {
         $this->unverified = VerifiedUser::where('verified', 0)->where('reason', null)->count();
         $this->unverified += VerifiedProperty::where('verified', 0)->where('reason', null)->count();
+
+        $this->reminders = Reminder::getNotifications();
+        $this->notifications = count($this->reminders) + $this->unverified;
     }
 
     private function calendarPage($viewName)
@@ -54,13 +59,17 @@ class AdminController extends Controller
     public function index()
     {
         return $this->calendarPage('admin.admin')
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function unblockPage()
     {
         return $this->calendarPage('admin.admin-unblock')
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function receipts()
@@ -74,7 +83,9 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
             ->with('users', $owners)
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function verify()
@@ -86,21 +97,27 @@ class AdminController extends Controller
         return view('admin.admin-verify')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
-            ->with('pending', $pending);
+            ->with('pending', $pending)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function searchProperties()
     {
         return view('admin.admin-search-property')
             ->with('name', Auth::user()->display_name)
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function profile()
     {
         return view('admin.admin-profile')
             ->with('name', Auth::user()->display_name)
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function social()
@@ -120,7 +137,9 @@ class AdminController extends Controller
         return view('admin.admin-demand')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
-            ->with('demand', $demand);
+            ->with('demand', $demand)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function createDemand(Request $request)
@@ -129,6 +148,48 @@ class AdminController extends Controller
             $request->all(),
             redirect(route('admin.demand'))
         );
+    }
+
+    public function reminder()
+    {
+        $reminder = null;
+
+        return view('admin.admin-reminder')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('reminder', $reminder)
+            ->with('properties', Property::published()->get())
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function viewReminder($id)
+    {
+        $reminder = Reminder::find($id);
+
+        return view('admin.admin-reminder')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('reminder', $reminder)
+            ->with('properties', Property::where('ID', $reminder->property_id)->get())
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function createReminder(Request $request)
+    {
+        return Reminder::new(
+            $request->all(),
+            redirect(route('admin.profile'))
+        );
+    }
+
+    public function deleteReminder($id)
+    {
+        $reminder = Reminder::find($id);
+        $reminder->delete();
+
+        return redirect(route('admin.profile'));
     }
 
     public function verified(Request $request)
@@ -213,7 +274,9 @@ class AdminController extends Controller
         return $this->calendarPage('admin.admin-reservation')
             ->with('rentalInformation', $rentalInformation)
             ->with('commitment', $commitment)
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function reservations()
@@ -224,7 +287,9 @@ class AdminController extends Controller
             ->with('properties', Property::all())
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations)
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     private function reservationsAsHtml($reservations)
@@ -281,7 +346,9 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('reservation', $reservation)
             ->with('user', Auth::user())
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function downloadContract($id)
@@ -363,7 +430,9 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::published()->get())
             ->with('report', $report)
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function reportIndication()
@@ -371,7 +440,9 @@ class AdminController extends Controller
         return view('admin.admin-report-indication')
             ->with('name', Auth::user()->display_name)
             ->with('properties', PropertyInfo::all())
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function reportRegional()
@@ -379,7 +450,9 @@ class AdminController extends Controller
         return view('admin.admin-report-regional')
             ->with('name', Auth::user()->display_name)
             ->with('regional_tax', RegionalTax::all())
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function properties()
@@ -387,7 +460,9 @@ class AdminController extends Controller
         return view('admin.admin-properties')
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::all())
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function propertyIndication($propertyId)
@@ -396,7 +471,9 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('property', Property::find($propertyId))
             ->with('users', User::all())
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function propertyStandard($propertyId)
@@ -404,7 +481,9 @@ class AdminController extends Controller
         return view('admin.admin-property-standard')
             ->with('name', Auth::user()->display_name)
             ->with('property', Property::find($propertyId))
-            ->with('unverified', $this->unverified);
+            ->with('unverified', $this->unverified)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
     }
 
     public function getProperty($propertyId)

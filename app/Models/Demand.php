@@ -28,8 +28,8 @@ class Demand extends Model
         ) {
             return back()->withErrors('Data de Check-in deve ser menor do que Check-out.');
         }
-        
-        $demand = new self([
+
+        $demand = Demand::create([
             'checkin' => $data['checkin'],
             'checkout' => $data['checkout'],
             'client' => $data['client'],
@@ -38,8 +38,6 @@ class Demand extends Model
             'people_number' => $data['people_number'],
             'type' => $data['type']
         ]);
-        
-        $demand->save();
 
         return $callback;
     }

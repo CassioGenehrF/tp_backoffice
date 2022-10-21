@@ -244,7 +244,8 @@ textarea {
     resize: none;
 }
 
-a, a:hover {
+a,
+a:hover {
     text-decoration: none;
 }
 
@@ -263,4 +264,22 @@ a, a:hover {
 .save-button:hover {
     background-color: rgba(217, 217, 217, 35%);
     color: var(--cor-primaria);
+}
+
+.delete-button {
+    margin: 0 auto;
+    align-self: center;
+    background-color: #dc3545;
+    width: 100%;
+    height: 60px;
+    border-radius: 0.25rem;
+    font-size: 20px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
 }

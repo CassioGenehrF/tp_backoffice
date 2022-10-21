@@ -51,7 +51,7 @@
                         <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
                         <a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a>
                         <a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
-                        <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
+                        <a class="dropdown-item" href="{{ route('admin.reminder') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                     </div>
                 </div>
@@ -99,26 +99,25 @@
         </nav>
     </header>
     <main class="container">
-        <a href="{{ route('admin.properties') }}" class="btn btn-light ml-4 mb-2">
+        <a href="{{ route('admin.profile') }}" class="btn btn-light ml-4 mb-2">
             Voltar
         </a>
-        <form action="{{ route('admin.save_demand') }}" method="POST">
-            @csrf
+        <form action="{{ route('admin.store_reminder') }}" method="POST">
             <div class="row mt-2 ml-4">
                 <div class="form-group col-md-6">
                     <label for="checkin">Check-in:</label>
-                    @if ($demand)
+                    @if ($reminder)
                         <input class="form-control" type="date" id="checkin" name="checkin"
-                            value="{{ $demand->checkin }}" required>
+                            value="{{ $reminder->checkin }}" required disabled>
                     @else
                         <input class="form-control" type="date" id="checkin" name="checkin" required>
                     @endif
                 </div>
                 <div class="form-group col-md-6">
                     <label for="checkout">Check-out:</label>
-                    @if ($demand)
+                    @if ($reminder)
                         <input class="form-control" type="date" id="checkout" name="checkout"
-                            value="{{ $demand->checkout }}" required>
+                            value="{{ $reminder->checkout }}" required disabled>
                     @else
                         <input class="form-control" type="date" id="checkout" name="checkout" required>
                     @endif
@@ -126,19 +125,19 @@
             </div>
             <div class="row mt-2 ml-4">
                 <div class="form-group col-md-6">
-                    <label for="hospede">Nome do Cliente:</label>
-                    @if ($demand)
+                    <label for="client">Nome do Cliente:</label>
+                    @if ($reminder)
                         <input class="form-control" type="text" id="client" name="client"
-                            value="{{ $demand->client }}"" required>
+                            value="{{ $reminder->client }}"" required disabled>
                     @else
                         <input class="form-control" type="text" id="client" name="client" required>
                     @endif
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="telefone">Telefone:</label>
-                    @if ($demand)
+                    <label for="phone">Telefone:</label>
+                    @if ($reminder)
                         <input class="form-control" type="tel" id="phone" name="phone" required
-                            onkeypress="return onlyNumberKey(event)" value="{{ $demand->phone }}">
+                            onkeypress="return onlyNumberKey(event)" value="{{ $reminder->phone }}" disabled>
                     @else
                         <input class="form-control" type="tel" id="phone" name="phone" required
                             onkeypress="return onlyNumberKey(event)">
@@ -146,41 +145,110 @@
                 </div>
             </div>
             <div class="row mt-2 ml-4">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="price">Preço:</label>
-                    @if ($demand)
+                    @if ($reminder)
                         <input class="form-control" type="number" id="price" name="price"
-                            value="{{ $demand->price }}" required>
+                            value="{{ $reminder->price }}" required disabled>
                     @else
                         <input class="form-control" type="number" id="price" name="price" required>
                     @endif
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="people_number">Quantidade de Pessoas:</label>
-                    @if ($demand)
+                    @if ($reminder)
                         <input class="form-control" type="number" id="people_number" name="people_number" required
-                            onkeypress="return onlyNumberKey(event)" value="{{ $demand->people_number }}">
+                            onkeypress="return onlyNumberKey(event)" value="{{ $reminder->people_number }}" disabled>
                     @else
                         <input class="form-control" type="number" id="people_number" name="people_number" required
                             onkeypress="return onlyNumberKey(event)">
                     @endif
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="type">Perfil:</label>
-                    @if ($demand)
-                        <input class="form-control" type="text" id="type" name="type" required
-                            value="{{ $demand->type }}">
+                <div class="form-group col-md-3">
+                    <label for="period">Período</label>
+                    @if ($reminder)
+                        <select class="form-control" name="period" id="period" disabled>
+                            @switch($reminder->period)
+                                @case('weekend')
+                                    <option value="weekend">Final de Semana</option>
+                                @break
+
+                                @case('day_use')
+                                    <option value="day_use">Day Use</option>
+                                @break
+
+                                @case('week')
+                                    <option value="week">Dia de Semana</option>
+                                @break
+
+                                @case('holiday')
+                                    <option value="holiday">Feriado Prolongado</option>
+                                @break
+
+                                @case('christmas')
+                                    <option value="christmas">Natal</option>
+                                @break
+
+                                @case('new_year')
+                                    <option value="new_year">Ano Novo</option>
+                                @break
+
+                                @case('carnival')
+                                    <option value="carnival">Carnaval</option>
+                                @break
+
+                                @default
+                            @endswitch
+                        </select>
                     @else
-                        <input class="form-control" type="text" id="type" name="type" required>
+                        <select class="form-control" name="period" id="period">
+                            <option value="0" selected>Selecione uma opção</option>
+                            <option value="weekend">Final de Semana</option>
+                            <option value="day_use">Day Use</option>
+                            <option value="week">Dia de Semana</option>
+                            <option value="holiday">Feriado Prolongado</option>
+                            <option value="christmas">Natal</option>
+                            <option value="new_year">Ano Novo</option>
+                            <option value="carnival">Carnaval</option>
+                        </select>
+                    @endif
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="property_id">Imóvel:</label>
+                    @if ($reminder)
+                        <select class="form-control" name="property_id" id="property_id" disabled>
+                            @foreach ($properties as $property)
+                                <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <select class="form-control" name="property_id" id="property_id">
+                            <option value="0">Todas</option>
+                            @foreach ($properties as $property)
+                                <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
+                            @endforeach
+                        </select>
                     @endif
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-12 ml-4">
-                    <button type="submit" class="save-button">SALVAR</button>
+            @if (!$reminder)
+                <div class="row mt-2">
+                    <div class="col-md-12 ml-4">
+                        <button type="submit" class="save-button">SALVAR</button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </form>
+        @if ($reminder)
+            <form action="{{ route('admin.delete_reminder', ['id' => $reminder->id]) }}" method="post">
+                @method('delete')
+                <div class="row mt-2">
+                    <div class="col-md-12 ml-4">
+                        <button type="submit" class="delete-button">Excluir</button>
+                    </div>
+                </div>
+            </form>
+        @endif
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

@@ -47,7 +47,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('receipts', [AdminController::class, 'receipts'])->name('admin.receipts');
         Route::get('verify', [AdminController::class, 'verify'])->name('admin.verify');
         Route::get('search-properties', [AdminController::class, 'searchProperties'])->name('admin.search_properties');
-        Route::get('demand', [AdminController::class, 'demand'])->name('admin.demand');
+
+        Route::group(['prefix' => 'demand'], function () {
+            Route::get('', [AdminController::class, 'demand'])->name('admin.demand');
+            Route::post('', [AdminController::class, 'createDemand'])->name('admin.save_demand');
+        });
+
+        Route::group(['prefix' => 'reminder'], function () {
+            Route::get('', [AdminController::class, 'reminder'])->name('admin.reminder');
+            Route::get('{id}', [AdminController::class, 'viewReminder'])->name('admin.show_reminder');
+            Route::post('', [AdminController::class, 'createReminder'])->name('admin.store_reminder');
+            Route::delete('{id}', [AdminController::class, 'deleteReminder'])->name('admin.delete_reminder');
+        });
+
         Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
         Route::get('social', [AdminController::class, 'social'])->name('admin.social_media');
         Route::get('contracts', [AdminController::class, 'contracts'])->name('admin.contracts');
@@ -57,7 +69,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
 
-        Route::post('demand', [AdminController::class, 'createDemand'])->name('admin.save_demand');
         Route::post('receipts', [AdminController::class, 'createReceipt'])->name('admin.create_receipt');
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
         Route::post('unblock', [AdminController::class, 'unblock'])->name('admin.unblock');

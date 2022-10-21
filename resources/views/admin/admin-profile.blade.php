@@ -64,8 +64,8 @@
                 <li class="menu-item notification">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-bell"></i>
-                        @if ($unverified)
-                            <span class="badge notification-count">{{ $unverified }}</span>
+                        @if ($notifications)
+                            <span class="badge notification-count">{{ $notifications }}</span>
                         @endif
                     </button>
                     <div class="dropdown-menu">
@@ -75,6 +75,20 @@
                                 <a class="notification-menu" href="{{ route('admin.verify') }}">
                                     Verificar agora</a>
                             </p>
+                            <hr>
+                        @endif
+
+                        @if ($reminders)
+                            @foreach ($reminders as $reminderNotification)
+                                <p>
+                                    <b>Lembrete:</b> entre em contato com o cliente:
+                                    {{ $reminderNotification['client'] }}.<br>
+                                    <a class="notification-menu"
+                                        href="{{ route('admin.show_reminder', ['id' => $reminderNotification['id']]) }}">
+                                        Verificar agora</a>
+                                </p>
+                                <hr>
+                            @endforeach
                         @endif
                     </div>
                 </li>
@@ -95,6 +109,9 @@
                 <a href="{{ route('admin.social_media') }}" target="_blank"
                     class="list-group-item list-group-item-action">
                     Gerar Relatório Redes Sociais
+                </a>
+                <a href="{{ route('admin.reminder') }}" class="list-group-item list-group-item-action">
+                    Criar Lembretes
                 </a>
             </div>
         </section>
