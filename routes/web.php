@@ -10,6 +10,9 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 
 Route::post('auth', [LoginController::class, 'auth'])->name('auth.user');
 
+Route::get('contract/{contractId}/client', [OwnerController::class, 'contractClient'])->name('owner.property_contract_client');
+Route::post('contract/{contractId}/client', [OwnerController::class, 'saveContractClient'])->name('owner.client_signature');
+
 Route::middleware(['auth'])->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.user');
 
@@ -124,8 +127,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{contractId}/download', [OwnerController::class, 'downloadPropertyContract'])->name('owner.download_property_contract');
             Route::get('{contractId}/owner', [OwnerController::class, 'contractOwner'])->name('owner.property_contract');
             Route::post('{contractId}/owner', [OwnerController::class, 'saveContractOwner'])->name('owner.owner_signature');
-            Route::get('{contractId}/client', [OwnerController::class, 'contractClient'])->name('owner.property_contract_client');
-            Route::post('{contractId}/client', [OwnerController::class, 'saveContractClient'])->name('owner.client_signature');
             Route::delete('{contractId}', [OwnerController::class, 'destroyContract'])->name('owner.destroy_contract');
         });
 

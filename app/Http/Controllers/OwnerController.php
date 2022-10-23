@@ -406,7 +406,7 @@ class OwnerController extends Controller
         }
 
         return view('owner.owner-property-contract-client')
-            ->with('name', Auth::user()->display_name)
+            ->with('name', Auth::user()->display_name ?? 'Convidado')
             ->with('contractId', $contractId);
     }
 
@@ -418,7 +418,7 @@ class OwnerController extends Controller
         $contract->client_signature_at = now();
         $contract->save();
 
-        return $this->propertiesContracts();
+        return redirect()->back();
     }
 
     public function destroyContract($contractId)
