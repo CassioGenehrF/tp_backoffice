@@ -14,8 +14,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- Boostrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
@@ -39,19 +39,23 @@
         <nav class="cabecalho-menu">
             <ul class="list-itens">
                 <div class="btn-group menu-item">
-                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                    <button type="button" class="btn dropdown-toggle" id="dropdownMenu" type="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Opções
                     </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Agenda</a>
-                        <a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
-                        <a class="dropdown-item" href="{{ route('owner.reservations') }}">Minhas Reservas</a>
-                        <a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a>
-                        <a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
-                        <a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a>
-                        <a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus Contratos</a>
-                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                        <li><a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Agenda</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('owner.reservations') }}">Minhas Reservas</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus
+                                Contratos</a>
+                        </li>
+                    </ul>
                 </div>
                 <li class="menu-item username">
                     <p>{{ $name }}</p>
@@ -99,24 +103,44 @@
                         <td>{{ $contract->property_id }}</td>
                         <td>{{ $contract->owner_name ?? $contract->owner_signature }}</td>
                         <td>
-                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $contract->owner_signature_at)->format('m/d/Y H:i:s') }}
+                            @if ($contract->owner_signature_at)
+                                {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $contract->owner_signature_at)->format('m/d/Y H:i:s') }}
+                            @endif
                         </td>
                         <td>{{ $contract->client_name ?? $contract->client_signature }}</td>
                         <td>
-                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $contract->client_signature_at)->format('m/d/Y H:i:s') }}
+                            @if ($contract->client_signature_at)
+                                {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $contract->client_signature_at)->format('m/d/Y H:i:s') }}
+                            @endif
                         </td>
                         <td>
-                            <a href="{{ route('owner.download_property_contract', ['contractId' => $contract->id]) }}"
-                                class="btn btn-light">Baixar Contrato</a>
-                            <a href="{{ route('owner.property_contract', ['contractId' => $contract->id]) }}"
-                                class="btn btn-light">Assinar Contrato</a>
-                            <a href="{{ route('owner.property_contract_client', ['contractId' => $contract->id]) }}"
-                                class="btn btn-light">Contrato do Cliente</a>
-                            <form action="{{ route('owner.destroy_contract', ['contractId' => $contract->id]) }}"
-                                method="post">
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Excluir Contrato</button>
-                            </form>
+                            <button type="button" class="btn dropdown-toggle" id="dropdownMenu" type="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Opções
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                <li>
+                                    <a href="{{ route('owner.download_property_contract', ['contractId' => $contract->id]) }}"
+                                        class="dropdown-item">Baixar Contrato</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('owner.property_contract', ['contractId' => $contract->id]) }}"
+                                        class="dropdown-item">Assinar Contrato</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('owner.property_contract_client', ['contractId' => $contract->id]) }}"
+                                        class="dropdown-item">Contrato do Cliente</a>
+                                </li>
+                                <li>
+                                    <form
+                                        action="{{ route('owner.destroy_contract', ['contractId' => $contract->id]) }}"
+                                        method="post">
+                                        @method('delete')
+                                        <button type="submit" class="text-white bg-danger dropdown-item">Excluir
+                                            Contrato</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </td>
                     </tr>
                 @endforeach
@@ -126,11 +150,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
