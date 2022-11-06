@@ -14,6 +14,7 @@ use App\Models\Commitment;
 use App\Models\ContractClient;
 use App\Models\ContractDeposit;
 use App\Models\Demand;
+use App\Models\Indication;
 use App\Models\Property;
 use App\Models\PropertyValue;
 use App\Models\Receipt;
@@ -503,6 +504,63 @@ class OwnerController extends Controller
         $client->save();
 
         return redirect(route('owner.clients'));
+    }
+
+    public function viewIndications()
+    {
+        $indications = Indication::query()
+            ->where('user_id', auth()->user()->ID)
+            ->get();
+
+        return view('owner.owner-indications')
+            ->with('name', Auth::user()->display_name)
+            ->with('indications', $indications);
+    }
+
+    public function createIndication()
+    {
+        return view('owner.owner-create-indication')
+            ->with('name', Auth::user()->display_name)
+            ->with('indication', null);
+    }
+
+    public function showIndication($indicationId)
+    {
+        $indication = Indication::find($indicationId);
+
+        return view('owner.owner-create-indication')
+            ->with('name', Auth::user()->display_name)
+            ->with('indication', $indication);
+    }
+
+    public function saveIndication(Request $request)
+    {
+        $data = array_merge(
+            ['user_id' => auth()->user()->ID],
+            $request->all()
+        );
+
+        if ($request->indication_id) {
+            $indication = Indication::find($request->indication_id);
+        } else {
+            $indication = new Indication();
+        }
+
+        $indication->fill($data);
+        $indication->save();
+
+        return redirect(route('owner.indications'));
+    }
+
+    public function destroyIndication($indicationId)
+    {
+        $indication = Indication::find($indicationId);
+
+        if ($indication && $indication->status === 'Aguardando Atendimento') {
+            $indication->delete();
+        }
+
+        return redirect(route('owner.indications'));
     }
 
     public function getCalendarAsJson($propertyId, $monthId, $yearId)

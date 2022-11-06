@@ -54,6 +54,7 @@
                         <a class="dropdown-item" href="{{ route('admin.reminder') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                         <a class="dropdown-item" href="{{ route('admin.clients') }}">Clientes</a>
+                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Indicações</a>
                     </div>
                 </div>
                 <li class="menu-item username">

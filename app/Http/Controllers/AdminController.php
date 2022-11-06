@@ -10,6 +10,7 @@ use App\Http\Requests\Owner\BlockRequest;
 use App\Models\Client;
 use App\Models\Commitment;
 use App\Models\Demand;
+use App\Models\Indication;
 use App\Models\Property;
 use App\Models\PropertyInfo;
 use App\Models\Receipt;
@@ -254,6 +255,61 @@ class AdminController extends Controller
         if ($client) $client->delete();
 
         return redirect(route('admin.clients'));
+    }
+
+    public function viewIndications()
+    {
+        $indications = Indication::all();
+
+        return view('admin.admin-indications')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
+            ->with('indications', $indications)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function showIndication($indicationId)
+    {
+        $indication = Indication::find($indicationId);
+
+        return view('admin.admin-create-indication')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
+            ->with('indication', $indication)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function answeredIndication($indicationId)
+    {
+        $indication = Indication::find($indicationId);
+        $indication->update(['status' => 'Atendido']);
+
+        return redirect(route('admin.indications'));
+    }
+
+    public function reservedIndication(Request $request, $IndicationId)
+    {
+        $indication = Indication::find($IndicationId);
+        $indication->update([
+            'status' => 'Reservado',
+            'value' => $request->value,
+            'rented_month' => Carbon::createFromFormat('Y-m', $request->rented_month)->format('Y-m-d'),
+        ]);
+
+        return redirect(route('admin.indications'));
+    }
+
+    public function destroyIndication($indicationId)
+    {
+        $indication = Indication::find($indicationId);
+
+        if ($indication) $indication->delete();
+
+        return redirect(route('admin.indications'));
     }
 
     public function verified(Request $request)

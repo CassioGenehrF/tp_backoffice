@@ -7,7 +7,7 @@
     <link rel="icon" href="https://temporadapaulista.com.br/wp-content/uploads/2022/06/FAVICON-36x36.png"
         sizes="32x32">
 
-    <title>Administrador - Temporada Paulista</title>
+    <title>Proprietário - Temporada Paulista</title>
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -16,16 +16,13 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owner.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 </head>
@@ -112,20 +109,47 @@
             </ul>
         </nav>
     </header>
-    <main class="conteudo">
-        <section class="mt-2 w-75">
-            <h1>{{ Auth::user()->display_name }}</h1>
-            <hr>
-            <div class="list-group">
-                <a href="{{ route('admin.social_media') }}" target="_blank"
-                    class="list-group-item list-group-item-action">
-                    Gerar Relatório Redes Sociais
-                </a>
-                <a href="{{ route('admin.reminder') }}" class="list-group-item list-group-item-action">
-                    Criar Lembretes
-                </a>
+    <main class="container">
+        <form action="{{ route('admin.reserved_indication', ['indicationId' => $indication->id]) }}" method="POST">
+            <h2 class="text-center mt-2">Dados do Indicador:</h2>
+            <div class="row mt-2">
+                <div class="form-group col-md-4">
+                    <label for="name">Nome:</label>
+                    <input class="form-control" type="text" id="name" name="name"
+                        value="{{ $indication->name }}" required disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="email">Email:</label>
+                    <input class="form-control" type="email" id="email" name="email"
+                        value="{{ $indication->email }}" required disabled>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="cpf">CPF:</label>
+                    <input class="form-control" type="text" id="cpf" name="cpf"
+                        value="{{ $indication->cpf }}" required disabled>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="phone">Telefone:</label>
+                    <input type="text" class="form-control" id="phone" name="phone"
+                        onkeypress="return onlyNumberKey(event)" required disabled value="{{ $indication->phone }}">
+                </div>
             </div>
-        </section>
+            <div class="row mt-2">
+                <div class="form-group col-md-3">
+                    <label for="value">Valor Comissão:</label>
+                    <input class="form-control" type="number" id="value" name="value" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="rented_month">Mês Competência:</label>
+                    <input class="form-control" type="month" id="rented_month" name="rented_month" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <button type="submit" class="save-button">Concluir Reserva</button>
+                </div>
+            </div>
+        </form>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">

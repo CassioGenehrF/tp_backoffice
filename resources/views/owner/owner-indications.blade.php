@@ -83,46 +83,52 @@
             </ul>
         </nav>
     </header>
-    <main class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Propriedade</th>
-                    <th class="action" scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="report-content">
-                @foreach ($properties as $property)
+    <div class="container">
+        <br>
+        <a href="{{ route('owner.create_indication') }}" class="btn btn-primary">
+            Criar nova Indicação
+        </a>
+        <br>
+        <br>
+        <main class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ $property->post_title }}</td>
-                        <td>
-                            @if (is_null($property->verified))
-                                <a href="{{ route('owner.property_documents', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-success">Enviar Documentos</a>
-                            @endif
-                            @if ($property->verified && $property->verified->verified)
-                                <a href="{{ route('owner.value', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-warning">Definir Valores</a>
-                                <a href="{{ route('owner.contract', ['propertyId' => $property->ID]) }}"
-                                    class="btn btn-danger">Gerar Contrato</a>
-                            @endif
-                            @if ($property->verified && !$property->verified->verified)
-                                @if ($property->verified->reason)
-                                    <p>
-                                        Recusado - Motivo: {{ $property->verified->reason }}
-                                    </p>
-                                    <a href="{{ route('owner.property_documents', ['propertyId' => $property->ID]) }}"
-                                        class="btn btn-success">Enviar Novamente</a>
-                                @else
-                                    Aguardando Aprovação da Documentação
-                                @endif
-                            @endif
-                        </td>
+                        <th scope="col">Nome</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Status</th>
+                        <th class="action" scope="col">Ações</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </main>
+                </thead>
+                <tbody id="report-content">
+                    @foreach ($indications as $indication)
+                        <tr>
+                            <td>{{ $indication->name }}</td>
+                            <td>{{ $indication->cpf }}</td>
+                            <td>{{ $indication->phone }}</td>
+                            <td>{{ $indication->status }}</td>
+                            <td>
+                                <a href="{{ route('owner.indication', ['indicationId' => $indication->id]) }}"
+                                    class="btn btn-light">
+                                    Editar
+                                </a>
+                                @if ($indication->status === 'Aguardando Atendimento')
+                                    <form
+                                        action="{{ route('owner.destroy_indication', ['indicationId' => $indication->id]) }}"
+                                        method="post">
+                                        @method('delete')
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </main>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>

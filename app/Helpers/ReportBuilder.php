@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Indication;
 use App\Models\Receipt;
 use App\Models\RentalInformation;
 use Carbon\Carbon;
@@ -86,6 +87,19 @@ class ReportBuilder
 
             if ($isAdmin) {
                 $report["$month/$year"]['regional_comission'] += $reservation->regional_tax;
+            }
+        }
+
+        if (!$propertyId && !($isBroker && $isAdmin)) {
+            $indications = Indication::query()
+                ->where('status', 'Reservado')
+                ->where('user_id', auth()->user()->ID)
+                ->get();
+
+            foreach ($indications as $indication) {
+                $month = Carbon::createFromFormat('Y-m-d H:i:s', $indication->rented_month)->format('m');
+
+                $report["$month/$year"]['comission'] += $indication->value;
             }
         }
 

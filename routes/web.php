@@ -71,6 +71,14 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('{clientId}', [AdminController::class, 'destroyClient'])->name('admin.destroy_client');
         });
 
+        Route::group(['prefix' => 'indication'], function () {
+            Route::get('', [AdminController::class, 'viewIndications'])->name('admin.indications');
+            Route::get('{indicationId}', [AdminController::class, 'showIndication'])->name('admin.indication');
+            Route::post('{indicationId}/answered', [AdminController::class, 'answeredIndication'])->name('admin.answered_indication');
+            Route::post('{indicationId}/reserved', [AdminController::class, 'reservedIndication'])->name('admin.reserved_indication');
+            Route::delete('{indicationId}', [AdminController::class, 'destroyIndication'])->name('admin.destroy_indication');
+        });
+
         Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
         Route::get('social', [AdminController::class, 'social'])->name('admin.social_media');
         Route::get('contracts', [AdminController::class, 'contracts'])->name('admin.contracts');
@@ -144,6 +152,14 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{clientId}', [OwnerController::class, 'showClient'])->name('owner.client');
             Route::post('', [OwnerController::class, 'saveClient'])->name('owner.save_client');
             Route::delete('{clientId}', [OwnerController::class, 'destroyClient'])->name('owner.destroy_client');
+        });
+
+        Route::group(['prefix' => 'indication'], function () {
+            Route::get('', [OwnerController::class, 'viewIndications'])->name('owner.indications');
+            Route::get('new', [OwnerController::class, 'createIndication'])->name('owner.create_indication');
+            Route::get('{indicationId}', [OwnerController::class, 'showIndication'])->name('owner.indication');
+            Route::post('', [OwnerController::class, 'saveIndication'])->name('owner.save_indication');
+            Route::delete('{indicationId}', [OwnerController::class, 'destroyIndication'])->name('owner.destroy_indication');
         });
 
         Route::get('value/{propertyId}', [OwnerController::class, 'value'])->name('owner.value');
