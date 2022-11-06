@@ -53,6 +53,7 @@
                         <a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
                         <a class="dropdown-item" href="{{ route('admin.reminder') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
+                        <a class="dropdown-item" href="{{ route('admin.clients') }}">Clientes</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -70,6 +71,15 @@
                             <p>
                                 Você possui {{ $unverified }} proprietário(s) aguardando aprovação de documentos.
                                 <a class="notification-menu" href="{{ route('admin.verify') }}">
+                                    Verificar agora</a>
+                            </p>
+                            <hr>
+                        @endif
+
+                        @if ($pendingClient)
+                            <p>
+                                Você possui {{ $pendingClient }} clientes(s) aguardando aprovação.
+                                <a class="notification-menu" href="{{ route('admin.clients') }}">
                                     Verificar agora</a>
                             </p>
                             <hr>

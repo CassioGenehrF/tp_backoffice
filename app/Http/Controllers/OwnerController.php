@@ -9,6 +9,7 @@ use App\Helpers\ReportBuilder;
 use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
 use App\Http\Requests\Owner\ContractRequest;
+use App\Models\Client;
 use App\Models\Commitment;
 use App\Models\ContractClient;
 use App\Models\ContractDeposit;
@@ -22,6 +23,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 
@@ -264,6 +266,18 @@ class OwnerController extends Controller
             ->with('properties', Auth::user()->properties);
     }
 
+    private function calculateRentedDays($checkin, $checkout)
+    {
+        try {
+            return Carbon::createFromFormat('Y-m-d', $checkout)
+                ->diffInDays(Carbon::createFromFormat('Y-m-d', $checkin));
+        } catch (\Exception $e) {
+            Log::error("$checkin - $checkout");
+            Log::error($e->getMessage());
+            return 0;
+        }
+    }
+
     public function createContract(ContractRequest $request)
     {
         $property = Property::find($request->property_id);
@@ -303,7 +317,7 @@ class OwnerController extends Controller
             'property_address' => $property->street,
             'property_city' => $property->city,
             'property_uf' => $property->state,
-            'rented_days' => Carbon::createFromFormat('Y-m-d', $request->checkout)->diffInDays(Carbon::createFromFormat('Y-m-d', $request->checkin)),
+            'rented_days' => $this->calculateRentedDays($request->checkin, $request->checkout),
             'checkin_date' => Carbon::createFromFormat('Y-m-d', $request->checkin),
             'checkin_hour' => Carbon::createFromFormat('Y-m-d', $request->checkin)->setHour($checkin_hour)->setMinute($checkin_minute),
             'checkin_limit_hour' => Carbon::createFromFormat('Y-m-d', $request->checkin)->setHour($checkin_limit_hour)->setMinute($checkin_limit_minute),
@@ -430,6 +444,65 @@ class OwnerController extends Controller
         $contractDeposit->delete();
 
         return $this->propertiesContracts();
+    }
+
+    public function viewClients()
+    {
+        $clients = Client::query()
+            ->where('user_id', auth()->user()->ID)
+            ->whereNotIn('status', ['Deletando'])
+            ->get();
+
+        return view('owner.owner-clients')
+            ->with('name', Auth::user()->display_name)
+            ->with('clients', $clients);
+    }
+
+    public function createClient()
+    {
+        return view('owner.owner-create-client')
+            ->with('name', Auth::user()->display_name)
+            ->with('client', null);
+    }
+
+    public function showClient($clientId)
+    {
+        $client = Client::find($clientId);
+
+        return view('owner.owner-create-client')
+            ->with('name', Auth::user()->display_name)
+            ->with('client', $client);
+    }
+
+    public function saveClient(Request $request)
+    {
+        $data = array_merge(
+            [
+                'user_id' => auth()->user()->ID,
+                'status' => 'Pendente'
+            ],
+            $request->all()
+        );
+
+        if ($request->client_id) {
+            $client = Client::find($request->client_id);
+        } else {
+            $client = new Client();
+        }
+
+        $client->fill($data);
+        $client->save();
+
+        return redirect(route('owner.clients'));
+    }
+
+    public function destroyClient($clientId)
+    {
+        $client = Client::find($clientId);
+        $client->status = 'Deletando';
+        $client->save();
+
+        return redirect(route('owner.clients'));
     }
 
     public function getCalendarAsJson($propertyId, $monthId, $yearId)

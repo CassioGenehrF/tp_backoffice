@@ -283,3 +283,8 @@ a:hover {
     background-color: #c82333;
     border-color: #bd2130;
 }
+
+.star {
+    height: 30px;
+    width: 30px;
+}

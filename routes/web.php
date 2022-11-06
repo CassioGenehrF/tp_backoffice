@@ -63,6 +63,14 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('{id}', [AdminController::class, 'deleteReminder'])->name('admin.delete_reminder');
         });
 
+        Route::group(['prefix' => 'client'], function () {
+            Route::get('', [AdminController::class, 'viewClients'])->name('admin.clients');
+            Route::get('{clientId}', [AdminController::class, 'showClient'])->name('admin.client');
+            Route::post('', [AdminController::class, 'saveClient'])->name('admin.save_client');
+            Route::post('{clientId}', [AdminController::class, 'approveClient'])->name('admin.approve_client');
+            Route::delete('{clientId}', [AdminController::class, 'destroyClient'])->name('admin.destroy_client');
+        });
+
         Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
         Route::get('social', [AdminController::class, 'social'])->name('admin.social_media');
         Route::get('contracts', [AdminController::class, 'contracts'])->name('admin.contracts');
@@ -128,6 +136,14 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{contractId}/owner', [OwnerController::class, 'contractOwner'])->name('owner.property_contract');
             Route::post('{contractId}/owner', [OwnerController::class, 'saveContractOwner'])->name('owner.owner_signature');
             Route::delete('{contractId}', [OwnerController::class, 'destroyContract'])->name('owner.destroy_contract');
+        });
+
+        Route::group(['prefix' => 'client'], function () {
+            Route::get('', [OwnerController::class, 'viewClients'])->name('owner.clients');
+            Route::get('new', [OwnerController::class, 'createClient'])->name('owner.create_client');
+            Route::get('{clientId}', [OwnerController::class, 'showClient'])->name('owner.client');
+            Route::post('', [OwnerController::class, 'saveClient'])->name('owner.save_client');
+            Route::delete('{clientId}', [OwnerController::class, 'destroyClient'])->name('owner.destroy_client');
         });
 
         Route::get('value/{propertyId}', [OwnerController::class, 'value'])->name('owner.value');

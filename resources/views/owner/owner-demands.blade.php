@@ -53,6 +53,7 @@
                         <li><a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus
                                 Contratos</a>
                         </li>
+                        <li><a class="dropdown-item" href="{{ route('owner.clients') }}">Clientes</a></li>
                     </ul>
                 </div>
                 <li class="menu-item username">

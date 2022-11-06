@@ -16,15 +16,19 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owner/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -78,21 +82,47 @@
             </ul>
         </nav>
     </header>
-    <main class="container">
-        <form action="{{ route('owner.owner_signature', ['contractId' => $contractId]) }}" method="POST">
-            <div class="row mt-2">
-                <div class="form-group col-md-4">
-                    <label for="owner">Nome Completo:</label>
-                    <input type="text" class="form-control" id="owner" name="owner">
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-12">
-                    <button type="submit" class="save-button">Assinar Contrato</button>
-                </div>
-            </div>
-        </form>
-    </main>
+    <div class="container">
+        <br>
+        <a href="{{ route('owner.create_client') }}" class="btn btn-primary">
+            Criar novo Cliente
+        </a>
+        <br>
+        <br>
+        <main class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">Telefone</th>
+                        <th class="action" scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="report-content">
+                    @foreach ($clients as $client)
+                        <tr>
+                            <td>{{ $client->name }}</td>
+                            <td>{{ $client->cpf }}</td>
+                            <td>{{ $client->phone }}</td>
+                            <td>
+                                <a href="{{ route('owner.client', ['clientId' => $client->id]) }}"
+                                    class="btn btn-light">
+                                    Editar
+                                </a>
+                                <form action="{{ route('owner.destroy_client', ['clientId' => $client->id]) }}"
+                                    method="post">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </main>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>
@@ -103,16 +133,23 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script text="text/javascript">
-        $('#checkin').on('change', function() {
-            $('#checkout').val($('#checkin').val())
-            $('#checkout').prop('min', $('#checkin').val())
-        });
+    <script type="text/javascript">
+        $('#filtro-propriedade').on('change', function() {
+            $.ajax({
+                url: "/owner/getReport/" + this.value,
+                success: function(result) {
+                    value = $('#filtro-propriedade').val();
 
-        function onlyNumberKey(evt) {
-            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
-            return !(ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-        }
+                    if (value == '0') {
+                        $('#comission').show();
+                    } else {
+                        $('#comission').hide();
+                    }
+
+                    $("#report-content").html(result['data']);
+                }
+            });
+        });
     </script>
 </body>
 

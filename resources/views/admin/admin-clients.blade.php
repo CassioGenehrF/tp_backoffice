@@ -7,7 +7,7 @@
     <link rel="icon" href="https://temporadapaulista.com.br/wp-content/uploads/2022/06/FAVICON-36x36.png"
         sizes="32x32">
 
-    <title>Administrador - Temporada Paulista</title>
+    <title>Proprietário - Temporada Paulista</title>
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -16,15 +16,19 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owner/properties.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -108,31 +112,7 @@
             </ul>
         </nav>
     </header>
-    <main class="container">
-        <a href="{{ route('admin.properties') }}" class="btn btn-light ml-4 mb-2">
-            Voltar
-        </a>
-        <form action="{{ route('admin.property_info') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="propriedade" id="propriedade" value="{{ $property->ID }}">
-            <div class="row mt-2">
-                <div class="form-group col-md-12 ml-4">
-                    <label for="standard">Padrão do Imóvel:</label>
-                    <select class="form-control" name="standard" id="standard">
-                        <option value="" disabled selected hidden>Selecione uma opção</option>
-                        <option value="1">Simples</option>
-                        <option value="2">Médio</option>
-                        <option value="3">Alto</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-12 ml-4">
-                    <button type="submit" class="save-button">SALVAR</button>
-                </div>
-            </div>
-        </form>
-    </main>
+    <livewire:client />
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
     </script>
@@ -144,37 +124,24 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
-        $('#contrato').change(function() {
-            var file = $('#contrato')[0].files[0].name;
-            $(this).prev('label').text(file);
-        });
-
-        $(function() {
+        $('#filtro-propriedade').on('change', function() {
             $.ajax({
-                url: "/admin/getProperty/" + $('#propriedade').val(),
+                url: "/owner/getReport/" + this.value,
                 success: function(result) {
-                    if (result['user_indication_id']) {
-                        $('#indicacao option[value="' + result['user_indication_id'] + '"]').prop(
-                            'selected', 'selected');
+                    value = $('#filtro-propriedade').val();
+
+                    if (value == '0') {
+                        $('#comission').show();
                     } else {
-                        $('#indicacao').prop(
-                            'selectedIndex', 0);
+                        $('#comission').hide();
                     }
 
-                    if (result['contract']) {
-                        id = $('#propriedade').val()
-                        $('#contract_download').prop('href',
-                            `${window.location.origin}/admin/property/${id}/contract`)
-                        $('#contract_download').removeClass('hidden')
-                        $('.custom-file-label').text(result['contract'])
-                    } else {
-                        $('#contract_download').addClass('hidden')
-                        $('.custom-file-label').text('Escolher Arquivo')
-                    }
+                    $("#report-content").html(result['data']);
                 }
             });
         });
     </script>
+    @livewireScripts
 </body>
 
 </html>

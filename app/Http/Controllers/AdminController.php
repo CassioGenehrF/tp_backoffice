@@ -7,6 +7,7 @@ use App\Helpers\CalendarBuilder;
 use App\Helpers\ReportBuilder;
 use App\Http\Requests\Broker\RentRequest;
 use App\Http\Requests\Owner\BlockRequest;
+use App\Models\Client;
 use App\Models\Commitment;
 use App\Models\Demand;
 use App\Models\Property;
@@ -28,14 +29,17 @@ class AdminController extends Controller
 {
     private $unverified;
     private $reminders;
+    private $pendingClient;
 
     public function __construct()
     {
         $this->unverified = VerifiedUser::where('verified', 0)->where('reason', null)->count();
         $this->unverified += VerifiedProperty::where('verified', 0)->where('reason', null)->count();
 
+        $this->pendingClient = Client::whereNotIn('status', ['Ativo'])->count();
+
         $this->reminders = Reminder::getNotifications();
-        $this->notifications = count($this->reminders) + $this->unverified;
+        $this->notifications = count($this->reminders) + $this->unverified + $this->pendingClient;
     }
 
     private function calendarPage($viewName)
@@ -60,6 +64,7 @@ class AdminController extends Controller
     {
         return $this->calendarPage('admin.admin')
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -68,6 +73,7 @@ class AdminController extends Controller
     {
         return $this->calendarPage('admin.admin-unblock')
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -84,6 +90,7 @@ class AdminController extends Controller
             ->with('properties', Property::published()->get())
             ->with('users', $owners)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -97,6 +104,7 @@ class AdminController extends Controller
         return view('admin.admin-verify')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('pending', $pending)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
@@ -107,6 +115,7 @@ class AdminController extends Controller
         return view('admin.admin-search-property')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -116,6 +125,7 @@ class AdminController extends Controller
         return view('admin.admin-profile')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -137,6 +147,7 @@ class AdminController extends Controller
         return view('admin.admin-demand')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('demand', $demand)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
@@ -157,6 +168,7 @@ class AdminController extends Controller
         return view('admin.admin-reminder')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('reminder', $reminder)
             ->with('properties', Property::published()->get())
             ->with('notifications', $this->notifications)
@@ -170,6 +182,7 @@ class AdminController extends Controller
         return view('admin.admin-reminder')
             ->with('name', Auth::user()->display_name)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('reminder', $reminder)
             ->with('properties', Property::where('ID', $reminder->property_id)->get())
             ->with('notifications', $this->notifications)
@@ -190,6 +203,57 @@ class AdminController extends Controller
         $reminder->delete();
 
         return redirect(route('admin.profile'));
+    }
+
+    public function viewClients()
+    {
+        $clients = Client::all();
+
+        return view('admin.admin-clients')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
+            ->with('clients', $clients)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function showClient($clientId)
+    {
+        $client = Client::find($clientId);
+
+        return view('admin.admin-create-client')
+            ->with('name', Auth::user()->display_name)
+            ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
+            ->with('client', $client)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function saveClient(Request $request)
+    {
+        $client = Client::find($request->client_id);
+        $client->update($request->all());
+
+        return redirect(route('admin.clients'));
+    }
+
+    public function approveClient($clientId)
+    {
+        $client = Client::find($clientId);
+        $client->update(['status' => 'Ativo']);
+
+        return redirect(route('admin.clients'));
+    }
+
+    public function destroyClient($clientId)
+    {
+        $client = Client::find($clientId);
+
+        if ($client) $client->delete();
+
+        return redirect(route('admin.clients'));
     }
 
     public function verified(Request $request)
@@ -275,6 +339,7 @@ class AdminController extends Controller
             ->with('rentalInformation', $rentalInformation)
             ->with('commitment', $commitment)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -288,6 +353,7 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('reservations', $reservations)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -347,6 +413,7 @@ class AdminController extends Controller
             ->with('reservation', $reservation)
             ->with('user', Auth::user())
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -431,6 +498,7 @@ class AdminController extends Controller
             ->with('properties', Property::published()->get())
             ->with('report', $report)
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -441,6 +509,7 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('properties', PropertyInfo::all())
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -451,6 +520,7 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('regional_tax', RegionalTax::all())
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -461,6 +531,7 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('properties', Property::all())
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -472,6 +543,7 @@ class AdminController extends Controller
             ->with('property', Property::find($propertyId))
             ->with('users', User::all())
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
@@ -482,6 +554,7 @@ class AdminController extends Controller
             ->with('name', Auth::user()->display_name)
             ->with('property', Property::find($propertyId))
             ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
             ->with('reminders', $this->reminders);
     }
