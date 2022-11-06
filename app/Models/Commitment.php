@@ -122,15 +122,6 @@ class Commitment extends Model
 
         $commitment->save();
 
-        $token = "tof7lsdJasdloaa57e"; // Ultramsg.com token
-        $instance_id = "instance1150"; // Ultramsg.com instance id
-        $client = new WhatsAppApi($token, $instance_id);
-
-        $to = "put_your_mobile_number_here";
-        $body = "Hello world";
-        $api = $client->sendChatMessage($to, $body);
-        print_r($api);
-
         return $callback;
     }
 
