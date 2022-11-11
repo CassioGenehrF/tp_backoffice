@@ -14,8 +14,8 @@
                 <select class="form-select" name="status" id="status" wire:model="status">
                     <option value="" selected>Selecione uma opção</option>
                     <option value="Aguardando Atendimento">Aguardando Atendimento</option>
-                    <option value="Atendido">Atendido</option>
-                    <option value="Reservado">Reservado</option>
+                    <option value="Atendido Não Reservado">Atendido</option>
+                    <option value="Atendido Reservado">Reservado</option>
                 </select>
             </div>
         </div>
@@ -44,11 +44,11 @@
                                     <form
                                         action="{{ route('admin.answered_indication', ['indicationId' => $indication->id]) }}"
                                         method="post">
-                                        <button type="submit" class="btn btn-success">Atendido</button>
+                                        <button type="submit" class="btn btn-success">Atendido Não Reservado</button>
                                     </form>
                                     <a href="{{ route('admin.indication', ['indicationId' => $indication->id]) }}"
                                         class="btn btn-light">
-                                        Reservado
+                                        Atendido Reservado
                                     </a>
                                 @endif
                                 <form

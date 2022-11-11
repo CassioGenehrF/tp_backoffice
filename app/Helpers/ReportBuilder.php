@@ -92,7 +92,7 @@ class ReportBuilder
 
         if (!$propertyId && !($isBroker && $isAdmin)) {
             $indications = Indication::query()
-                ->where('status', 'Reservado')
+                ->where('status', 'Atendido Reservado')
                 ->where('user_id', auth()->user()->ID)
                 ->get();
 

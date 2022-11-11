@@ -295,7 +295,7 @@ class AdminController extends Controller
     {
         $indication = Indication::find($IndicationId);
         $indication->update([
-            'status' => 'Reservado',
+            'status' => 'Atendido Reservado',
             'value' => $request->value,
             'rented_month' => Carbon::createFromFormat('Y-m', $request->rented_month)->format('Y-m-d'),
         ]);

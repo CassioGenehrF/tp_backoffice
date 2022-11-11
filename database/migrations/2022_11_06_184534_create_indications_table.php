@@ -20,7 +20,7 @@ class CreateIndicationsTable extends Migration
             $table->string('cpf')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('status', ['Aguardando Atendimento', 'Atendido', 'Reservado'])->default('Aguardando Atendimento');
+            $table->enum('status', ['Aguardando Atendimento', 'Atendido Não Reservado', 'Atendido Reservado'])->default('Aguardando Atendimento');
             $table->decimal('value')->nullable();
             $table->datetime('rented_month')->nullable();
             $table->timestamps();
