@@ -37,18 +37,18 @@
                 <div class="btn-group menu-item">
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        Opções
+                        Menu
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Agenda</a>
-                        <a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
+                        <a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Data</a>
+                        <a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Data</a>
                         <a class="dropdown-item" href="{{ route('owner.reservations') }}">Minhas Reservas</a>
-                        <a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a>
-                        <a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
-                        <a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a>
+                        <a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Financeiro</a>
+                        <a class="dropdown-item" href="{{ route('owner.properties') }}">Meus Imóveis</a>
+                        <a class="dropdown-item" href="{{ route('owner.demands') }}">Ver Ofertas</a>
                         <a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus Contratos</a>
-                        <a class="dropdown-item" href="{{ route('owner.clients') }}">Clientes</a>
-                        <a class="dropdown-item" href="{{ route('owner.indications') }}">Indicações</a>
+                        <a class="dropdown-item" href="{{ route('owner.clients') }}">Histórico de Clientes</a>
+                        <a class="dropdown-item" href="{{ route('owner.indications') }}">Fazer uma Indicação</a>
                     </div>
                 </div>
                 <li class="menu-item username">

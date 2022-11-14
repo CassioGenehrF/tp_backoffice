@@ -41,14 +41,14 @@
                 <div class="btn-group menu-item">
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        Opções
+                        Menu
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Agenda</a>
-                        <a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a>
+                        <a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Data</a>
+                        <a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Data</a>
                         <a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a>
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
-                        <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a>
+                        <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Financeiro</a>
                         <a class="dropdown-item" href="{{ route('admin.properties') }}">Imóveis</a>
                         <a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
                             Indicações</a>
@@ -57,12 +57,12 @@
                         <a class="dropdown-item" href="{{ route('admin.search_properties') }}">Filtrar Imóvel</a>
                         <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
-                        <a class="dropdown-item" href="{{ route('admin.clients') }}">Clientes</a>
-                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Indicações</a>
+                        <a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a>
+                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a>
                     </div>
                 </div>
                 <li class="menu-item username">
-                    <a href="{{ route('admin.profile') }}">{{ Auth::user()->display_name }}</a>
+                    <a href="{{ route('admin.profile') }}">Demais Funções</a>
                 </li>
                 <li class="menu-item notification">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

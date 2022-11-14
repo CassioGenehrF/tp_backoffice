@@ -40,18 +40,18 @@
                 <div class="btn-group menu-item dropdown">
                     <button type="button" class="btn dropdown-toggle" id="dropdownMenu" type="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Opções
+                        Menu
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-                        <li><a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Agenda</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Agenda</a>
+                        <li><a class="dropdown-item" href="{{ route('admin.page') }}">Bloquear Data</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.unblock_page') }}">Desbloquear Data</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.reservation') }}">Efetuar Reserva</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Mensal</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Financeiro</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.properties') }}">Imóveis</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
-                                Indicações</a></li>
+                                Fazer uma Indicação</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a></li>
@@ -59,12 +59,12 @@
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.clients') }}">Clientes</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.indications') }}">Indicações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a></li>
                     </ul>
                 </div>
                 <li class="menu-item username">
-                    <a href="{{ route('admin.profile') }}">{{ Auth::user()->display_name }}</a>
+                    <a href="{{ route('admin.profile') }}">Demais Funções</a>
                 </li>
                 <li class="menu-item notification">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

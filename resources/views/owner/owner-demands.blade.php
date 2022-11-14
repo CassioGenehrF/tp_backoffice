@@ -39,22 +39,22 @@
                 <div class="btn-group menu-item">
                     <button type="button" class="btn dropdown-toggle" id="dropdownMenu" type="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Opções
+                        Menu
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-                        <li><a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Agenda</a></li>
-                        <li><a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Agenda</a>
+                        <li><a class="dropdown-item" href="{{ route('owner.page') }}">Bloquear Data</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.unblock_page') }}">Desbloquear Data</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('owner.reservations') }}">Minhas Reservas</a></li>
-                        <li><a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Mensal</a></li>
-                        <li><a class="dropdown-item" href="{{ route('owner.properties') }}">Minhas Propriedades</a>
+                        <li><a class="dropdown-item" href="{{ route('owner.report') }}">Relatório Financeiro</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.properties') }}">Meus Imóveis</a>
                         </li>
-                        <li><a class="dropdown-item" href="{{ route('owner.demands') }}">Solicitações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.demands') }}">Ver Ofertas</a></li>
                         <li><a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus
                                 Contratos</a>
                         </li>
-                        <li><a class="dropdown-item" href="{{ route('owner.clients') }}">Clientes</a></li>
-                        <li><a class="dropdown-item" href="{{ route('owner.indications') }}">Indicações</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.clients') }}">Histórico de Clientes</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.indications') }}">Fazer uma Indicação</a></li>
                     </ul>
                 </div>
                 <li class="menu-item username">

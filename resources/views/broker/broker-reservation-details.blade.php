@@ -39,12 +39,12 @@
                 <div class="btn-group menu-item">
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        Opções
+                        Menu
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ route('broker.page') }}">Efetuar Reserva</a>
                         <a class="dropdown-item" href="{{ route('broker.reservations') }}">Minhas Reservas</a>
-                        <a class="dropdown-item" href="{{ route('broker.report') }}">Relatório Mensal</a>
+                        <a class="dropdown-item" href="{{ route('broker.report') }}">Relatório Financeiro</a>
                     </div>
                 </div>
                 <li class="menu-item username">
