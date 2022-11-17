@@ -56,7 +56,8 @@
                                 Contratos</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('owner.clients') }}">Histórico de Clientes</a></li>
-                        <li><a class="dropdown-item" href="{{ route('owner.indications') }}">Fazer uma Indicação</a></li>
+                        <li><a class="dropdown-item" href="{{ route('owner.indications') }}">Fazer uma Indicação</a>
+                        </li>
                     </ul>
                 </div>
                 <li class="menu-item username">

@@ -25,6 +25,19 @@
             text-align: center !important;
         }
 
+        .assinaturas {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .locador,
+        .locatario {
+            flex: 1 1 auto;
+            border: 1px #000 solid;
+            text-align: center;
+            margin: 5px;
+        }
+
         .mt-2 {
             margin-top: 0.5rem !important;
         }
@@ -543,13 +556,22 @@
             <p class="mt-10">
                 {{ "$cidade_imovel, " .now()->day .' de ' .ucfirst(now()->locale('pt-BR')->translatedFormat('F')) .' de ' .now()->year }}
             </p>
-            <p class="mt-2">{{ $nome_proprietario }}</p>
-            <p>CPF: {{ $cpf_proprietario }}</p>
-            <p>Locador</p>
-            <hr style="width: 50%; margin: 0 auto;">
-            <p class="mt-2">{{ $nome_cliente }}</p>
-            <p>CPF: {{ $cpf_cliente }}</p>
-            <p>Locatário</p>
+            <div class="assinaturas">
+                <div class="locador">
+                    <p class="mt-2"><b>{!! $assinatura_proprietario ?? '&nbsp' !!}</b></p>
+                    <hr style="width: 50%; margin: 0 auto;">
+                    <p class="mt-2">{{ $nome_proprietario }}</p>
+                    <p>CPF: {{ $cpf_proprietario }}</p>
+                    <p>Locador</p>
+                </div>
+                <div class="locatario">
+                    <p class="mt-2"><b>{!! $assinatura_cliente ?? '&nbsp' !!}</b></p>
+                    <hr style="width: 50%; margin: 0 auto;">
+                    <p class="mt-2">{{ $nome_cliente }}</p>
+                    <p>CPF: {{ $cpf_cliente }}</p>
+                    <p>Locatário</p>
+                </div>
+            </div>
         </span>
     </main>
 </body>

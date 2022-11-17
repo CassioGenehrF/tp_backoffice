@@ -334,7 +334,7 @@ class OwnerController extends Controller
             'contract_deposit_id' => $contractDeposit->id
         ]);
 
-        return $this->propertiesContracts();
+        return redirect(route('owner.properties_contracts'));
     }
 
     public function downloadPropertyContract($contractId)
@@ -344,6 +344,8 @@ class OwnerController extends Controller
         $property = Property::find($contract->property_id);
 
         $data = [
+            'assinatura_proprietario' => $contract->owner_signature,
+            'assinatura_cliente' => $contract->client_signature,
             'propriedade' => $property,
             'nome_proprietario' => $contract->owner_name,
             'cpf_proprietario' => $contract->owner_cpf,
@@ -409,7 +411,7 @@ class OwnerController extends Controller
         $contract->owner_signature_at = now();
         $contract->save();
 
-        return $this->propertiesContracts();
+        return redirect(route('owner.properties_contracts'));
     }
 
     public function contractClient($contractId)
@@ -444,7 +446,7 @@ class OwnerController extends Controller
         $contractDeposit = ContractDeposit::find($contract->contract_deposit_id);
         $contractDeposit->delete();
 
-        return $this->propertiesContracts();
+        return redirect(route('owner.properties_contracts'));
     }
 
     public function viewClients()

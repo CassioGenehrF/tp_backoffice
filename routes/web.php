@@ -142,6 +142,7 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['prefix' => 'contract'], function () {
             Route::get('{contractId}/download', [OwnerController::class, 'downloadPropertyContract'])->name('owner.download_property_contract');
             Route::get('{contractId}/owner', [OwnerController::class, 'contractOwner'])->name('owner.property_contract');
+            Route::post('', [OwnerController::class, 'createContract'])->name('owner.create_contract');
             Route::post('{contractId}/owner', [OwnerController::class, 'saveContractOwner'])->name('owner.owner_signature');
             Route::delete('{contractId}', [OwnerController::class, 'destroyContract'])->name('owner.destroy_contract');
         });
@@ -171,7 +172,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('getReport/{propertyId}', [OwnerController::class, 'getReport']);
 
         Route::post('property/documents', [OwnerController::class, 'sendPropertyDocuments'])->name('owner.send_property_documents');
-        Route::post('contract', [OwnerController::class, 'createContract'])->name('owner.create_contract');
         Route::post('value', [OwnerController::class, 'saveValue'])->name('owner.save_value');
         Route::post('block', [OwnerController::class, 'block'])->name('owner.block');
         Route::post('unblock', [OwnerController::class, 'unblock'])->name('owner.unblock');

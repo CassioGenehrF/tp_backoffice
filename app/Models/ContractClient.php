@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ContractClient extends Model
 {
+    use Uuids;
     protected $table = 'contract_clients';
 
     protected $fillable = [
