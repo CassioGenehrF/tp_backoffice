@@ -4,6 +4,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Contrato - Temporada Paulista</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         * {
@@ -36,6 +40,12 @@
             border: 1px #000 solid;
             text-align: center;
             margin: 5px;
+        }
+
+        .locador>p>b,
+        .locatario>p>b {
+            font-family: 'Dancing Script', cursive;
+            font-size: 30px; 
         }
 
         .mt-2 {
@@ -558,14 +568,14 @@
             </p>
             <div class="assinaturas">
                 <div class="locador">
-                    <p class="mt-2"><b>{!! $assinatura_proprietario ?? '&nbsp' !!}</b></p>
+                    <p class="mt-2"><b>{!! $assinatura_proprietario ?? '' !!}</b></p>
                     <hr style="width: 50%; margin: 0 auto;">
                     <p class="mt-2">{{ $nome_proprietario }}</p>
                     <p>CPF: {{ $cpf_proprietario }}</p>
                     <p>Locador</p>
                 </div>
                 <div class="locatario">
-                    <p class="mt-2"><b>{!! $assinatura_cliente ?? '&nbsp' !!}</b></p>
+                    <p class="mt-2"><b>{!! $assinatura_cliente ?? '' !!}</b></p>
                     <hr style="width: 50%; margin: 0 auto;">
                     <p class="mt-2">{{ $nome_cliente }}</p>
                     <p>CPF: {{ $cpf_cliente }}</p>

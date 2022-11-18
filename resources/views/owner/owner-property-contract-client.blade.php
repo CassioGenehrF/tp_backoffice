@@ -81,6 +81,8 @@
     </header>
     <main class="container">
         <form action="{{ route('owner.client_signature', ['contractId' => $contractId]) }}" method="POST">
+            <a href="{{ route('owner.download_property_contract', ['contractId' => $contractId]) }}"
+                class="btn btn-primary">Visualizar Contrato</a>
             <div class="row mt-2">
                 <div class="form-group col-md-4">
                     <label for="client">Nome Completo:</label>

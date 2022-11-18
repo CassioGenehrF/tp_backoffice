@@ -10,6 +10,7 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 
 Route::post('auth', [LoginController::class, 'auth'])->name('auth.user');
 
+Route::get('contract/{contractId}/download', [OwnerController::class, 'downloadPropertyContract'])->name('owner.download_property_contract');
 Route::get('contract/{contractId}/client', [OwnerController::class, 'contractClient'])->name('owner.property_contract_client');
 Route::post('contract/{contractId}/client', [OwnerController::class, 'saveContractClient'])->name('owner.client_signature');
 
@@ -140,7 +141,6 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::group(['prefix' => 'contract'], function () {
-            Route::get('{contractId}/download', [OwnerController::class, 'downloadPropertyContract'])->name('owner.download_property_contract');
             Route::get('{contractId}/owner', [OwnerController::class, 'contractOwner'])->name('owner.property_contract');
             Route::post('', [OwnerController::class, 'createContract'])->name('owner.create_contract');
             Route::post('{contractId}/owner', [OwnerController::class, 'saveContractOwner'])->name('owner.owner_signature');
