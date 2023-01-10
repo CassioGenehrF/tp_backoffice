@@ -123,14 +123,16 @@ class Search extends Component
                 ]);
 
                 $res = json_decode($response->getBody());
-
-                $location_lat = $res->results[0]->geometry->location->lat;
-                $location_lng = $res->results[0]->geometry->location->lng;
-
-                $propertyInfo->update([
-                    'location_lat' => $location_lat,
-                    'location_lng' => $location_lng
-                ]);
+                
+                if (isset($res->results[0]->geometry)) {
+                    $location_lat = $res->results[0]->geometry->location->lat;
+                    $location_lng = $res->results[0]->geometry->location->lng;
+    
+                    $propertyInfo->update([
+                        'location_lat' => $location_lat,
+                        'location_lng' => $location_lng
+                    ]);
+                }
             }
 
             $property->refresh();

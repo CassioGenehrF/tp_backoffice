@@ -208,9 +208,11 @@ class OwnerController extends Controller
 
     public function propertiesContracts()
     {
+        $contracts = ContractClient::fromAuthUser();
+
         return view('owner.owner-properties-contracts')
             ->with('name', Auth::user()->display_name)
-            ->with('contracts', ContractClient::all());
+            ->with('contracts', $contracts);
     }
 
     public function contract($propertyId)
