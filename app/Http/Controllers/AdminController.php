@@ -486,6 +486,7 @@ class AdminController extends Controller
         setlocale(LC_TIME, 'pt_BR');
         $date = Carbon::createFromDate($yearId, $monthId);
         $month = ucfirst($date->localeMonth);
+        $month = str_contains($month, 'Mar') ? 'Março' : $month;
 
         $row = CalendarBuilder::create($propertyId, $monthId, $yearId);
 
