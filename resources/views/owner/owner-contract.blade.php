@@ -48,7 +48,7 @@
                         <a class="dropdown-item" href="{{ route('owner.demands') }}">Ver Ofertas</a>
                         <a class="dropdown-item" href="{{ route('owner.properties_contracts') }}">Meus Contratos</a>
                         <a class="dropdown-item" href="{{ route('owner.clients') }}">Histórico de Clientes</a>
-                        <a class="dropdown-item" href="{{ route('owner.indications') }}">Fazer uma Indicação</a>
+                        <a class="dropdown-item" href="{{ route('owner.indications') }}">Indicar um cliente</a>
                     </div>
                 </div>
                 <li class="menu-item username">

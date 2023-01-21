@@ -156,6 +156,7 @@ class Commitment extends Model
 
     public static function updateRent(
         $rentalInformationId,
+        $indicator,
         $propertyId,
         $checkin,
         $checkout,
@@ -196,7 +197,7 @@ class Commitment extends Model
 
         $commitment->save();
 
-        $tax = $preco * 10 / 100;
+        $tax = $preco * 15 / 100;
 
         $broker_tax = 0;
 
@@ -206,7 +207,9 @@ class Commitment extends Model
 
         $publisher_tax = 0;
 
-        if ($property->propertyInfo && $property->propertyInfo->user_indication_id) {
+        if ($indicator) {
+            $publisher_tax = $tax * 30 / 100;
+        } else if ($property->propertyInfo && $property->propertyInfo->user_indication_id) {
             $publisher_tax = $property->propertyInfo->user_indication_id == $user_id ? 0 : $tax * 30 / 100;
         }
 
@@ -228,7 +231,8 @@ class Commitment extends Model
             'publisher_tax' => $publisher_tax,
             'regional_tax' => $regional_tax,
             'clean_tax' => $clean,
-            'bail_tax' => $bail
+            'bail_tax' => $bail,
+            'indicator' => $indicator
         ]);
 
         $rentalInformation->save();
@@ -237,6 +241,7 @@ class Commitment extends Model
     }
 
     public static function rent(
+        $indicator,
         $propertyId,
         $checkin,
         $checkout,
@@ -292,7 +297,7 @@ class Commitment extends Model
 
         $commitment->save();
 
-        $tax = $preco * 10 / 100;
+        $tax = $preco * 15 / 100;
 
         $broker_tax = 0;
         if (Auth::user()->role != 'administrator') {
@@ -300,7 +305,9 @@ class Commitment extends Model
         }
 
         $publisher_tax = 0;
-        if ($property->propertyInfo && $property->propertyInfo->user_indication_id) {
+        if ($indicator) {
+            $publisher_tax = $tax * 30 / 100;
+        } else if ($property->propertyInfo && $property->propertyInfo->user_indication_id) {
             $publisher_tax = $property->propertyInfo->user_indication_id == $user_id ? 0 : $tax * 30 / 100;
         }
 
@@ -322,7 +329,8 @@ class Commitment extends Model
             'publisher_tax' => $publisher_tax,
             'regional_tax' => $regional_tax,
             'clean_tax' => $clean,
-            'bail_tax' => $bail
+            'bail_tax' => $bail,
+            'indicator' => $indicator
         ]);
 
         $rentalInformation->save();

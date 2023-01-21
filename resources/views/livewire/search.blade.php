@@ -24,7 +24,8 @@
                 <div class="form-group col-md-3">
                     <label for="standard">Padrão</label>
                     <select class="form-select" name="standard" id="standard" wire:model.debounce.1s="standard">
-                        <option value="0" selected>Selecione um padrão</option>
+                        <option value="" disabled selected hidden>Selecione uma opção</option>
+                        <option value="0">Sem Classificação</option>
                         <option value="1">Simples</option>
                         <option value="2">Médio</option>
                         <option value="3">Alto</option>

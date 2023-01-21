@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Auth;
 
 class RentalInformation extends Model
 {
@@ -26,7 +25,8 @@ class RentalInformation extends Model
         'publisher_tax',
         'regional_tax',
         'clean_tax',
-        'bail_tax'
+        'bail_tax',
+        'indicator'
     ];
 
     public $timestamps = false;

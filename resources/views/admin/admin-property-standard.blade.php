@@ -54,7 +54,7 @@
                         <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                         <a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a>
-                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a>
+                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Indicar um cliente</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -121,6 +121,7 @@
                     <label for="standard">Padrão do Imóvel:</label>
                     <select class="form-control" name="standard" id="standard">
                         <option value="" disabled selected hidden>Selecione uma opção</option>
+                        <option value="0">Sem Classificação</option>
                         <option value="1">Simples</option>
                         <option value="2">Médio</option>
                         <option value="3">Alto</option>

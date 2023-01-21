@@ -57,7 +57,7 @@
                         <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                         <a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a>
-                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a>
+                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Indicar um cliente</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -182,6 +182,18 @@
                 @else
                     <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
                 @endif
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="indicator">Indicador:</label>
+                        <select name="indicator" id="indicator" class="form-control">
+                            @foreach ($users as $user)
+                                <option value="{{ $user->ID }}"
+                                    {{ $rentalInformation && $rentalInformation->indicator == $user->ID ? 'selected' : '' }}>
+                                    {{ $user->display_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="checkin">Check-in:</label>

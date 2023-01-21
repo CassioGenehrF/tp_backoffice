@@ -153,6 +153,7 @@ class BrokerController extends Controller
         if ($request->rentalInformation) {
             return Commitment::updateRent(
                 $request->rentalInformation,
+                '',
                 $request->propriedade,
                 $request->checkin,
                 $request->checkout,
@@ -171,6 +172,7 @@ class BrokerController extends Controller
         }
 
         return Commitment::rent(
+            '',
             $request->propriedade,
             $request->checkin,
             $request->checkout,

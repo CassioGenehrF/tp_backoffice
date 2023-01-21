@@ -56,7 +56,7 @@
                         <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                         <a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a>
-                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a>
+                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Indicar um cliente</a>
                     </div>
                 </div>
                 <li class="menu-item username">

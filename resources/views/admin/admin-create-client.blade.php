@@ -54,7 +54,7 @@
                         <a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a>
                         <a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a>
                         <a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a>
-                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a>
+                        <a class="dropdown-item" href="{{ route('admin.indications') }}">Indicar um cliente</a>
                     </div>
                 </div>
                 <li class="menu-item username">
@@ -187,17 +187,17 @@
                 <div class="form-group col-md-6">
                     <label for="feedback_positive">Pontos Positivos:</label>
                     @if ($client)
-                        <textarea rows="3" class="form-control" id="feedback_positive" name="feedback_positive" required>{{ $client->feedback_positive }}</textarea>
+                        <textarea rows="3" class="form-control" id="feedback_positive" name="feedback_positive">{{ $client->feedback_positive }}</textarea>
                     @else
-                        <textarea rows="3" class="form-control" id="feedback_positive" name="feedback_positive" required></textarea>
+                        <textarea rows="3" class="form-control" id="feedback_positive" name="feedback_positive"></textarea>
                     @endif
                 </div>
                 <div class="form-group col-md-6">
                     <label for="feedback_negative">Pontos Negativos:</label>
                     @if ($client)
-                        <textarea rows="3" class="form-control" id="feedback_negative" name="feedback_negative" required>{{ $client->feedback_negative }}</textarea>
+                        <textarea rows="3" class="form-control" id="feedback_negative" name="feedback_negative">{{ $client->feedback_negative }}</textarea>
                     @else
-                        <textarea rows="3" class="form-control" id="feedback_negative" name="feedback_negative" required></textarea>
+                        <textarea rows="3" class="form-control" id="feedback_negative" name="feedback_negative"></textarea>
                     @endif
                 </div>
             </div>

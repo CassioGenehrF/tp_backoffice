@@ -96,10 +96,20 @@ class ReportBuilder
                 ->where('user_id', auth()->user()->ID)
                 ->get();
 
+            $rentalInformations = RentalInformation::query()
+                ->where('indicator', auth()->user()->ID)
+                ->get();
+
             foreach ($indications as $indication) {
                 $month = Carbon::createFromFormat('Y-m-d H:i:s', $indication->rented_month)->format('m');
 
                 $report["$month/$year"]['comission'] += $indication->value;
+            }
+
+            foreach ($rentalInformations as $rentalInformation) {
+                $month = Carbon::createFromFormat('Y-m-d', $rentalInformation->commitment->checkin)->format('m');
+
+                $report["$month/$year"]['comission'] += $rentalInformation->publisher_tax;
             }
         }
 

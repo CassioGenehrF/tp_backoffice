@@ -31,6 +31,7 @@ class AdminController extends Controller
     private $unverified;
     private $reminders;
     private $pendingClient;
+    private $notifications;
 
     public function __construct()
     {
@@ -391,13 +392,16 @@ class AdminController extends Controller
             $commitment = Commitment::find($rentalInformation->commitment_id);
         }
 
+        $users = User::all();
+
         return $this->calendarPage('admin.admin-reservation')
             ->with('rentalInformation', $rentalInformation)
             ->with('commitment', $commitment)
             ->with('unverified', $this->unverified)
             ->with('pendingClient', $this->pendingClient)
             ->with('notifications', $this->notifications)
-            ->with('reminders', $this->reminders);
+            ->with('reminders', $this->reminders)
+            ->with('users', $users);
     }
 
     public function reservations()
@@ -503,6 +507,7 @@ class AdminController extends Controller
         if ($request->rentalInformation) {
             return Commitment::updateRent(
                 $request->rentalInformation,
+                $request->indicator,
                 $request->propriedade,
                 $request->checkin,
                 $request->checkout,
@@ -521,6 +526,7 @@ class AdminController extends Controller
         }
 
         return Commitment::rent(
+            $request->indicator,
             $request->propriedade,
             $request->checkin,
             $request->checkout,

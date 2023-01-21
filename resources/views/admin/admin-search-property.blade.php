@@ -51,7 +51,7 @@
                         <li><a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Financeiro</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.properties') }}">Imóveis</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
-                                Fazer uma Indicação</a></li>
+                                Indicar um cliente</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.receipts') }}">Enviar Comprovantes</a></li>
@@ -60,7 +60,7 @@
                         <li><a class="dropdown-item" href="{{ route('admin.demand') }}">Criar Solicitação</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.contracts') }}">Contratos</a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.clients') }}">Histórico de Clientes</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.indications') }}">Fazer uma Indicação</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.indications') }}">Indicar um cliente</a></li>
                     </ul>
                 </div>
                 <li class="menu-item username">
