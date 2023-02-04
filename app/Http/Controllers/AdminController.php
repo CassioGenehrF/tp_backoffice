@@ -599,6 +599,67 @@ class AdminController extends Controller
             ->with('reminders', $this->reminders);
     }
 
+    public function propertiesHeat()
+    {
+        $properties = Property::published()->get();
+        $properties = $properties->sortBy(function ($property) {
+            return $property->getRentsPercentage();
+        });
+
+        return view('admin.admin-properties-heat')
+            ->with('name', Auth::user()->display_name)
+            ->with('properties', $properties)
+            ->with('unverified', $this->unverified)
+            ->with('pendingClient', $this->pendingClient)
+            ->with('notifications', $this->notifications)
+            ->with('reminders', $this->reminders);
+    }
+
+    public function getPropertyHeat($propertyId, $month, $year)
+    {
+        $properties = Property::published();
+
+        if ($propertyId != 0) {
+            $properties = $properties->where('ID', $propertyId);
+        }
+
+        $properties = $properties->get();
+
+        $properties = $properties->sortBy(function ($property) use ($month, $year) {
+            return $property->getRentsPercentage($month, $year);
+        });
+
+        $html = $this->propertyHeatAsHtml($properties, $month, $year);
+        $data = ['data' => $html];
+
+        return response()->json($data, 200);
+    }
+
+    private function propertyHeatAsHtml($properties, $month, $year): string
+    {
+        $html = '';
+
+        foreach ($properties as $property) {
+            $html .= "
+                <tr>
+                    <td>
+                        <a href='https://temporadapaulista.com.br/propriedade/$property->ID'
+                            target='_blank'>
+                            $property->post_title
+                        </a>
+                    </td>
+                    <td>
+                        <div data-rented-percentage={$property->getRentsPercentage($month, $year)}
+                            id='" . "progress-$property->ID" . "' class='progress-bar'>
+                        </div>
+                    </td>
+                </tr>
+            ";
+        }
+
+        return $html;
+    }
+
     public function propertyIndication($propertyId)
     {
         return view('admin.admin-property-indication')

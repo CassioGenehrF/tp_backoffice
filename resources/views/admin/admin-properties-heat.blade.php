@@ -16,16 +16,14 @@
     <!-- Boostrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owner.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/properties.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/broker/reservation.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 </head>
@@ -113,78 +111,49 @@
             </ul>
         </nav>
     </header>
-    <main class="conteudo">
-        <section class="p-4 mw-60">
-            <div class="calendar">
-                <section class="filter">
-                    <div class="form-group">
-                        <label for="filtro-propriedade">Propriedade:</label>
-                        <select name="filtro-propriedade" id="filtro-propriedade" class="form-control">
-                            @foreach ($properties as $property)
-                                <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </section>
-                <div class="calendar-tools">
-                    <input type="hidden" name="month_id" id="month_id" value="{{ $monthId }}">
-                    <input type="hidden" name="year_id" id="year_id" value="{{ $yearId }}">
-                    <div class="d-flex flex-lg-row justify-content-center align-items-center">
-                        <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
-                            <button onclick="prevMonth()" data-mdb-ripple-color="dark"
-                                class="btn btn-link text-dark">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                        </div>
-                        <span class="calendar-heading">{{ $month }}</span>
-                        <div class="my-2 me-2 my-lg-0 d-flex justify-content-center">
-                            <button onclick="nextMonth()" data-mdb-ripple-color="dark"
-                                class="btn btn-link text-dark">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <table class="month">
-                    <thead>
+    <section class="flex mt-2">
+        <div class="form-group col-md-4 ml-4">
+            <label for="filtro-propriedade">Imóvel:</label>
+            <select class="form-control" name="filtro-propriedade" id="filtro-propriedade">
+                <option value="0">Todas</option>
+                @foreach ($properties as $property)
+                    <option value="{{ $property->ID }}">{{ $property->post_title }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-2 ml-4">
+            <label for="month">Mês</label>
+            <input type="month" name="month" id="month" class="form-control">
+        </div>
+    </section>
+    <main>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Propriedade</th>
+                        <th scope="col">Termômetro</th>
+                    </tr>
+                </thead>
+                <tbody id="properties">
+                    @foreach ($properties as $property)
                         <tr>
-                            <th>Domingo</th>
-                            <th>Segunda</th>
-                            <th>Terça</th>
-                            <th>Quarta</th>
-                            <th>Quinta</th>
-                            <th>Sexta</th>
-                            <th>Sábado</th>
+                            <td>
+                                <a href="https://temporadapaulista.com.br/propriedade/{{ $property->ID }}"
+                                    target="_blank">
+                                    {{ $property->post_title }}
+                                </a>
+                            </td>
+                            <td>
+                                <div data-rented-percentage={{ $property->getRentsPercentage() }}
+                                    id="{{ "progress-$property->ID" }}" class="progress-bar">
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody id="calendar-content">
-                        {!! $calendar !!}
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        <section class="p-4">
-            <form action="{{ route('admin.unblock') }}" method="POST">
-                @if ($errors->any())
-                    <ul class="list-group mt-4 w-75 mx-auto">
-                        @foreach ($errors->all() as $error)
-                            <li class="list-group-item list-group-item-danger">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-                @csrf
-                <input type="hidden" name="propriedade" id="propriedade" value="{{ $properties[0]->ID }}">
-                <div class="form-group input-box">
-                    <label for="checkin">Check-in:</label>
-                    <input type="date" class="form-control" id="checkin" name="checkin" required>
-                </div>
-                <div class="form-group input-box">
-                    <label for="checkout">Check-out:</label>
-                    <input type="date" class="form-control" id="checkout" name="checkout" required>
-                </div>
-                <button type="submit" class="block-button">DESBLOQUEAR</button>
-            </form>
-        </section>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -196,79 +165,50 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
     <script type="text/javascript">
+        $(function() {
+            $('[id^=progress-]').each(function() {
+                $(this)[0].style.setProperty("--progress", $(this).data('rented-percentage'));
+            });
+        });
+
+        $('#properties').on('change', function() {
+            console.log('trocou');
+        });
+
         $('#filtro-propriedade').on('change', function() {
-            $('#propriedade').val(this.value);
+            propriedade = $('#filtro-propriedade').val() ?? 0;
+            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
+            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
 
             $.ajax({
-                url: "/admin/getCalendar/" + this.value + "/" + $('#month_id').val() + "/" + $('#year_id')
-                    .val(),
+                url: "/admin/getPropertyHeat/" + propriedade + "/" + month + "/" + year,
                 success: function(result) {
-                    $("#calendar-content").html(result['data']);
-                    reloadJs("https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js")
+                    $("#properties").html(result['data']);
+                    $('[id^=progress-]').each(function() {
+                        $(this)[0].style.setProperty("--progress", $(this).data(
+                            'rented-percentage'));
+                    });
                 }
             });
         });
 
-        $('#checkin').on('change', function() {
-            $('#checkout').val($('#checkin').val())
-            $('#checkout').prop('min', $('#checkin').val())
+        $('#month').on('change', function() {
+            propriedade = $('#filtro-propriedade').val() ?? 0;
+            year = $('#month').val() ? $('#month').val().substring(0, 4) : 0;
+            month = $('#month').val() ? parseInt($('#month').val().substring(5, 7)) : 0;
+
+            $.ajax({
+                url: "/admin/getPropertyHeat/" + propriedade + "/" + month + "/" + year,
+                success: function(result) {
+                    $("#properties").html(result['data']);
+                    $('[id^=progress-]').each(function() {
+                        $(this)[0].style.setProperty("--progress", $(this).data(
+                            'rented-percentage'));
+                    });
+                }
+            });
         });
-
-        function prevMonth() {
-            let month = parseInt($('#month_id').val()) - 1
-            let year = parseInt($('#year_id').val())
-            let propriedade = $('#propriedade').val()
-
-            if (month >= 1) {
-                $('#month_id').val(month)
-            } else {
-                month = 12
-                year = parseInt($('#year_id').val()) - 1
-                $('#month_id').val(month)
-                $('#year_id').val(year)
-            }
-
-            $.ajax({
-                url: "/admin/getCalendar/" + propriedade + "/" + month + "/" + year,
-                success: function(result) {
-                    $(".calendar-heading").html(result['month']);
-                    $("#calendar-content").html(result['data']);
-                    reloadJs("https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js")
-                }
-            });
-        }
-
-        function nextMonth() {
-            let month = parseInt($('#month_id').val()) + 1
-            let year = parseInt($('#year_id').val())
-            let propriedade = $('#propriedade').val()
-
-            if (month <= 12) {
-                $('#month_id').val(month);
-            } else {
-                month = 1
-                year = parseInt(year) + 1
-                $('#month_id').val(month)
-                $('#year_id').val(year)
-            }
-
-            $.ajax({
-                url: "/admin/getCalendar/" + propriedade + "/" + month + "/" + year,
-                success: function(result) {
-                    $(".calendar-heading").html(result['month']);
-                    $("#calendar-content").html(result['data']);
-                    reloadJs("https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js")
-                }
-            });
-        }
-
-        function reloadJs(src) {
-            // Utilizado para que ao alterar o calendário não perca as tooltips
-            $('script[src="' + src + '"]').remove();
-            $('<script>').attr('src', src).appendTo('body');
-        }
     </script>
 </body>
 

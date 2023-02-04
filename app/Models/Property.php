@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -56,6 +57,48 @@ class Property extends Model
         'room',
         'sustainable'
     ];
+
+    protected function getRents($startMonth = null, $endMonth = null)
+    {
+        return Commitment::where('property_id', $this->ID)
+            ->where('type', 'rented')
+            ->where(function ($query) use ($startMonth, $endMonth) {
+                if ($startMonth && $endMonth) {
+                    $query->whereDate('checkin', '>=', $startMonth);
+                    $query->whereDate('checkin', '<=', $endMonth);
+                }
+            })
+            ->get();
+    }
+
+    public function getRentsPercentage(int $month = 0, int $year = 0): float
+    {
+        if ($month && $year) {
+            $startMonth = Carbon::createFromDate($year, $month)->startOfMonth()->format('Y-m-d');
+            $endMonth = Carbon::createFromDate($year, $month)->lastOfMonth()->format('Y-m-d');
+            $rents = $this->getRents($startMonth, $endMonth);
+        } else {
+            $rents = $this->getRents();
+        }
+
+        if (count($rents) <= 0) {
+            return 0;
+        }
+
+        $startOfYear = now()->startOfYear();
+        $endOfYear = now()->endOfYear();
+        $days = $endOfYear->diffInDays($startOfYear) + 1;
+        $totalRentedDays = 0;
+
+        foreach ($rents as $rent) {
+            $checkin = Carbon::createFromFormat("Y-m-d", $rent->checkin);
+            $checkout = Carbon::createFromFormat("Y-m-d", $rent->checkout);
+            $rentedDays = $checkout->diffInDays($checkin);
+            $totalRentedDays += $rentedDays;
+        }
+
+        return floatval(number_format($totalRentedDays * 100 / $days, 2));
+    }
 
     protected function getNotesAttribute(): string
     {

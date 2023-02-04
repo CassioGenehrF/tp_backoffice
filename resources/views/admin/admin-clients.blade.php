@@ -50,6 +50,7 @@
                         <a class="dropdown-item" href="{{ route('admin.reservations') }}">Minhas Reservas</a>
                         <a class="dropdown-item" href="{{ route('admin.report') }}">Relatório Financeiro</a>
                         <a class="dropdown-item" href="{{ route('admin.properties') }}">Imóveis</a>
+                        <a class="dropdown-item" href="{{ route('admin.properties_heat') }}">Termômetro Imóveis</a>
                         <a class="dropdown-item" href="{{ route('admin.report_indication') }}">Relatório de
                             Indicações</a>
                         <a class="dropdown-item" href="{{ route('admin.report_regional') }}">Relatório Regional</a>

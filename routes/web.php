@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::get('properties', [AdminController::class, 'properties'])->name('admin.properties');
+        Route::get('properties/heat', [AdminController::class, 'propertiesHeat'])->name('admin.properties_heat');
 
         Route::group(['prefix' => 'property'], function () {
             Route::get('{id}/contract', [AdminController::class, 'downloadContractProperty'])->name('admin.download_contract_property');
@@ -88,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('getCalendar/{propertyId}/{monthId}/{yearId}', [AdminController::class, 'getCalendarAsJson']);
         Route::get('getReport/{propertyId}', [AdminController::class, 'getReport']);
         Route::get('getReservations/{propertyId}/{month}/{year}', [AdminController::class, 'getReservations']);
+        Route::get('getPropertyHeat/{propertyId}/{month}/{year}', [AdminController::class, 'getPropertyHeat']);
 
         Route::post('receipts', [AdminController::class, 'createReceipt'])->name('admin.create_receipt');
         Route::post('block', [AdminController::class, 'block'])->name('admin.block');
